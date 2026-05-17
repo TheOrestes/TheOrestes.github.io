@@ -1,17 +1,47 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on The Pixel Dump</title><link>https://TheOrestes.github.io/posts/</link><description>Recent content in Posts on The Pixel Dump</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>© 2026 Rupesh Mandke</copyright><lastBuildDate>Sat, 16 May 2026 16:29:03 +0530</lastBuildDate><atom:link href="https://TheOrestes.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World</title><link>https://TheOrestes.github.io/posts/2026/hello-world/</link><pubDate>Sat, 16 May 2026 16:29:03 +0530</pubDate><guid>https://TheOrestes.github.io/posts/2026/hello-world/</guid><description>&lt;p&gt;First Post!&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; std&lt;span style="color:#f92672"&gt;::&lt;/span&gt;cout &lt;span style="color:#f92672"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><content type="html"><![CDATA[<p>First Post!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on The Pixel Dump</title><link>https://TheOrestes.github.io/posts/</link><description>Recent content in Posts on The Pixel Dump</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>© 2026 Rupesh Mandke</copyright><lastBuildDate>Sat, 16 May 2026 16:40:53 +0530</lastBuildDate><atom:link href="https://TheOrestes.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>From CUDA Rays to OpenGL Pixels</title><link>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_opengl_interop_blog_post/</link><pubDate>Sat, 16 May 2026 16:40:53 +0530</pubDate><guid>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_opengl_interop_blog_post/</guid><description>&lt;p&gt;Ray tracers are fun to write, but they only get truly satisfying once the result shows up on screen without the renderer taking the scenic route through system memory. CUDA and OpenGL both live on the GPU, but they do not automatically share resources, so displaying a CUDA-rendered image often turns into an awkward copy chain unless interop is set up properly.&lt;/p&gt;
+&lt;p&gt;This commit focuses on the wiring needed to connect an OpenGL texture to CUDA so the renderer can move toward a direct GPU-to-GPU display path. It is one of those changes that looks like plumbing in the diff but quietly removes a lot of friction from the rendering pipeline.&lt;/p&gt;</description><content type="html"><![CDATA[<p>Ray tracers are fun to write, but they only get truly satisfying once the result shows up on screen without the renderer taking the scenic route through system memory. CUDA and OpenGL both live on the GPU, but they do not automatically share resources, so displaying a CUDA-rendered image often turns into an awkward copy chain unless interop is set up properly.</p>
+<p>This commit focuses on the wiring needed to connect an OpenGL texture to CUDA so the renderer can move toward a direct GPU-to-GPU display path. It is one of those changes that looks like plumbing in the diff but quietly removes a lot of friction from the rendering pipeline.</p>
+<h2 id="the-problem">The Problem</h2>
+<p>Without interop, the frame usually takes a needlessly dramatic route: CUDA renders, the image gets copied back to the CPU, and then OpenGL uploads it again for display. That approach works, but it is exactly the sort of detour that makes a GPU pipeline feel less like a renderer and more like a parcel delivery service.</p>
+<p>The cleaner approach is to let OpenGL own the texture that will be shown on screen and let CUDA access that same resource directly. The whole point is to keep the frame on the GPU and stop paying for unnecessary travel.</p>
+<h2 id="the-texture-becomes-the-display-target">The Texture Becomes the Display Target</h2>
+<p>The first step is to create a normal OpenGL texture that will hold the rendered image. Nothing exotic here, just a 2D texture that acts as the on-screen destination.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>glGenTextures(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>glTexture);
+</span></span><span style="display:flex;"><span>glBindTexture(GL_TEXTURE_2D, glTexture);
+</span></span><span style="display:flex;"><span>glTexImage2D(GL_TEXTURE_2D, <span style="color:#ae81ff">0</span>, GL_RGBA32F, width, height, <span style="color:#ae81ff">0</span>, GL_RGBA, GL_FLOAT, <span style="color:#66d9ef">nullptr</span>);
+</span></span></code></pre></div><p>At this point, the texture is still just an OpenGL object. CUDA does not know about it yet.</p>
+<h2 id="registering-the-texture-with-cuda">Registering the Texture with CUDA</h2>
+<p>The key interop step is registering that OpenGL texture so CUDA can work with it. This is the point where the two APIs stop pretending the other one does not exist.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>cudaGraphicsResource<span style="color:#f92672">*</span> cudaResource;
+</span></span><span style="display:flex;"><span>cudaGraphicsGLRegisterImage(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&amp;</span>cudaResource,
+</span></span><span style="display:flex;"><span>    glTexture,
+</span></span><span style="display:flex;"><span>    GL_TEXTURE_2D,
+</span></span><span style="display:flex;"><span>    cudaGraphicsRegisterFlagsWriteDiscard
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p>The <code>cudaGraphicsRegisterFlagsWriteDiscard</code> flag tells CUDA that the texture contents will be replaced rather than preserved. For a renderer that refreshes pixels every frame, that is a very reasonable life choice.</p>
+<h2 id="mapping-and-unmapping-the-shared-resource">Mapping and Unmapping the Shared Resource</h2>
+<p>Once the texture is registered, CUDA still needs the resource to be mapped before it can use it. In this commit, the important part is the synchronization and ownership handoff: CUDA maps the OpenGL resource when it needs access, then unmaps it so OpenGL can safely use it again.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>cudaGraphicsMapResources(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>cudaResource);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// CUDA uses the registered image here
 </span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() 
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>]]></content></item></channel></rss>
+</span></span><span style="display:flex;"><span>cudaGraphicsUnmapResources(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>cudaResource);
+</span></span></code></pre></div><p>That map/unmap pair is the practical heart of the interop flow. It defines when CUDA is allowed to touch the texture and when control returns to OpenGL.</p>
+<h2 id="drawing-it-with-opengl">Drawing It with OpenGL</h2>
+<p>Once CUDA is done with the shared resource, OpenGL can bind the texture and draw it to a fullscreen quad like any other rendered image. The presentation pass stays simple, which is exactly what it should do.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>glUseProgram(shader);
+</span></span><span style="display:flex;"><span>glActiveTexture(GL_TEXTURE0);
+</span></span><span style="display:flex;"><span>glBindTexture(GL_TEXTURE_2D, glTexture);
+</span></span><span style="display:flex;"><span>glBindVertexArray(quadVAO);
+</span></span><span style="display:flex;"><span>glDrawArrays(GL_TRIANGLES, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">6</span>);
+</span></span></code></pre></div><p>That is one of the nice parts of this setup: the display side does not need to know anything about ray traversal, intersections, or shading. It just samples a texture and puts it on screen.</p>
+<h2 id="why-this-commit-matters">Why This Commit Matters</h2>
+<p>This is a small but meaningful architectural step. It replaces a clunky GPU-to-CPU-to-GPU path with a cleaner direction where CUDA and OpenGL share the same display resource more directly.</p>
+<p>It also lays the groundwork for a renderer that feels interactive rather than staged. Once the image path is clean, later work on accumulation, camera movement, or more advanced shading has a much better place to land.</p>
+<h2 id="what-this-post-does-not-cover">What This Post Does Not Cover</h2>
+<p>This particular commit is about interop plumbing, not the ray-tracing kernel itself. The details of how CUDA writes pixels into the mapped image, how per-thread pixel work is organized, and how the final color data gets produced belong in a future post where the rendering side can get the spotlight on its own.</p>
+<p>That future post is where topics like CUDA image writes, surface access, and the actual per-pixel rendering logic can be unpacked properly. For this commit, the important story is simpler: OpenGL provides the texture, CUDA gets access to it, and the renderer moves one big step closer to drawing straight from GPU work to the screen.</p>
+<hr>
+<p><strong>Actual commit:</strong> <a href="https://github.com/TheOrestes/CUDA_Tracer/commit/a2a2f72972498db4c82e262eddd4b1ca80f09101">CUDA inter-op, GLtexture to CUDA image</a></p>
+]]></content></item></channel></rss>
