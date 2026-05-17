@@ -44,4 +44,72 @@
 <p>That future post is where topics like CUDA image writes, surface access, and the actual per-pixel rendering logic can be unpacked properly. For this commit, the important story is simpler: OpenGL provides the texture, CUDA gets access to it, and the renderer moves one big step closer to drawing straight from GPU work to the screen.</p>
 <hr>
 <p><strong>Actual commit:</strong> <a href="https://github.com/TheOrestes/CUDA_Tracer/commit/a2a2f72972498db4c82e262eddd4b1ca80f09101">CUDA inter-op, GLtexture to CUDA image</a></p>
+]]></content></item><item><title>From Interop Plumbing to Actual Pixels</title><link>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_uv_framebuffer_followup/</link><pubDate>Sat, 16 May 2026 16:40:53 +0530</pubDate><guid>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_uv_framebuffer_followup/</guid><description>&lt;p&gt;The previous post was all about getting CUDA and OpenGL to share nicely. Useful, necessary, slightly plumbing-shaped work. This commit is where things become visually more fun: CUDA now actually writes animated color data into the shared texture, and OpenGL displays it through a framebuffer blit.&lt;/p&gt;
+&lt;p&gt;In other words, the texture is no longer just a properly registered GPU resource with good intentions. It now contains pixels produced by a CUDA kernel, updated every frame, and pushed to the window in a way that is simple enough to understand at a glance.&lt;/p&gt;</description><content type="html"><![CDATA[<p>The previous post was all about getting CUDA and OpenGL to share nicely. Useful, necessary, slightly plumbing-shaped work. This commit is where things become visually more fun: CUDA now actually writes animated color data into the shared texture, and OpenGL displays it through a framebuffer blit.</p>
+<p>In other words, the texture is no longer just a properly registered GPU resource with good intentions. It now contains pixels produced by a CUDA kernel, updated every frame, and pushed to the window in a way that is simple enough to understand at a glance.</p>
+<h3 id="cuda-written-framebuffer-texture-in-motion">CUDA-written framebuffer texture in motion:</h3>
+<video controls preload="metadata" playsinline style="width: 100%; max-width: 900px; margin: 2rem auto; display: block; border-radius: 12px;">
+    <source src="https://github.com/user-attachments/assets/91af5b77-48d5-4f43-a0fc-2a9bd20f6ca7" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+<h2 id="the-main-loop-stops-clearing-and-starts-rendering">The Main Loop Stops Clearing and Starts Rendering</h2>
+<p>Apart from minor code refactoring, The biggest change in <code>Main.cpp</code> is inside the render loop. Instead of clearing the screen with a chosen solid color, the program now grabs the current time and calls a CUDA entry point:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> time <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(glfwGetTime());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RunRayTracingKernel(fbCudaResource, width, height, time);
+</span></span></code></pre></div><p>That one call is the handoff from the OpenGL side to the CUDA side. The shared texture, the frame dimensions, and the current time all get passed in so the CUDA code can update the image each frame.</p>
+<h2 id="a-framebuffer-gets-added-to-the-display-path">A Framebuffer Gets Added to the Display Path</h2>
+<p>We also create the framebuffer object(FBO) and attach the CUDA-written texture to it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>GLuint fbo;
+</span></span><span style="display:flex;"><span>glGenFramebuffers(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>fbo);
+</span></span><span style="display:flex;"><span>glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbTexture, <span style="color:#ae81ff">0</span>);
+</span></span></code></pre></div><p>That setup changes how the final image reaches the screen. Instead of drawing a textured quad, the code now treats the CUDA texture as the read source and blits it directly into the default framebuffer.</p>
+<h2 id="the-display-path-becomes-a-blit">The Display Path Becomes a Blit</h2>
+<p>Once the CUDA kernel has updated the texture, OpenGL presents it like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
+</span></span><span style="display:flex;"><span>glBindFramebuffer(GL_DRAW_FRAMEBUFFER, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>glBlitFramebuffer(
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, width, height,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, width, height,
+</span></span><span style="display:flex;"><span>    GL_COLOR_BUFFER_BIT,
+</span></span><span style="display:flex;"><span>    GL_NEAREST
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p>This is a nice simplification. OpenGL is no longer asked to draw geometry just to show the image; it simply copies the color buffer from the framebuffer-backed texture into the window. It is a very direct “here are the pixels, please show them” kind of move.</p>
+<h2 id="the-cuda-side-becomes-real">The CUDA Side Becomes Real</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>__global__ <span style="color:#66d9ef">void</span> RayTracer(cudaSurfaceObject_t surface, <span style="color:#66d9ef">int</span> width, <span style="color:#66d9ef">int</span> height, <span style="color:#66d9ef">float</span> time)
+</span></span></code></pre></div><p>Inside that kernel, each thread computes its <code>x</code> and <code>y</code> pixel position, converts those coordinates into normalized <code>u</code> and <code>v</code> values, and then generates animated RGB values using <code>sinf</code> and <code>cosf</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> u <span style="color:#f92672">=</span> x <span style="color:#f92672">/</span> (<span style="color:#66d9ef">float</span>)width;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> v <span style="color:#f92672">=</span> y <span style="color:#f92672">/</span> (<span style="color:#66d9ef">float</span>)height;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> r <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">*</span> sinf(time <span style="color:#f92672">+</span> u <span style="color:#f92672">*</span> <span style="color:#ae81ff">6.28f</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> g <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">*</span> cosf(time <span style="color:#f92672">+</span> v <span style="color:#f92672">*</span> <span style="color:#ae81ff">6.28f</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">*</span> sinf(time <span style="color:#f92672">+</span> (u <span style="color:#f92672">+</span> v) <span style="color:#f92672">*</span> <span style="color:#ae81ff">6.28f</span>);
+</span></span></code></pre></div><p>This is not ray tracing yet in the scene-intersection sense, despite the kernel name. What it is doing is generating an animated procedural color pattern across the framebuffer. Think of it as a GPU-written test image with enough motion to prove that the whole CUDA-to-texture-to-screen path is alive.</p>
+<h2 id="writing-into-the-shared-texture">Writing into the Shared Texture</h2>
+<p>Once the color is computed, the kernel writes it into the surface object:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>surf2Dwrite(make_float4(r, g, b, <span style="color:#ae81ff">1.0f</span>), surface, x <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(float4), y);
+</span></span></code></pre></div><p>That line is the real moment of payoff. CUDA is now writing actual pixel data into the shared OpenGL texture, one thread per pixel, using a surface object created from the mapped graphics resource.</p>
+<p>The code even leaves a warning comment right above it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// x * sizeof(float4) is CRITICAL for surf2Dwrite
+</span></span></span></code></pre></div><p>That comment earns its capital letters. <code>surf2Dwrite</code> expects a byte offset in the horizontal direction, not a plain pixel index, so this is one of those details that looks tiny and ruins everything when wrong.</p>
+<h2 id="the-interop-path-gets-wrapped-in-one-function">The Interop Path Gets Wrapped in One Function</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">extern</span> <span style="color:#e6db74">&#34;C&#34;</span> <span style="color:#66d9ef">void</span> RunRayTracingKernel(cudaGraphicsResource_t res, <span style="color:#66d9ef">int</span> cuWidth, <span style="color:#66d9ef">int</span> cuHeight, <span style="color:#66d9ef">float</span> t);
+</span></span></code></pre></div><p>That function wraps the whole CUDA side of the interop cycle:</p>
+<ul>
+<li>Map the OpenGL resource.</li>
+<li>Get the mapped CUDA array.</li>
+<li>Create a surface object from that array.</li>
+<li>Launch the kernel.</li>
+<li>Destroy the surface object.</li>
+<li>Unmap the resource so OpenGL can use it again.</li>
+</ul>
+<p>That is a nice step up from scattering interop code across the rendering loop. <code>Main.cpp</code> can stay focused on orchestration, while the CUDA file owns the details of texture access and kernel dispatch.</p>
+<h2 id="what-we-achieved">What we achieved?</h2>
+<p>This is the first post in the series that visibly proves the pipeline works end to end. The earlier interop setup made sharing possible; this one actually uses that shared path to generate animated image data on the CUDA side and present it with OpenGL.</p>
+<p>It also establishes a structure that future posts can build on cleanly. There is now a dedicated render entry point, a dedicated CUDA kernel file, a framebuffer-backed display path, and a time-driven image update loop. Right now the output is a procedural animated gradient, which is exactly the right kind of stepping stone before the code graduates into actual scene rendering.</p>
+<p>Hopefully in our next post, we will do some ray tracing! &#x1f60e;</p>
+<p><em>GitHub commit:</em> <a href="https://github.com/TheOrestes/CUDA_Tracer/commit/6304b77bf0d1e696f96200c6a76c6baf8b43879f">*CUDA kernel outputs animated UVs to the Framebuffer</a></p>
 ]]></content></item></channel></rss>
