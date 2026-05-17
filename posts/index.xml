@@ -36,14 +36,12 @@
 </span></span><span style="display:flex;"><span>glBindVertexArray(quadVAO);
 </span></span><span style="display:flex;"><span>glDrawArrays(GL_TRIANGLES, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">6</span>);
 </span></span></code></pre></div><p>That is one of the nice parts of this setup: the display side does not need to know anything about ray traversal, intersections, or shading. It just samples a texture and puts it on screen.</p>
-<h2 id="why-this-commit-matters">Why This Commit Matters</h2>
+<h2 id="what-we-achieved">What we achieved?</h2>
 <p>This is a small but meaningful architectural step. It replaces a clunky GPU-to-CPU-to-GPU path with a cleaner direction where CUDA and OpenGL share the same display resource more directly.</p>
 <p>It also lays the groundwork for a renderer that feels interactive rather than staged. Once the image path is clean, later work on accumulation, camera movement, or more advanced shading has a much better place to land.</p>
-<h2 id="what-this-post-does-not-cover">What This Post Does Not Cover</h2>
-<p>This particular commit is about interop plumbing, not the ray-tracing kernel itself. The details of how CUDA writes pixels into the mapped image, how per-thread pixel work is organized, and how the final color data gets produced belong in a future post where the rendering side can get the spotlight on its own.</p>
 <p>That future post is where topics like CUDA image writes, surface access, and the actual per-pixel rendering logic can be unpacked properly. For this commit, the important story is simpler: OpenGL provides the texture, CUDA gets access to it, and the renderer moves one big step closer to drawing straight from GPU work to the screen.</p>
 <hr>
-<p><strong>Actual commit:</strong> <a href="https://github.com/TheOrestes/CUDA_Tracer/commit/a2a2f72972498db4c82e262eddd4b1ca80f09101">CUDA inter-op, GLtexture to CUDA image</a></p>
+<p><a href="https://github.com/TheOrestes/CUDA_Tracer/commit/a2a2f72972498db4c82e262eddd4b1ca80f09101">Github Commit URL</a></p>
 ]]></content></item><item><title>From Interop Plumbing to Actual Pixels</title><link>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_uv_framebuffer_followup/</link><pubDate>Sat, 16 May 2026 16:40:53 +0530</pubDate><guid>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_uv_framebuffer_followup/</guid><description>&lt;p&gt;The previous post was all about getting CUDA and OpenGL to share nicely. Useful, necessary, slightly plumbing-shaped work. This commit is where things become visually more fun: CUDA now actually writes animated color data into the shared texture, and OpenGL displays it through a framebuffer blit.&lt;/p&gt;
 &lt;p&gt;In other words, the texture is no longer just a properly registered GPU resource with good intentions. It now contains pixels produced by a CUDA kernel, updated every frame, and pushed to the window in a way that is simple enough to understand at a glance.&lt;/p&gt;</description><content type="html"><![CDATA[<p>The previous post was all about getting CUDA and OpenGL to share nicely. Useful, necessary, slightly plumbing-shaped work. This commit is where things become visually more fun: CUDA now actually writes animated color data into the shared texture, and OpenGL displays it through a framebuffer blit.</p>
 <p>In other words, the texture is no longer just a properly registered GPU resource with good intentions. It now contains pixels produced by a CUDA kernel, updated every frame, and pushed to the window in a way that is simple enough to understand at a glance.</p>
@@ -111,5 +109,94 @@
 <p>This is the first post in the series that visibly proves the pipeline works end to end. The earlier interop setup made sharing possible; this one actually uses that shared path to generate animated image data on the CUDA side and present it with OpenGL.</p>
 <p>It also establishes a structure that future posts can build on cleanly. There is now a dedicated render entry point, a dedicated CUDA kernel file, a framebuffer-backed display path, and a time-driven image update loop. Right now the output is a procedural animated gradient, which is exactly the right kind of stepping stone before the code graduates into actual scene rendering.</p>
 <p>Hopefully in our next post, we will do some ray tracing! &#x1f60e;</p>
-<p><em>GitHub commit:</em> <a href="https://github.com/TheOrestes/CUDA_Tracer/commit/6304b77bf0d1e696f96200c6a76c6baf8b43879f">*CUDA kernel outputs animated UVs to the Framebuffer</a></p>
+<hr>
+<p><a href="https://github.com/TheOrestes/CUDA_Tracer/commit/6304b77bf0d1e696f96200c6a76c6baf8b43879f">GitHub Commit URL</a></p>
+]]></content></item><item><title>The Ray Tracer Stops Being a Screensaver</title><link>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_camera_sky_followup/</link><pubDate>Sat, 16 May 2026 16:40:53 +0530</pubDate><guid>https://TheOrestes.github.io/posts/cuda-ray-tracer/cuda_camera_sky_followup/</guid><description>&lt;p&gt;The previous post proved that CUDA could write animated pixels into the shared OpenGL texture. Fun, useful, and a very respectable GPU-powered lava lamp. This post takes the next real step toward ray tracing: instead of generating time-based color waves, the CUDA kernel now generates rays from a camera and shades the background based on ray direction.&lt;/p&gt;
+&lt;p&gt;The renderer is no longer just filling the framebuffer with procedural color motion; it is starting to behave like a ray tracer, even if the only thing it can hit right now is the sky.&lt;/p&gt;</description><content type="html"><![CDATA[<p>The previous post proved that CUDA could write animated pixels into the shared OpenGL texture. Fun, useful, and a very respectable GPU-powered lava lamp. This post takes the next real step toward ray tracing: instead of generating time-based color waves, the CUDA kernel now generates rays from a camera and shades the background based on ray direction.</p>
+<p>The renderer is no longer just filling the framebuffer with procedural color motion; it is starting to behave like a ray tracer, even if the only thing it can hit right now is the sky.</p>
+<p><img src="https://github.com/user-attachments/assets/f15ade62-1cf7-4c4d-b4b2-1383afea4bbb" alt="CUDA sky gradient output"></p>
+<h2 id="some-minor-book-keeping-commonh">Some minor book keeping (Common.h)</h2>
+<p>Introduced a common header that becomes the shared language between the OpenGL side and the CUDA side. It contains a bunch of small math helpers for <code>float3</code>, including vector addition, subtraction, scaling, division, dot product, cross product, and normalization. None of that is glamorous, but this is exactly the sort of code a ray tracer needs before it can do anything interesting without immediately tripping over vector math.</p>
+<h2 id="rays-become-real-types">Rays Become Real Types</h2>
+<p>Inside <code>Common.h</code>, we introduce <code>RT::Ray</code> struct:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ray</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    float3 Origin;
+</span></span><span style="display:flex;"><span>    float3 Direction;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    __host__ __device__ <span style="color:#a6e22e">Ray</span>() {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    __host__ __device__ <span style="color:#a6e22e">Ray</span>(<span style="color:#66d9ef">const</span> float3<span style="color:#f92672">&amp;</span> o, <span style="color:#66d9ef">const</span> float3<span style="color:#f92672">&amp;</span> d)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">:</span> Origin(o), Direction(d) { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    __host__ __device__ float3 <span style="color:#a6e22e">GetAt</span>(<span style="color:#66d9ef">float</span> t) <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> Origin <span style="color:#f92672">+</span> Direction <span style="color:#f92672">*</span> t; }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>This is the first moment where the renderer starts speaking in ray-tracing nouns instead of just “kernel writes colors.” A ray now exists as an origin and a direction, which is the minimum required equipment for launching pixels into a 3D scene and asking uncomfortable questions about what they hit.</p>
+<h2 id="a-camera-enters-the-scene">A Camera Enters the Scene</h2>
+<p>The same header also introduces <code>RT::Camera</code>, which stores:</p>
+<ul>
+<li><code>Origin</code></li>
+<li><code>Lower_Left_Corner</code></li>
+<li><code>Horizontal</code></li>
+<li><code>Vertical</code></li>
+</ul>
+<p>That camera constructor builds a viewport from <code>lookfrom</code>, <code>lookat</code>, <code>vup</code>, vertical field of view, and aspect ratio. In other words, the renderer now has a proper camera model instead of just treating each pixel like a coordinate in procedural color space.</p>
+<p>The key method is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>__host__ __device__ Ray <span style="color:#a6e22e">GetRay</span>(<span style="color:#66d9ef">float</span> u, <span style="color:#66d9ef">float</span> v)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Ray(Origin, Lower_Left_Corner <span style="color:#f92672">+</span> Horizontal <span style="color:#f92672">*</span> u <span style="color:#f92672">+</span> Vertical <span style="color:#f92672">*</span> v <span style="color:#f92672">-</span> Origin);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>That is the line where a screen-space UV turns into an actual viewing ray.</p>
+<h2 id="the-main-loop-stops-passing-time">The Main Loop Stops Passing Time</h2>
+<p>In <code>Main.cpp</code>, the CUDA entry point changes from this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>RunRayTracingKernel(fbCudaResource, width, height, time);
+</span></span></code></pre></div><p>to this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>RunRayTracingKernel(fbCudaResource, width, height, mainCamera);
+</span></span></code></pre></div><p>That one signature change tells the whole story. The kernel no longer needs <code>time</code> to animate colors; it now needs a camera so it can decide which ray belongs to each pixel.</p>
+<p>The scene setup added in <code>Main.cpp</code> is also very explicit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>float3 lookfrom <span style="color:#f92672">=</span> make_float3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>float3 lookat <span style="color:#f92672">=</span> make_float3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>float3 vup <span style="color:#f92672">=</span> make_float3(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT<span style="color:#f92672">::</span>Camera mainCamera(lookfrom, lookat, vup, <span style="color:#ae81ff">45.0f</span>, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(width) <span style="color:#f92672">/</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(height));
+</span></span></code></pre></div><p>That gives the renderer a fixed camera positioned at <code>(0, 0, 2)</code>, looking toward <code>(0, 0, -1)</code>, with a 45-degree field of view.</p>
+<h2 id="the-kernel-stops-faking-motion">The Kernel Stops Faking Motion</h2>
+<p>The old kernel generated RGB values with <code>sinf</code> and <code>cosf</code>, which was a nice proof that CUDA-to-texture output worked. That logic is now gone.</p>
+<p>The new kernel starts like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>__global__ <span style="color:#66d9ef">void</span> RayTracer(cudaSurfaceObject_t surface, <span style="color:#66d9ef">int</span> width, <span style="color:#66d9ef">int</span> height, RT<span style="color:#f92672">::</span>Camera cam)
+</span></span></code></pre></div><p>and after computing the pixel coordinates, it converts them to normalized screen-space values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> u <span style="color:#f92672">=</span> <span style="color:#66d9ef">float</span>(x) <span style="color:#f92672">/</span> <span style="color:#66d9ef">float</span>(width <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> v <span style="color:#f92672">=</span> <span style="color:#66d9ef">float</span>(y) <span style="color:#f92672">/</span> <span style="color:#66d9ef">float</span>(height <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+</span></span></code></pre></div><p>That is a subtle but important change. The pixel is no longer treated as a place to invent color from; it is treated as a place from which to launch a ray.</p>
+<h2 id="each-pixel-now-gets-a-ray">Each Pixel Now Gets a Ray</h2>
+<p>The next line is the real transition point:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>RT<span style="color:#f92672">::</span>Ray r <span style="color:#f92672">=</span> cam.GetRay(u, v);
+</span></span></code></pre></div><p>That means every CUDA thread now does something ray-tracing shaped. It asks the camera for the ray corresponding to its pixel, and then uses that ray to decide the pixel color.</p>
+<p>At this stage, there is still no scene intersection logic. The ray does not test against spheres, triangles, or anything else that might object to being intersected. But the control flow is now structurally correct for a ray tracer: generate ray first, shade second.</p>
+<h2 id="the-background-becomes-a-sky-gradient">The Background Becomes a Sky Gradient</h2>
+<p>The new shading logic lives in <code>GetMissColor</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>__device__ float3 <span style="color:#a6e22e">GetMissColor</span>(<span style="color:#66d9ef">const</span> RT<span style="color:#f92672">::</span>Ray<span style="color:#f92672">&amp;</span> r)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    float3 unit_direction <span style="color:#f92672">=</span> unit_vector(r.Direction);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> t <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5f</span> <span style="color:#f92672">*</span> (unit_direction.y <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.0f</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    float3 white <span style="color:#f92672">=</span> make_float3(<span style="color:#ae81ff">1.0f</span>, <span style="color:#ae81ff">1.0f</span>, <span style="color:#ae81ff">1.0f</span>);
+</span></span><span style="display:flex;"><span>    float3 blue <span style="color:#f92672">=</span> make_float3(<span style="color:#ae81ff">0.5f</span>, <span style="color:#ae81ff">0.7f</span>, <span style="color:#ae81ff">1.0f</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> white <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1.0f</span> <span style="color:#f92672">-</span> t) <span style="color:#f92672">+</span> blue <span style="color:#f92672">*</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This is the classic “miss shader” move: if the ray hits nothing, color the background based on its vertical direction. Rays pointing upward get pushed toward blue, and rays lower in the image stay closer to white.</p>
+<p>That makes the framebuffer look like a sky gradient rather than a procedural animation. It is simple, but it immediately feels more like a renderer looking into a world instead of a screensaver!</p>
+<h2 id="writing-the-final-pixel-is-still-the-same-last-step">Writing the Final Pixel Is Still the Same Last Step</h2>
+<p>Once the miss color is computed, the kernel packs it into a <code>float4</code> and writes it to the surface:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>float4 finalColor <span style="color:#f92672">=</span> make_float4(pixelColor.x, pixelColor.y, pixelColor.z, <span style="color:#ae81ff">1.0f</span>);
+</span></span><span style="display:flex;"><span>surf2Dwrite(finalColor, surface, x <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(float4), y);
+</span></span></code></pre></div><p>That part has not changed conceptually. The interop path is stable enough now that the code can focus on improving what gets written, not constantly re-litigating how to write it.</p>
+<h2 id="what-we-achieved">What we achieved?</h2>
+<p>This is the commit where the project starts to deserve the words “ray tracer” a little more seriously. It adds the core types and math needed to generate camera rays, replaces time-based color animation with ray-based shading, and introduces a proper miss color for rays that do not hit geometry.</p>
+<p>There is still no scene intersection, no materials, and no lighting model beyond “the sky is blue-ish if you look upward,” but the pipeline is now pointed in the right direction. The renderer is no longer faking interesting pixels; it is beginning to compute them from a camera model, which is a much more promising personality trait.</p>
+<p>This commit does not add hittable objects, bounce logic, or full scene rendering. No spheres are harmed yet!
+But architecturally it is the kind of step that turns “CUDA image demo” into a humble “early ray tracer.” 😊</p>
+<hr>
+<p><a href="https://github.com/TheOrestes/CUDA_Tracer/commit/df3466468944fb4695b20999d1a04108995de983">GitHub commit URL</a></p>
 ]]></content></item></channel></rss>
