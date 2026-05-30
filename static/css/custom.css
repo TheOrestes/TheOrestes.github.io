@@ -1,0 +1,75 @@
+body,
+p,
+li,
+blockquote,
+td,
+th,
+label,
+input,
+textarea,
+select,
+button,
+.md-content,
+.md-content p,
+.md-content li,
+.md-content blockquote,
+article,
+article p,
+article li,
+main,
+main p,
+main li,
+.font-jersey {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Fustat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+code, pre, kbd, samp {
+  font-family: "Sometype Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+nav#TableOfContents,
+nav#TableOfContents ul,
+nav#TableOfContents li,
+nav#TableOfContents a {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: italic;
+}
+
+nav#TableOfContents a {
+  text-decoration: none;
+}
+
+nav#TableOfContents li {
+  line-height: 2.0;
+}
+
+header .site-title,
+header .site-name,
+header .brand,
+header .logo {
+  font-family: "Fustat", sans-serif !important;
+  font-weight: 720;
+}
+
+header nav a,
+header a {
+  font-family: "Fustat", sans-serif !important;
+  font-weight: 580;
+}
