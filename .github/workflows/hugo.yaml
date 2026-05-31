@@ -46,6 +46,11 @@ jobs:
         run: |
           hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
+      - name: Debug public output
+        run: |
+          echo "Top-level public files:"
+          find public -maxdepth 2 -type f | sort
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
