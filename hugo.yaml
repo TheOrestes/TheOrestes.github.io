@@ -33,7 +33,7 @@ footnotereturnlinkcontents: ^
 ignoreFiles: [".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 disableAliases: true
 outputs:
-  home: [HTML, RSS, headers, redirects, backlinks]
+  home: [HTML, RSS]
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
