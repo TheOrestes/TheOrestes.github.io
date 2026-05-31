@@ -1,5 +1,7 @@
 ---
 title: "The Pixel Dump"
+type: _default
+layout: single
 draft: false
 ---
 
