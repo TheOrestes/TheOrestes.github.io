@@ -50,8 +50,8 @@ jobs:
           HUGO_ENVIRONMENT: production
         run: |
           hugo mod graph
-          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --debug
-
+          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --logLevel debug --printPathWarnings --printUnusedTemplates
+          
       - name: Debug public output
         run: |
           echo "Top-level public files:"
