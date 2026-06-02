@@ -1,9 +1,8 @@
-<!-- layouts/home.html -->
 {{ define "main" }}
-  <section class="home">
-    <h1>About Me</h1>
-    {{ with site.GetPage "page" "about.md" }}
-      {{ .Content }}
-    {{ end }}
-  </section>
+<h1>About Me</h1>
+{{ with site.GetPage "page" "about" }}
+  {{ .Content }}
+{{ else }}
+  {{ .Content }}
+{{ end }}
 {{ end }}
