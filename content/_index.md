@@ -12,3 +12,5 @@ These days at Qualcomm Snapdragon Game Studio, I spend my time juggling engineer
 I still love being hands-on. I like getting my hands dirty with personal rendering projects just for learning, experimenting, and reminding myself that debugging is basically a lifestyle choice.
 
 And yes, I still play old games on shiny new machines — because nothing says “technical progress” quite like running a 20-year-old game at 240 FPS and pretending that’s normal.
+
+Wohoooooo!!
