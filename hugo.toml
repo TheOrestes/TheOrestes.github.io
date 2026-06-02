@@ -20,7 +20,7 @@ theme = "enervoid-theme"
     weight = 30
 
 [params]
-  avatar = "https://picsum.photos/200"
+  avatar = "/images/website_icon.jpg"
 
   [[params.socials]]
       link = "https://github.com/TheOrestes"

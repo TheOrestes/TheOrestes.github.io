@@ -1,4 +1,4 @@
-I’ve spent 18+ years in real-time graphics, gaming, military simulation, and the VFX industry, working my way through engineering leadership roles at Qualcomm, EA, and a few entrepreneurial adventures along the way. I’ve built and scaled teams from scratch, delivered hardware-enabling technology at scale, and generally tried to keep the chaos organized.
+I’ve spent around 20 years in real-time graphics, gaming, military simulation, and the VFX industry, working my way through engineering leadership roles at Qualcomm, EA, and a few entrepreneurial adventures along the way. I’ve built and scaled teams from scratch, delivered hardware-enabling technology at scale, and generally tried to keep the chaos organized.
 
 These days at Qualcomm Snapdragon Game Studio, I spend my time juggling engineers, creative folks, art direction, profiling, and optimization — basically trying to make ambitious tech behave itself.
 
