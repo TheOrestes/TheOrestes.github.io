@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.147.9
+      HUGO_VERSION: 0.161.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,20 +38,17 @@ jobs:
         run: |
           wget -O ${RUNNER_TEMP}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
           sudo dpkg -i ${RUNNER_TEMP}/hugo.deb
-        
-      - name: Initialize Hugo Modules
-        run: |
-          hugo mod get ./...
-          hugo mod tidy
+
+      - name: Show Hugo config
+        run: hugo config | grep -i theme
 
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
         run: |
-          hugo mod graph
-          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --logLevel debug --printPathWarnings --printUnusedTemplates
-          
+          hugo --config hugo.toml --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --logLevel debug
+
       - name: Debug public output
         run: |
           echo "Top-level public files:"
