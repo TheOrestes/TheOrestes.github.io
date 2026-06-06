@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+
+  <p>Kind: {{ .Kind }}</p>
+  <p>Section: {{ .Section }}</p>
+  <p>Pages: {{ len .Pages }}</p>
+  <p>RegularPages: {{ len .RegularPages }}</p>
+  <p>RegularPagesRecursive: {{ len .RegularPagesRecursive }}</p>
+  <p>Sections: {{ len .Sections }}</p>
+
+  <hr>
+
+  <h2>RegularPagesRecursive</h2>
+  {{ range .RegularPagesRecursive }}
+    <div>
+      <a href="{{ .RelPermalink }}">{{ .RelPermalink }}</a> — {{ .Title }}
+    </div>
+  {{ else }}
+    <p>No recursive regular pages found.</p>
+  {{ end }}
+
+  <h2>Sections</h2>
+  {{ range .Sections }}
+    <div>
+      <a href="{{ .RelPermalink }}">{{ .RelPermalink }}</a> — {{ .Title }}
+    </div>
+  {{ else }}
+    <p>No child sections found.</p>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,90 @@
+{{ define "main" }}
+<main class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-12 text-gray-100">
+  <div class="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-8">
+
+    <aside class="lg:sticky lg:top-24 self-start">
+      <div class="rounded-sm border border-gray-800/70 bg-[#070709] p-4 sm:p-5">
+        <h2 class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-4">
+          Index
+        </h2>
+
+        <nav class="space-y-2">
+          <a href="/blog/" class="block text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+            All Posts
+          </a>
+
+          {{ range .Sections.ByTitle }}
+            <a
+              href="{{ .RelPermalink }}"
+              class="block pl-3 border-l border-gray-800 text-xs text-gray-500 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
+            >
+              {{ .Title }}
+            </a>
+          {{ end }}
+        </nav>
+      </div>
+    </aside>
+
+    <section class="min-w-0">
+      <header class="mb-8">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
+        <p class="mt-2 text-sm sm:text-base text-gray-400">
+          {{ len .RegularPagesRecursive }} posts across all blog folders.
+        </p>
+      </header>
+
+      {{- $pages := .RegularPagesRecursive.ByDate.Reverse -}}
+
+      <div class="border border-gray-800/70 rounded-sm bg-[#070709] divide-y divide-gray-800/80 overflow-hidden">
+        {{- if gt (len $pages) 0 -}}
+          {{- range $pages -}}
+            {{- $panelClass := "bg-transparent" -}}
+            {{- with .CurrentSection.Params.panelClass -}}
+              {{- $panelClass = . -}}
+            {{- end -}}
+
+            <a href="{{ .RelPermalink }}" class="group block px-4 sm:px-6 py-4 {{ $panelClass }} transition-colors duration-200 hover:bg-white/5">
+              <div class="grid grid-cols-12 gap-4 items-start">
+                <div class="col-span-12 md:col-span-8">
+                  <div class="text-xs sm:text-sm text-gray-500 font-mono">
+                    <span>{{ .Date.Format "Jan 02, 2006" }}</span>
+                    <span class="mx-2 text-gray-700">•</span>
+                    <span>{{ .Date.Format "15:04" }}</span>
+
+                    {{ with .CurrentSection }}
+                      {{ if ne .RelPermalink "/blog/" }}
+                        <span class="mx-2 text-gray-700">•</span>
+                        <span class="text-cyan-300">{{ .Title }}</span>
+                      {{ end }}
+                    {{ end }}
+                  </div>
+
+                  <div class="mt-1 text-lg sm:text-xl text-gray-100">
+                    <span class="relative inline-block">
+                      {{ .Title }}
+                      <span class="absolute left-0 -bottom-1 h-px w-0 bg-indigo-400 transition-all duration-300 group-hover:w-full"></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-span-12 md:col-span-4 flex md:justify-end flex-wrap gap-2">
+                  {{- with .Params.tags -}}
+                    {{- range . -}}
+                      <span class="px-2 py-0.5 text-xs sm:text-sm rounded-sm border border-gray-700/70 text-gray-300 bg-black/30">
+                        #{{ . }}
+                      </span>
+                    {{- end -}}
+                  {{- end -}}
+                </div>
+              </div>
+            </a>
+          {{- end -}}
+        {{- else -}}
+          <div class="px-4 sm:px-6 py-10 text-gray-400">No entries yet.</div>
+        {{- end -}}
+      </div>
+    </section>
+
+  </div>
+</main>
+{{ end }}
