@@ -1,6 +1,6 @@
 +++
 title = "The Ray Tracer Stops Being a Screensaver"
-date = 2025-12-25T00:00:00+05:30
+date = 2025-12-23T00:00:00+05:30
 tags = ["cuda", "rendering", "raytracing", "opengl"]
 description = "The beginning of tracing actual rays..."
 +++

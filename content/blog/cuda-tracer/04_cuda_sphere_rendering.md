@@ -1,6 +1,6 @@
 +++
 title= "Spheres, Hits, and a Sky"
-date= 2025-12-12T00:00:00+05:30
+date= 2025-12-26T00:00:00+05:30
 tags= ["cuda", "ray-tracing", "rendering", "cpp"]
 +++
 
