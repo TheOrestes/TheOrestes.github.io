@@ -10,7 +10,13 @@ math = true
 
 A BVH is usually a behind-the-scenes structure: useful, essential, and about as visually expressive as a spreadsheet. This change set adds a way to draw its node bounds as OpenGL wireframes over the rendered image, while also carrying the BVH node count through the host and CUDA-facing interfaces.
 
+&nbsp;
+
 The patch does not change the visible shading model in a meaningful way; most CUDA material-switch edits are structural bracing and formatting. The substantive addition is a host-side BVH-to-line-geometry path and a conditional OpenGL overlay.
+
+&nbsp;
+
+{{< youtube App62kGye0U >}}
 
 ## What Changed
 
