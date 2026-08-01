@@ -10,7 +10,11 @@ math = true
 
 By the end of this post, our flat textured rectangle is gone, replaced by a solid, per-vertex-colored cube: eight vertices, thirty-six indices, and — for the first time in this series — geometry with a back side. That last part matters beyond this one commit. Every step from here on, camera movement, lighting, reflections, shadows, needs something three-dimensional to act on, and a quad facing the camera head-on was never going to cut it. This is the commit where the series trades its last flat surface for a shape worth building the rest of the pipeline around.
 
+&nbsp;
+
 {{< youtube jOOWaa0-QJc >}}
+
+&nbsp;
 
 $$
 \text{textured quad } (4\ \text{verts})
@@ -91,6 +95,8 @@ GLCube(const glm::vec4& color);
 ```
 
 Both constructors set the same default transform: position at the origin, unit scale, and a rotation of \(45^\circ\) around the \(y\)-axis via `SetRotation(glm::vec3(0,1,0), 45.0f)`.
+
+&nbsp;
 
 Here's a small wrinkle worth flagging for fidelity's sake: that stored rotation axis and angle are never actually read back. `Update()` builds its own rotation independently, using a locally accumulated `angle` and a hardcoded \(y\)-axis:
 
