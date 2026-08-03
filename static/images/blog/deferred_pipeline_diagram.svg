@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 640" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#256B67"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="780" height="640" fill="#F7F5EF"/>
+  <rect x="1" y="1" width="778" height="638" fill="none" stroke="#D9D3C2" stroke-width="1"/>
+
+  <!-- Eyebrow -->
+  <text x="20" y="24" font-size="12" letter-spacing="1.5" fill="#6B6558">GEOMETRY PASS &#183; ONCE PER OBJECT</text>
+
+  <!-- Row 1: three geometry shaders -->
+  <g>
+    <rect x="20" y="34" width="230" height="72" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+    <text x="135" y="66" font-size="14" font-weight="700" fill="#20242B" text-anchor="middle">psNormalMapWSDeferred</text>
+    <text x="135" y="88" font-size="12" fill="#6B6558" text-anchor="middle">(character mesh)</text>
+  </g>
+  <g>
+    <rect x="275" y="34" width="230" height="72" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+    <text x="390" y="66" font-size="14" font-weight="700" fill="#20242B" text-anchor="middle">psLightDeferred</text>
+    <text x="390" y="88" font-size="12" fill="#6B6558" text-anchor="middle">(light marker cubes)</text>
+  </g>
+  <g>
+    <rect x="530" y="34" width="230" height="72" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+    <text x="645" y="66" font-size="14" font-weight="700" fill="#20242B" text-anchor="middle">psSkyboxDeferred</text>
+    <text x="645" y="88" font-size="12" fill="#6B6558" text-anchor="middle">(skybox)</text>
+  </g>
+
+  <!-- Converging lines to G-buffer -->
+  <path d="M135,106 L135,140 L390,140" fill="none" stroke="#256B67" stroke-width="1.6"/>
+  <path d="M645,106 L645,140 L390,140" fill="none" stroke="#256B67" stroke-width="1.6"/>
+  <path d="M390,106 L390,168" fill="none" stroke="#256B67" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <rect x="235" y="132" width="310" height="18" fill="#F7F5EF"/>
+  <text x="390" y="146" font-size="12" fill="#6B6558" text-anchor="middle">glDrawBuffers &#8212; 3 attachments, one draw call</text>
+
+  <!-- G-Buffer container -->
+  <rect x="20" y="170" width="740" height="200" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+  <text x="35" y="195" font-size="13" font-weight="700" fill="#20242B">G-BUFFER  (m_fboDeferred)</text>
+
+  <line x1="20" y1="260" x2="760" y2="260" stroke="#D9D3C2" stroke-width="1"/>
+  <line x1="20" y1="310" x2="760" y2="310" stroke="#D9D3C2" stroke-width="1"/>
+
+  <circle cx="45" cy="235" r="11" fill="none" stroke="#256B67" stroke-width="1.4"/>
+  <text x="45" y="239" font-size="11" font-weight="700" fill="#256B67" text-anchor="middle">0</text>
+  <text x="66" y="231" font-size="13" font-weight="700" fill="#20242B">gPosition &#183; RGB16F</text>
+  <text x="66" y="247" font-size="12" fill="#6B6558">world-space xyz</text>
+
+  <circle cx="45" cy="285" r="11" fill="none" stroke="#256B67" stroke-width="1.4"/>
+  <text x="45" y="289" font-size="11" font-weight="700" fill="#256B67" text-anchor="middle">1</text>
+  <text x="66" y="281" font-size="13" font-weight="700" fill="#20242B">gNormal &#183; RGBA16F</text>
+  <text x="66" y="297" font-size="12" fill="#6B6558">normal (rgb) + specular (a)</text>
+
+  <circle cx="45" cy="335" r="11" fill="none" stroke="#256B67" stroke-width="1.4"/>
+  <text x="45" y="339" font-size="11" font-weight="700" fill="#256B67" text-anchor="middle">2</text>
+  <text x="66" y="331" font-size="13" font-weight="700" fill="#20242B">gAlbedo &#183; RGBA</text>
+  <text x="66" y="347" font-size="12" fill="#6B6558">base color</text>
+
+  <!-- Arrow to lighting pass -->
+  <path d="M390,370 L390,408" fill="none" stroke="#256B67" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <rect x="200" y="378" width="380" height="18" fill="#F7F5EF"/>
+  <text x="390" y="392" font-size="12" fill="#6B6558" text-anchor="middle">reads all 3 textures + skybox cubemap</text>
+
+  <!-- Lighting pass box -->
+  <rect x="20" y="410" width="740" height="100" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+  <text x="390" y="435" font-size="14" font-weight="700" fill="#20242B" text-anchor="middle">psDeferredLighting.glsl</text>
+  <text x="390" y="457" font-size="12" fill="#6B6558" text-anchor="middle">fullscreen quad &#183; runs once per screen pixel</text>
+  <text x="390" y="475" font-size="12" fill="#6B6558" text-anchor="middle">loops over point lights &#8594; Diffuse + Specular, adds Reflection</text>
+  <text x="390" y="493" font-size="11" letter-spacing="1" fill="#6B6558" text-anchor="middle">GEOMETRY PASS COST SCALES WITH OBJECTS &#183; THIS PASS SCALES WITH PIXELS</text>
+
+  <!-- Arrow to screen -->
+  <path d="M390,510 L390,543" fill="none" stroke="#256B67" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- Screen box -->
+  <rect x="270" y="545" width="240" height="55" rx="6" fill="#FFFFFF" stroke="#256B67" stroke-width="1.6"/>
+  <text x="390" y="578" font-size="14" font-weight="700" fill="#20242B" text-anchor="middle">outColor &#8594; screen</text>
+</svg>
