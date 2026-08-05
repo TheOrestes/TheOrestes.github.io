@@ -23,42 +23,98 @@ What began as "put a window on screen" ended, twenty-eight posts later, as a def
 ## The Posts, In Order
 
 ### Foundations
-1. [Empty Window and First Quad](/blog/opengl-step-by-step/01_ogl_window_to_spinning_quad/) — a first mesh, compiled shaders, and a quad transformed through the pipeline.
-2. [Texturing a Quad](/blog/opengl-step-by-step/02_texturing_quad/) — vertex colors give way to texture coordinates and a sampled 2D image.
-3. [Building a Cube](/blog/opengl-step-by-step/03_from_quad_to_cube/) — an eight-vertex, thirty-six-index cube, and depth testing finally has a job.
-4. [Cutting the Camera Loose](/blog/opengl-step-by-step/04_cutting_the_camera_loose/) — a hardcoded `lookAt` becomes WASD-and-mouse free-look.
-5. [Building a Skybox](/blog/opengl-step-by-step/05_building_a_skybox/) — cubemaps, a resurrected `TextureManager`, and the `GL_LEQUAL` trick.
+
+#### [01. Empty Window and First Quad](/blog/opengl-step-by-step/01_ogl_window_to_spinning_quad/)
+A first mesh, compiled shaders, and a quad transformed through the pipeline.
+
+#### [02. Texturing a Quad](/blog/opengl-step-by-step/02_texturing_quad/)
+Vertex colors give way to texture coordinates and a sampled 2D image.
+
+#### [03. Building a Cube](/blog/opengl-step-by-step/03_from_quad_to_cube/)
+An eight-vertex, thirty-six-index cube, and depth testing finally has a job.
+
+#### [04. Cutting the Camera Loose](/blog/opengl-step-by-step/04_cutting_the_camera_loose/)
+A hardcoded `lookAt` becomes WASD-and-mouse free-look.
+
+#### [05. Building a Skybox](/blog/opengl-step-by-step/05_building_a_skybox/)
+Cubemaps, a resurrected `TextureManager`, and the `GL_LEQUAL` trick.
 
 ### Real Assets and Classic Lighting
-6. [Loading a Real Mesh](/blog/opengl-step-by-step/06_loading_a_real_mesh/) — Assimp loads an actual FBX file, and the hand-typed cube gets benched.
-7. [Texturing the Custom Mesh](/blog/opengl-step-by-step/07_texturing_the_custom_mesh/) — a real `Material` struct arrives, and the permanent wireframe goes away.
-8. [Multi-Texturing](/blog/opengl-step-by-step/08_multitexturing/) — specular and normal maps load, though the shader still ignores them.
-9. [Basic Diffuse Lighting](/blog/opengl-step-by-step/09_basic_diffuse_lighting/) — per-vertex normals, computed three posts ago, finally earn their keep.
-10. [Basic Specular Lighting](/blog/opengl-step-by-step/10_basic_specular_lighting/) — a Phong highlight arrives, and last post's unused ambient term gets fixed.
-11. [Basic Environment Reflection](/blog/opengl-step-by-step/11_basic_environment_reflection/) — the mesh finally samples the skybox for a mirror-style reflection.
-12. [Building a Lighting System](/blog/opengl-step-by-step/12_lighting_system/) — a real multi-light `LightsManager` and point lights, while reflection quietly steps aside.
-13. [World-Space Normal Mapping](/blog/opengl-step-by-step/13_normal_mapping_world_space/) — tangents and bitangents build a TBN matrix for a real normal map.
-14. [Tangent-Space Normal Mapping](/blog/opengl-step-by-step/14_normal_mapping_tangent_space/) — the transform flips: light and view vectors move into tangent space instead.
+
+#### [06. Loading a Real Mesh](/blog/opengl-step-by-step/06_loading_a_real_mesh/)
+Assimp loads an actual FBX file, and the hand-typed cube gets benched.
+
+#### [07. Texturing the Custom Mesh](/blog/opengl-step-by-step/07_texturing_the_custom_mesh/)
+A real `Material` struct arrives, and the permanent wireframe goes away.
+
+#### [08. Multi-Texturing](/blog/opengl-step-by-step/08_multitexturing/)
+Specular and normal maps load, though the shader still ignores them.
+
+#### [09. Basic Diffuse Lighting](/blog/opengl-step-by-step/09_basic_diffuse_lighting/)
+Per-vertex normals, computed three posts ago, finally earn their keep.
+
+#### [10. Basic Specular Lighting](/blog/opengl-step-by-step/10_basic_specular_lighting/)
+A Phong highlight arrives, and last post's unused ambient term gets fixed.
+
+#### [11. Basic Environment Reflection](/blog/opengl-step-by-step/11_basic_environment_reflection/)
+The mesh finally samples the skybox for a mirror-style reflection.
+
+#### [12. Building a Lighting System](/blog/opengl-step-by-step/12_lighting_system/)
+A real multi-light `LightsManager` and point lights, while reflection quietly steps aside.
+
+#### [13. World-Space Normal Mapping](/blog/opengl-step-by-step/13_normal_mapping_world_space/)
+Tangents and bitangents build a TBN matrix for a real normal map.
+
+#### [14. Tangent-Space Normal Mapping](/blog/opengl-step-by-step/14_normal_mapping_tangent_space/)
+The transform flips: light and view vectors move into tangent space instead.
 
 ### Post-Processing and the Deferred Pipeline
-15. [Framebuffers Arrive](/blog/opengl-step-by-step/15_framebuffers/) — `Application`/`Scene` classes, an offscreen render target, and a `Framebuffer` class that never compiles.
-16. [HDR](/blog/opengl-step-by-step/16_framebuffers_hdr/) — a floating-point render target lets light exceed 1.0, tamed back down with exposure tone mapping.
-17. [Bloom Arrives](/blog/opengl-step-by-step/17_bloom/) — extract, blur, and composite, the setup this series had been quietly carrying since the camera post.
-18. [Deferred Rendering](/blog/opengl-step-by-step/18_deferred_rendering/) — one lighting pass replaces many, and three posts of HDR/bloom work get left behind in the switch.
-19. [Deferred Bloom](/blog/opengl-step-by-step/19_deferred_bloom/) — emission becomes the G-buffer's fourth channel, and bloom works again.
-20. [Shadow Mapping](/blog/opengl-step-by-step/20_shadow_mapping/) — the directional-light scaffolding from the lighting-system post finally comes alive.
-21. [Deferred Debug Views](/blog/opengl-step-by-step/21_deferred_debug_views/) — the G-buffer's channels get tiled on screen as debug thumbnails.
+
+#### [15. Framebuffers Arrive](/blog/opengl-step-by-step/15_framebuffers/)
+`Application`/`Scene` classes, an offscreen render target, and a `Framebuffer` class that never compiles.
+
+#### [16. HDR](/blog/opengl-step-by-step/16_framebuffers_hdr/)
+A floating-point render target lets light exceed 1.0, tamed back down with exposure tone mapping.
+
+#### [17. Bloom Arrives](/blog/opengl-step-by-step/17_bloom/)
+Extract, blur, and composite, the setup this series had been quietly carrying since the camera post.
+
+#### [18. Deferred Rendering](/blog/opengl-step-by-step/18_deferred_rendering/)
+One lighting pass replaces many, and three posts of HDR/bloom work get left behind in the switch.
+
+#### [19. Deferred Bloom](/blog/opengl-step-by-step/19_deferred_bloom/)
+Emission becomes the G-buffer's fourth channel, and bloom works again.
+
+#### [20. Shadow Mapping](/blog/opengl-step-by-step/20_shadow_mapping/)
+The directional-light scaffolding from the lighting-system post finally comes alive.
+
+#### [21. Deferred Debug Views](/blog/opengl-step-by-step/21_deferred_debug_views/)
+The G-buffer's channels get tiled on screen as debug thumbnails.
 
 ### Environment and Tooling
-22. [HDRI](/blog/opengl-step-by-step/22_hdri_skybox/) — a real photographed sky gets baked into a cubemap once, at startup.
-23. [Wireframe Overlay](/blog/opengl-step-by-step/23_wireframe_overlay/) — barycentric coordinates and `fwidth()` finally replace `GL_LINE`.
-24. [Dear ImGui](/blog/opengl-step-by-step/24_dear_imgui/) — every scattered console print becomes one panel, and the scene becomes a live, editable list.
+
+#### [22. HDRI](/blog/opengl-step-by-step/22_hdri_skybox/)
+A real photographed sky gets baked into a cubemap once, at startup.
+
+#### [23. Wireframe Overlay](/blog/opengl-step-by-step/23_wireframe_overlay/)
+Barycentric coordinates and `fwidth()` finally replace `GL_LINE`.
+
+#### [24. Dear ImGui](/blog/opengl-step-by-step/24_dear_imgui/)
+Every scattered console print becomes one panel, and the scene becomes a live, editable list.
 
 ### Physically Based Rendering
-25. [PBR: Cook-Torrance](/blog/opengl-step-by-step/25_pbr_cook_torrance/) — a hand-tuned specular exponent gives way to a real GGX/Smith/Fresnel BRDF.
-26. [PBR IBL Diffuse](/blog/opengl-step-by-step/26_pbr_ibl_diffuse/) — the baked HDRI sky gets convolved into an irradiance map for ambient diffuse.
-27. [PBR IBL Specular](/blog/opengl-step-by-step/27_pbr_ibl_specular/) — a prefiltered reflection map and a BRDF lookup table complete image-based lighting.
-28. [PCF Shadows](/blog/opengl-step-by-step/28_pcf_shadows/) — a hardware comparison sampler and nine depth taps soften a hard shadow edge.
+
+#### [25. PBR: Cook-Torrance](/blog/opengl-step-by-step/25_pbr_cook_torrance/)
+A hand-tuned specular exponent gives way to a real GGX/Smith/Fresnel BRDF.
+
+#### [26. PBR IBL Diffuse](/blog/opengl-step-by-step/26_pbr_ibl_diffuse/)
+The baked HDRI sky gets convolved into an irradiance map for ambient diffuse.
+
+#### [27. PBR IBL Specular](/blog/opengl-step-by-step/27_pbr_ibl_specular/)
+A prefiltered reflection map and a BRDF lookup table complete image-based lighting.
+
+#### [28. PCF Shadows](/blog/opengl-step-by-step/28_pcf_shadows/)
+A hardware comparison sampler and nine depth taps soften a hard shadow edge.
 
 &nbsp;
 
