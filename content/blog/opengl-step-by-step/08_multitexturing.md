@@ -6,8 +6,6 @@ description = "Loading specular and normal textures into the same Material struc
 math = true
 +++
 
-# Multi-Texturing: Specular and Normal Maps Load, But the Shader Still Ignores Them
-
 By the end of this post, `Material`'s specular and normal texture slots, declared two posts ago and empty ever since, actually get filled in from the model file. `Mesh::Render()` binds three texture units instead of one. None of that changes a single pixel on screen yet. The fragment shader that's supposed to do something with a specular highlight or a normal map still only reads the diffuse texture, the other two lines are written, commented out, sitting one keystroke away from the lighting posts this is clearly building toward.
 
 $$

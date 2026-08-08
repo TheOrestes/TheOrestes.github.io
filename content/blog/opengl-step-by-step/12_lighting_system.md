@@ -6,8 +6,6 @@ description = "Introducing a LightsManager, PointLightObject, and visual GLLight
 math = true
 +++
 
-# Building a Lighting System: Point Lights Arrive, and Reflection Quietly Steps Aside
-
 By the end of this post, the scene has three colored point lights instead of one fixed direction baked into a shader uniform, each with its own position, color, intensity, and a small glowing marker cube so you can actually see where it sits in the world. The mesh accumulates diffuse and specular contributions from all of them in a loop. It's the first time this series manages more than one light at a time, and the code that manages them is already shaped to hold a second kind of light it doesn't implement yet.
 
 &nbsp;

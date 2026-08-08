@@ -6,8 +6,6 @@ description = "Adding a mirror-style reflection term sampled straight from the s
 math = true
 +++
 
-# Basic Environment Reflection: The Mesh Finally Samples the Sky
-
 By the end of this post, the mesh doesn't just sit inside the skybox, it reflects it: a faint mirror-like sheen that shows the surrounding environment on its surface, blended in on top of the existing diffuse and specular lighting. Getting there closes out two threads this series has been carrying since much earlier posts without ever quite finishing them.
 
 &nbsp;

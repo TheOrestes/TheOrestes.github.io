@@ -6,8 +6,6 @@ description = "Activating the DirectionalLightObject scaffolding that's sat comm
 math = true
 +++
 
-# Shadow Mapping: The Directional Light Scaffolding Finally Comes Alive
-
 Every light in this series so far has been a point light, a colored bulb with a position and a falloff. This commit adds the other kind this series has been quietly set up for since the lighting-system post: a directional light, a sun with no position at all, just a direction. Getting one working also means rendering the scene a second time, from the light's point of view, just to know what it can and can't see.
 
 &nbsp;

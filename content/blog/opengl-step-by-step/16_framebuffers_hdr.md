@@ -6,8 +6,6 @@ description = "Switching the post-process framebuffer to a floating-point RGB16F
 math = true
 +++
 
-# HDR: Letting Light Go Above 1.0, and Bringing It Back Down With Tone Mapping
-
 Last post built the pipe: scene into a texture, texture onto a fullscreen quad, quad onto the screen. This post is about what actually flows through that pipe. Right now, every color this series has ever produced has been squeezed into the range \([0,1]\) per channel the moment it left a shader, an 8-bit texture simply has nowhere else to put a value of `1.4`. This commit changes that, and gives the lights something worth the extra room.
 
 ## Theory: Why Games Bother With HDR

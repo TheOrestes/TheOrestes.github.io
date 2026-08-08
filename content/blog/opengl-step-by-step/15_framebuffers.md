@@ -6,8 +6,6 @@ description = "Restructuring main() into Application and Scene classes, renderin
 math = true
 +++
 
-# Framebuffers Arrive: A Post-Process Pass, and a Class That Never Gets Compiled
-
 By the end of this post, the scene doesn't draw straight to the screen anymore. It draws into a texture first, then a second pass draws a fullscreen quad sampling that texture onto the actual screen. That's the standard shape of every post-processing effect that's ever existed, bloom, color grading, screen-space anything, and this commit builds the plumbing for it without turning any of the actual effects on yet.
 
 $$

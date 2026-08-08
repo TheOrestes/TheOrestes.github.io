@@ -6,8 +6,6 @@ description = "Splitting mesh shaders into a geometry pass that fills a three-ta
 math = true
 +++
 
-# Deferred Rendering: One Lighting Pass Instead of Many, and the HDR Pipeline Left Behind
-
 Every lighting shader so far has done the same thing: sample textures, loop over every point light, add up diffuse and specular and reflection, all inside the one fragment shader drawing that particular mesh. That means the same lighting loop runs again for every object, and again for every light, every time a pixel gets touched. This commit splits that in two: a geometry pass that just records what's at each pixel, position, normal, color, and a single lighting pass, run once per screen pixel, that reads those recordings back and does the actual lighting math exactly once no matter how many objects or lights are involved.
 
 $$

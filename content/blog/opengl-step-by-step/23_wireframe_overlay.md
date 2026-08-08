@@ -6,8 +6,6 @@ description = "Rendering a crisp, anti-aliased wireframe directly inside the sha
 math = true
 +++
 
-# Wireframe Overlay: Barycentric Coordinates Replace GL_LINE, Finally
-
 Every wireframe this series has produced so far worked the same way: switch `glPolygonMode` to `GL_LINE` and the mesh stops being a shaded surface and becomes lines instead, one or the other, never both. This commit does something different, a wireframe drawn directly inside the normal shaded render, on top of the lit, textured surface rather than instead of it.
 
 &nbsp;

@@ -6,8 +6,6 @@ description = "Wrapping the scene in a cubemap skybox, finally putting LoadCubem
 math = true
 +++
 
-# Building a Skybox: Cubemaps, a Resurrected TextureManager, and a Depth-Test Trick
-
 By the end of this post, the flat gray clear color behind our cube is gone, replaced by an actual sky: a cubemap wrapped around the whole scene, always centered on the camera, always infinitely far away. That matters for more than looks. Once there's an environment worth existing inside, the obvious next step is giving the scene something more interesting than a colored cube to put in it, and `assimp` and `stb` were already quietly wired into the project two posts ago in anticipation of exactly that. This is also the commit where `LoadCubemapFromFile()`, sitting unused in `TextureManager` since it was written all the way back in the texturing post, finally gets called.
 
 &nbsp;

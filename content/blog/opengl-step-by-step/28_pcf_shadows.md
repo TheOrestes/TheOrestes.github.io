@@ -6,8 +6,6 @@ description = "The shadow map itself doesn't change, only how it's read: the dep
 math = true
 +++
 
-# PCF Shadows: A Hardware Comparison Sampler Softens the Edge
-
 After several posts rebuilding the lighting equation from the ground up, this one is small and focused: the shadow map that's been part of this engine since the shadow-mapping post gets a better filter. Every fragment near a shadow edge used to get one depth comparison and a hard yes-or-no answer. This commit takes nine comparisons instead of one, letting the edge blend rather than snap.
 
 &nbsp;

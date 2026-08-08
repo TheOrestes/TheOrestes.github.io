@@ -6,8 +6,6 @@ description = "Reading the tangent and bitangent data Assimp has computed since 
 math = true
 +++
 
-# World-Space Normal Mapping: Tangents Earn Their Keep, and Reflection Returns
-
 By the end of this post, surface detail comes from a normal map instead of just the mesh's own geometry, small bumps and creases that were never modeled as actual triangles start showing up in the lighting. Getting there means reading two pieces of data Assimp has been computing since the very first custom-mesh post and throwing away every time since.
 
 &nbsp;

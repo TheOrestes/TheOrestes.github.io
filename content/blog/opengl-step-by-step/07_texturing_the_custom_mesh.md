@@ -6,8 +6,6 @@ description = "Reading UVs and a diffuse texture straight out of Assimp, wiring 
 math = true
 +++
 
-# Texturing the Custom Mesh: A Material System Arrives, and the Wireframe Goes Away
-
 By the end of this post, the loaded mesh stops being a permanent wireframe and starts showing an actual diffuse texture, pulled straight out of the model file itself rather than typed into `Source.cpp` by hand. That's the visible change. The structural one is a new `Material` struct with six texture slots, albedo, specular, normal, height, occlusion, emission, only one of which gets wired up this commit. The other five exist purely so the lighting and PBR posts coming later in this series have somewhere to plug in.
 
 &nbsp;

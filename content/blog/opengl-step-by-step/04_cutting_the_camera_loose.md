@@ -6,8 +6,6 @@ description = "Replacing the cube's hardcoded lookAt view with a WASD-and-mouse 
 math = true
 +++
 
-# Cutting the Camera Loose: From a Fixed lookAt to WASD and Mouse Look
-
 By the end of this post, the camera stops being a single hardcoded `glm::lookAt()` call and becomes an actual object you can steer: WASD to move, mouse to look around. That's not a cosmetic upgrade. Every post so far has been staring at geometry from the exact same fixed vantage point, which was fine for one cube but stops being fine the moment a scene has more than one thing in it worth walking around, and this commit makes sure it does: three cubes now sit at three different positions instead of one spinning in place. A skybox, in a few steps, is going to need somewhere to fly through it.
 
 &nbsp;

@@ -6,8 +6,6 @@ description = "Loading a real equirectangular HDR photograph and baking it into 
 math = true
 +++
 
-# HDRI: Turning a Real Photographed Sky Into a Cubemap, Once
-
 Every skybox so far has been six images an artist picked to line up at the edges. This commit's sky comes from a single photograph instead, an HDR panorama of an actual place, wrapped once around a cube at startup and never touched again after that.
 
 &nbsp;

@@ -6,8 +6,6 @@ description = "Flipping world-space normal mapping around: transforming light an
 math = true
 +++
 
-# Tangent-Space Normal Mapping: Moving the Transform to the Light, Not the Normal
-
 Last post got a normal map into the lighting pipeline by transforming the sampled tangent-space normal into world space, then doing all the usual lighting math there. This post does almost the same lighting, with one thing flipped: instead of moving the normal into world space, it moves the light and view directions into tangent space and does the math there instead. Same result, same TBN matrix, used the other way around.
 
 ## Theory: What Tangent Space Actually Buys You

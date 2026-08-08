@@ -6,8 +6,6 @@ description = "Wiring Dear ImGui into the engine: every std::cout and std::cerr 
 math = true
 +++
 
-# Dear ImGui: Twenty-Four Posts of Console Prints Become a Live Editor
-
 Every diagnostic this series has ever produced, a shader failing to compile, a texture failing to load, a framebuffer coming back incomplete, an Assimp import failing, has gone to the same place: a console window nobody's looking at while the actual render fills the screen. This commit gives all of it a second home, inside the application itself, as one of several panels built with Dear ImGui.
 
 &nbsp;

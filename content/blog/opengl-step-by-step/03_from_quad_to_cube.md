@@ -6,8 +6,6 @@ description = "Retiring the textured quad and TextureManager in favor of an eigh
 math = true
 +++
 
-# Building a Cube: Losing a Texture, Gaining a Dimension
-
 By the end of this post, our flat textured rectangle is gone, replaced by a solid, per-vertex-colored cube: eight vertices, thirty-six indices, and — for the first time in this series — geometry with a back side. That last part matters beyond this one commit. Every step from here on, camera movement, lighting, reflections, shadows, needs something three-dimensional to act on, and a quad facing the camera head-on was never going to cut it. This is the commit where the series trades its last flat surface for a shape worth building the rest of the pipeline around.
 
 &nbsp;

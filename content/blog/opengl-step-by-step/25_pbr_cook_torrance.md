@@ -6,8 +6,6 @@ description = "The material system trades a hand-tuned specular exponent for Rou
 math = true
 +++
 
-# PBR: Cook-Torrance Replaces Blinn-Phong, One BRDF for Every Light
-
 Every specular highlight this series has drawn so far came from the same trick: raise a reflection-vector dot product to some hand-picked power, 32 here, 128 there, whichever number happened to look right for that light at that moment. This commit replaces that trick entirely. The lighting pass gets a real bidirectional reflectance distribution function, Cook-Torrance, driven by two bounded, physically meaningful material properties, roughness and metallicness, instead of an exponent nobody could explain the value of.
 
 &nbsp;

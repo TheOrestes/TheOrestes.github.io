@@ -6,8 +6,6 @@ description = "Wiring brightColor into a real second render target, blurring it 
 math = true
 +++
 
-# Bloom Arrives: Extract, Blur, and Composite, All at Once
-
 Bloom is three steps: find the pixels bright enough to glow, blur that brightness into a soft halo, and add the halo back on top of the normal image. `brightColor` has existed since this series' camera post, computing exactly step one and then having nowhere to send the result. This commit builds the other two steps and finally gives it somewhere to go.
 
 &nbsp;

@@ -6,8 +6,6 @@ description = "The PrefilterSpecmap and BRDFLut shaders that sat unused last pos
 math = true
 +++
 
-# PBR IBL Specular: Prefiltered Reflections Meet a BRDF Lookup Table
-
 Last post's irradiance map covered indirect *diffuse*, every surface's ambient light came from a blurred average of the whole sky. Indirect *specular* is the harder half: a mirror-smooth surface should show a sharp reflection of the environment, a rough one a soft blurred smear, and that reflection has to respond correctly to viewing angle the way direct specular already does. This commit wires up the two shaders that were sitting in the `Shaders/` folder unused since last post, `PrefilterSpecmap` and `BRDFLut`, to finish the job.
 
 &nbsp;

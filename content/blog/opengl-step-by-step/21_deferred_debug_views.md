@@ -6,8 +6,6 @@ description = "Tiling the G-buffer's position, normal, albedo, emission, brightn
 math = true
 +++
 
-# Deferred Debug Views: Finally Seeing What's Inside the G-Buffer
-
 Every post since deferred rendering arrived has talked about position, normal, albedo, emission, and shadow-depth textures in the abstract, numbers packed into channels nobody could actually look at. This commit puts all six on screen at once, small tiled thumbnails layered over the final render, so the G-buffer stops being something you have to take on faith.
 
 &nbsp;

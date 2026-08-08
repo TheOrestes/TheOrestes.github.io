@@ -6,8 +6,6 @@ description = "Wiring up per-vertex normals, computed by Assimp three posts ago 
 math = true
 +++
 
-# Basic Diffuse Lighting: Normals Finally Earn Their Keep
-
 By the end of this post, the mesh shows actual lighting for the first time in this series: a simple grayscale shading term computed from the angle between each surface and a fixed light direction. It's not textured, it's not colored, it's just brightness, but it's the first commit in this series where the shape of the geometry itself affects what color a pixel is. Specular highlights and a proper lighting system are the obvious next posts; this is the one that gets normals into the pipeline at all.
 
 &nbsp;

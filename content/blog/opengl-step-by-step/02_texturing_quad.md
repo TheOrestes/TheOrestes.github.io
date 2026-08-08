@@ -6,8 +6,6 @@ description = "Replacing vertex colors with texture coordinates and sampling a 2
 math = true
 +++
 
-# Texturing a Quad: Giving Our First Mesh Some Pixels
-
 In the previous step, our OpenGL application could draw colored quads. That was a solid start: vertices entered the GPU, shaders transformed them, triangles appeared, and everyone went home mostly happy. But vertex colors are a little like painting a billboard with four paint buckets: useful, but not exactly the full visual buffet.
 
 ![Textured Quad](https://user-images.githubusercontent.com/5098227/150506409-1f163185-84f7-43a1-a80b-0341514656bb.png)

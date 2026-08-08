@@ -6,8 +6,6 @@ description = "The flat, hand-tuned reflection term from last post gets replaced
 math = true
 +++
 
-# PBR IBL Diffuse: Convolving the Sky Into an Irradiance Map
-
 Last post's Cook-Torrance BRDF made direct lighting, the sun and the point lights, physically grounded. Everything *not* directly lit still fell back on a flat `Reflection *= 0.02f` fudge sampled straight from the baked HDRI cubemap. This commit replaces that fudge with real image-based lighting: the environment itself becomes a diffuse light source, convolved once at startup into a small irradiance map and sampled per pixel from then on.
 
 &nbsp;

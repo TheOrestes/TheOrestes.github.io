@@ -6,8 +6,6 @@ description = "Adding an emission channel to the G-buffer so bloom works again u
 math = true
 +++
 
-# Deferred Bloom: Emission Becomes the Fourth G-Buffer Channel
-
 Bloom worked once already, back before deferred rendering arrived, because the mesh shader that computed final lit color could also decide right there whether that color was bright enough to glow. Deferred rendering split lighting into its own pass, so no shader touches an object's final color anymore until well after the object itself has been drawn. This commit reconnects the two: a fourth G-buffer channel carries "how much this pixel should glow" all the way from the geometry pass to the lighting pass to the bloom blur.
 
 &nbsp;

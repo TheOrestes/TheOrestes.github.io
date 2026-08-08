@@ -6,8 +6,6 @@ description = "Adding a Phong specular highlight driven by camera position and r
 math = true
 +++
 
-# Basic Specular Lighting: A Highlight Arrives, and the Ambient Term Finally Gets Used
-
 By the end of this post, the flat gray diffuse shading from last time gains a bright highlight that shifts as the camera moves around the mesh, the first lighting term in this series that depends on where the viewer is standing, not just where the light points. Getting there also means going back into last post's shader and actually using the texture sample that sat there computed and unread.
 
 &nbsp;

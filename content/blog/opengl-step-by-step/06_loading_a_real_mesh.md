@@ -6,8 +6,6 @@ description = "Wiring up Assimp through a new Mesh/Model/StaticObject pipeline t
 math = true
 +++
 
-# Loading a Real Mesh: Assimp Comes Back, and the Cube Gets Benched
-
 By the end of this post, the scene renders geometry that didn't come from eight hand-typed `glm::vec3` corners: a real character mesh, loaded from an `.FBX` file on disk. Every mesh so far, quad, cube, skybox, has been vertices and indices someone typed directly into a `.cpp` file. That approach tops out fast. `assimp`, linked into the project two posts ago and then quietly removed again last post because the skybox didn't need it, finally earns its keep here.
 
 &nbsp;
