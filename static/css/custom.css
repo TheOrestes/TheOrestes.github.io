@@ -31,12 +31,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Fustat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
-  font-style: normal;
+  font-style: italic;
   color: #72b4ff;
 }
 
 code, pre, kbd, samp {
-  font-family: "Intel One Mono", monospace;
+  font-family: "Ubuntu Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
