@@ -1,0 +1,4 @@
+# The GDI-era sources are UTF-16LE; without this git diffs them as binary.
+*.cpp diff=utf16
+*.h   diff=utf16
+*.rc  diff=utf16
