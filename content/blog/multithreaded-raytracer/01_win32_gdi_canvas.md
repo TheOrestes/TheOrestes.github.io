@@ -7,7 +7,11 @@ description = "The first commit: a Win32 window, a message loop, and the slowest
 
 Every ray tracer starts the same way: you need somewhere to put the pixels.
 
+&nbsp;
+
 If you come from realtime rendering, this is the part your API has been quietly doing for you your whole life. You bind a swapchain, you clear a render target, you present. Somebody at Khronos or Microsoft solved "where do the pixels go" a long time ago and you have never had to think about it again.
+
+&nbsp;
 
 This commit thinks about it. The answer it arrives at is `SetPixel()`, which is roughly the graphics equivalent of moving house by carrying one sock at a time.
 
@@ -17,11 +21,19 @@ This commit thinks about it. The answer it arrives at is `SetPixel()`, which is 
 
 Before the plumbing, the one idea you need if you have never written a ray tracer.
 
+&nbsp;
+
 In the rasterization pipeline you know, geometry is the thing that moves. You take triangles, run them through a vertex shader, project them into screen space, and the hardware figures out which pixels each triangle lands on. Geometry is the loop. Pixels are the result.
+
+&nbsp;
 
 Ray tracing runs that backwards. **Pixels are the loop.** For each pixel on screen, you fire a ray out into the world and ask what it hits. There is no projection matrix mapping triangles onto the screen, no rasterizer deciding coverage, no depth buffer resolving who won. There is a nested `for` loop over the framebuffer, and inside it, a geometry query.
 
+&nbsp;
+
 That single inversion is the whole reason this file looks the way it does. The renderer does not need a GPU pipeline. It needs a 2D array it can write colors into, one at a time.
+
+&nbsp;
 
 Which brings us to the crime scene.
 
@@ -49,7 +61,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 }
 ```
 
+&nbsp;
+
 One wrinkle worth noting, because it will matter later. `CreateWindow` is being handed `gBackbufferWidth` and `gBackbufferHeight` — 480 and 270 — as the **window** size. Not the client area. A `WS_OVERLAPPEDWINDOW` includes a title bar and a border, and those eat into the total. So the actual drawable region is somewhat smaller than the 480×270 the renderer thinks it owns.
+
+&nbsp;
 
 Nothing catches fire. The image just quietly doesn't fit.
 
@@ -72,11 +88,19 @@ case WM_PAINT:
     break;
 ```
 
+&nbsp;
+
 `Execute()` is the ray tracer. The *entire* ray tracer. It is being called from inside a paint message.
+
+&nbsp;
 
 If you have done any Win32, you already know why this is funny. `WM_PAINT` fires whenever Windows decides a region of your window has become invalid — you dragged another window over it, you minimized and restored, you resized, you looked at it wrong. Each one of those is now a full re-render of the scene from scratch.
 
+&nbsp;
+
 Also: the message loop is blocked for the entire duration. `GetMessage` cannot return until `DispatchMessage` finishes, and `DispatchMessage` cannot finish until every last ray has been traced. The window will not respond. Windows will offer to helpfully grey it out and ask if you would like to kill it.
+
+&nbsp;
 
 That is a genuinely reasonable place to be on commit one, though. The render happens, and you see it. Everything else is optimization.
 
@@ -114,25 +138,37 @@ for (int j = 0; j <= gBackbufferHeight; j++)
 }
 ```
 
+&nbsp;
+
 There is a surprising amount going on in twenty lines. Let's take it apart.
 
 ### Pixel to normalized coordinates
 
 The camera does not want pixel indices, it wants a point on the image plane in $[0,1]$. So each pixel index gets divided by the resolution:
 
+&nbsp;
+
 $$
 u = \frac{i + \xi}{W}, \qquad v = \frac{j + \xi}{H}
 $$
 
+&nbsp;
+
 where $\xi \sim U[0,1)$ is `Helper::GetRandom01()`.
 
+&nbsp;
+
 That $\xi$ is the interesting part. Without it, every ray for a given pixel would go through the *exact* same point, and you would get hard aliased edges — the ray tracing equivalent of `MSAA` being switched off. Jittering the sample within the pixel footprint and averaging is how you get antialiasing essentially for free.
+
+&nbsp;
 
 Except right now:
 
 ```cpp
 const int nSamples = 1;
 ```
+
+&nbsp;
 
 One sample per pixel. So the jitter is applied, then averaged over a set of size one, which is a mathematically elaborate way of applying jitter. The antialiasing machinery is in place and doing nothing. The knob exists; it is turned to zero.
 
@@ -142,13 +178,21 @@ One sample per pixel. So the jitter is applied, then averaged over a set of size
 color = Vector3(sqrt(color.x), sqrt(color.y), sqrt(color.z));
 ```
 
+&nbsp;
+
 A square root on the way out. This is gamma correction, and it's worth being precise about why it's here.
 
+&nbsp;
+
 The renderer accumulates light in **linear** space, because that is the only space where adding light makes physical sense — two lights of intensity $0.5$ really should sum to $1.0$. But display hardware is not linear. It expects values encoded with roughly
+
+&nbsp;
 
 $$
 c_{\text{encoded}} = c_{\text{linear}}^{1/2.2}
 $$
+
+&nbsp;
 
 Skip this step and everything renders muddy and too dark, because you handed linear values to a device expecting encoded ones. The code uses $c^{1/2}$ rather than $c^{1/2.2}$ — a square root is one instruction and $2.2$ is not — which is the standard cheap approximation. Slightly too bright, close enough, everybody does it.
 
@@ -158,15 +202,25 @@ Skip this step and everything renders muddy and too dark, because you handed lin
 float ir = (255.99*color.x);
 ```
 
+&nbsp;
+
 Not `255.0`. This is a small, load-bearing piece of folklore.
+
+&nbsp;
 
 You have a float in $[0,1]$ and you want an integer in $[0,255]$. Multiply by $255$ and truncate, and the only input that ever produces $255$ is exactly $1.0$ — every other value in the top bucket rounds down to $254$. Your whites are dingy.
 
+&nbsp;
+
 Multiply by $255.99$ and truncate instead, and the mapping
+
+&nbsp;
 
 $$
 \left\lfloor 255.99 \cdot c \right\rfloor
 $$
+
+&nbsp;
 
 distributes all $256$ buckets evenly across $[0,1]$. It is a hack. It is Peter Shirley's hack. It works.
 
@@ -176,9 +230,15 @@ distributes all $256$ buckets evenly across $[0,1]$. It is a hack. It is Peter S
 SetPixel(hdc, gBackbufferWidth-i, gBackbufferHeight-j, RGB(ir, ig, ib));
 ```
 
+&nbsp;
+
 Both axes are flipped: $x' = W - i$ and $y' = H - j$.
 
+&nbsp;
+
 The $y$ flip is the classic one — GDI puts the origin at the **top**-left and counts down, while the camera's $v$ axis points up, so somebody has to invert. Every graphics programmer has written this line and every graphics programmer has written it the wrong way round at least once.
+
+&nbsp;
 
 The $x$ flip is more of a choice. Combined, the two flips are a $180°$ rotation of the image.
 
@@ -188,17 +248,29 @@ The $x$ flip is more of a choice. Combined, the two flips are a $180°$ rotation
 SetPixel(hdc, ...)
 ```
 
+&nbsp;
+
 This is the part that hurts.
+
+&nbsp;
 
 `SetPixel` is a GDI call that draws a single pixel to a device context. Not to a buffer you later blit — to the device context, right now. Every call goes through the GDI layer, does its own bounds checking and clipping, and touches the actual window surface.
 
+&nbsp;
+
 At 480×270 that is
+
+&nbsp;
 
 $$
 480 \times 270 = 129{,}600
 $$
 
+&nbsp;
+
 individual GDI calls per frame, each carrying the full overhead of a Windows API call for the privilege of setting three bytes. And because there is no double buffering, you get to watch it happen — the image builds up line by line on screen like a JPEG on a 1998 dial-up connection.
+
+&nbsp;
 
 Honestly? As a debugging experience this is fantastic. You can *see* where the renderer is slow, because you can see it crawl.
 
@@ -213,13 +285,19 @@ const clock_t end_time = clock();
 TotalRenderTime = (end_time - begin_time) / (double)CLOCKS_PER_SEC;
 ```
 
+&nbsp;
+
 `clock()` around the render loop, result stashed in a global. This will become important later — you cannot optimize what you do not measure, and measuring is now technically possible.
+
+&nbsp;
 
 Where it *goes*, however:
 
 ```cpp
 //printf("Render Time : %.2f seconds\n", time);
 ```
+
+&nbsp;
 
 Commented out. As is the progress display:
 
@@ -228,7 +306,11 @@ percentageDone = (counter / (gBackbufferWidth*gBackbufferHeight)) * 100.0f;
 //ShowProgress(percentageDone);
 ```
 
+&nbsp;
+
 `ShowProgress` is fully implemented — it even calls `system("cls")` to clear the console between updates, which is its own special kind of choice — and then never gets called. `percentageDone` is dutifully computed every scanline and thrown away.
+
+&nbsp;
 
 Also `int percentageDone = 0.0f;`, which initializes an `int` from a `float` literal. The compiler will allow this. The compiler allows a lot of things.
 
@@ -236,12 +318,18 @@ Also `int percentageDone = 0.0f;`, which initializes an `int` from a `float` lit
 
 A window that renders once per paint message, blocking the message pump, into a canvas that draws one pixel per API call, with no buffer anywhere in sight.
 
+&nbsp;
+
 And yet: **it produces an image.** Spheres, reflections, refraction, depth of field, gamma correction — all of it, working, in commit one. The rendering is correct. Only the delivery mechanism is absurd.
+
+&nbsp;
 
 That's the right order to get things wrong in.
 
 ---
 
 **Commit:** [`24e60c1` — GDI based ray tracer, First commit](https://github.com/TheOrestes/Windows_RayTracer/commit/24e60c1)
+
+&nbsp;
 
 *Next up: the vector, ray, and camera types this whole thing is built on — and why the sky is a lerp.*
