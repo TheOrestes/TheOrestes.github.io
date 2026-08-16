@@ -7,8 +7,10 @@ files filtered out. Posts 1–4 diff against the empty tree — the project's fi
 852 lines at once, so those four are file-scoped slices of that single commit and show as all-`+`
 additions. Posts 5–17 are ordinary commit-to-commit diffs.
 
-The series follows `master` through the GDI era, then continues on the `OpenGL` branch — which is
-40 commits ahead of master and holds the newest work (through 2020-06-18).
+The series follows `master` through the GDI era, then continues on the `OpenGL` branch — which at
+the end of that work was 40 commits ahead of master (`ffc606d`..`ceb028e`) and holds the newest
+work (through 2020-06-18). Both tips have moved since; the range is pinned here so the count
+does not drift.
 
 | # | Post | Source | Anchors |
 |---|------|--------|---------|
@@ -39,6 +41,44 @@ checkout of Windows_RayTracer, commit `gitattributes-for-upstream` as `.gitattri
     git config diff.utf16.cachetextconv true
 
 Note: `git show --stat` still reports `Bin` (stats come from raw blobs) but the diff body is text.
+
+## Building it today
+
+The repository is public and builds from a clean clone with nothing preinstalled but Visual
+Studio 2022 (Desktop development with C++) and git. See `BUILDING.md` upstream:
+
+    git clone https://github.com/TheOrestes/Windows_RayTracer
+    cd Windows_RayTracer
+    .\build.ps1 -Run
+
+CMake fetches and builds every dependency at configure time — glm, stb, assimp and Open Image
+Denoise on `master`, plus GLFW, GLEW and marl on `OpenGL`. The first configure takes a few
+minutes, almost all of it assimp. CI builds Debug and Release on all three branches.
+
+VS 2022 specifically: `CMakePresets.json` names the `Visual Studio 17 2022` generator, so that is
+the version verified to work. Newer releases may be fine but nothing tests them.
+
+### Building a commit this series actually covers
+
+The build files only exist from `0a569ea` (2026) onward, so checking out a 2019–2020 anchor gets
+you that commit's sources with no `CMakeLists.txt`. Overlay the build system onto the old tree
+instead of the other way around:
+
+    git worktree add --detach ../rt-<sha> <sha>
+    git -C ../rt-<sha> checkout 0a569ea -- CMakeLists.txt CMakePresets.json cmake build.ps1
+    cd ../rt-<sha>
+    .\build.ps1 -Run
+
+Sources are globbed and the dependency set is detected from the includes, so the same build files
+work across the GDI and OpenGL layouts unchanged. Use `git -C <worktree>`, not
+`git --work-tree=`, which writes into the main checkout too.
+
+The renderer writes an `.hdr` into the working directory when it finishes, so run it from the
+worktree root. Scene, sample count and resolution are compile-time values in `Application.cpp`.
+
+Two Unity Asset Store meshes (`barb1.fbx`, `car.fbx`) were removed from the branch tips for
+licensing reasons, but they remain in history — every commit this series covers still has them,
+so the scenes in these posts load as written.
 
 ## Deliberately excluded
 
