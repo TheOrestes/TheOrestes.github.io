@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="760" height="430" role="img" aria-label="The camera's orthonormal basis u, v, w and the virtual image plane placed at focus distance along minus w">
+  <defs>
+    <marker id="ah-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <marker id="ah-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
+    </marker>
+    <marker id="ah-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="ah-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+    <marker id="ah-dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#818cf8"/>
+    </marker>
+  </defs>
+
+  <style>
+    .lbl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13px; fill: #d1d5db; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .dim  { fill: #9ca3af; font-size: 12px; }
+    .u    { fill: #34d399; }
+    .v    { fill: #fbbf24; }
+    .w    { fill: #f87171; }
+    .acc  { fill: #818cf8; }
+  </style>
+
+  <!-- image plane -->
+  <path d="M380,300 L600,330 L600,180 L380,150 z" fill="#818cf8" fill-opacity="0.07" stroke="#818cf8" stroke-width="1.6"/>
+
+  <!-- plane edge vectors -->
+  <line x1="380" y1="300" x2="600" y2="330" stroke="#818cf8" stroke-width="2.4" marker-end="url(#ah-dim)"/>
+  <line x1="380" y1="300" x2="380" y2="150" stroke="#818cf8" stroke-width="2.4" marker-end="url(#ah-dim)"/>
+
+  <!-- field of view guides from the eye to the plane edges -->
+  <line x1="140" y1="250" x2="380" y2="150" stroke="#6b7280" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="140" y1="250" x2="380" y2="300" stroke="#6b7280" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M196,227 A 60 60 0 0 1 196,274" fill="none" stroke="#9ca3af" stroke-width="1.2"/>
+  <text class="lbl dim" x="200" y="218">θ = vfov</text>
+
+  <!-- focus distance -->
+  <line x1="140" y1="250" x2="490" y2="240" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 5"/>
+  <text class="lbl dim" x="300" y="232">focus_dist</text>
+
+  <!-- the ray actually generated -->
+  <line x1="140" y1="250" x2="660" y2="212" stroke="#e5e7eb" stroke-width="1.8" marker-end="url(#ah-ray)"/>
+  <circle cx="512" cy="237" r="4" fill="#e5e7eb"/>
+  <text class="lbl mono" x="486" y="205" fill="#e5e7eb">s, t</text>
+
+  <!-- basis vectors at the eye -->
+  <line x1="140" y1="250" x2="214" y2="260" stroke="#34d399" stroke-width="2.6" marker-end="url(#ah-u)"/>
+  <line x1="140" y1="250" x2="140" y2="176" stroke="#fbbf24" stroke-width="2.6" marker-end="url(#ah-v)"/>
+  <line x1="140" y1="250" x2="66"  y2="274" stroke="#f87171" stroke-width="2.6" marker-end="url(#ah-w)"/>
+
+  <text class="lbl mono u" x="222" y="266">u</text>
+  <text class="lbl mono v" x="132" y="168">v</text>
+  <text class="lbl mono w" x="46"  y="292">w</text>
+
+  <!-- eye -->
+  <circle cx="140" cy="250" r="5.5" fill="#e5e7eb"/>
+  <text class="lbl" x="96" y="322">origin</text>
+  <text class="lbl mono dim" x="72" y="340">lookFrom</text>
+
+  <!-- corner + edge labels -->
+  <circle cx="380" cy="300" r="4" fill="#818cf8"/>
+  <text class="lbl mono acc" x="286" y="374">lower_left_corner</text>
+  <text class="lbl mono acc" x="452" y="358">horizontal</text>
+  <text class="lbl mono acc" x="300" y="128">vertical</text>
+
+  <!-- annotations -->
+  <text class="lbl" x="628" y="120">the image plane</text>
+  <text class="lbl dim" x="628" y="138">at −w, focus_dist away</text>
+
+  <text class="lbl dim" x="24" y="398">w = normalize(lookFrom − lookAt)   ·   u = normalize(cross(vup, w))   ·   v = cross(w, u)</text>
+  <text class="lbl dim" x="24" y="418">half_height = tan(θ/2)   ·   half_width = aspect · half_height   ·   note w points back toward the eye, not where it looks</text>
+</svg>

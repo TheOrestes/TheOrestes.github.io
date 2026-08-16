@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" role="img" aria-label="Why a nonzero aperture produces depth of field: rays leaving different points on the lens converge at the focus distance and diverge everywhere else">
+  <defs>
+    <marker id="dof-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+    <marker id="dof-dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+
+  <style>
+    .lbl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13px; fill: #d1d5db; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .dim  { fill: #9ca3af; font-size: 12px; }
+    .ok   { fill: #34d399; }
+    .bad  { fill: #f87171; }
+  </style>
+
+  <!-- the three sample planes -->
+  <line x1="300" y1="120" x2="300" y2="300" stroke="#f87171" stroke-width="1.2" stroke-dasharray="4 5" stroke-opacity="0.7"/>
+  <line x1="440" y1="110" x2="440" y2="310" stroke="#34d399" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <line x1="640" y1="120" x2="640" y2="300" stroke="#f87171" stroke-width="1.2" stroke-dasharray="4 5" stroke-opacity="0.7"/>
+
+  <!-- rays: three points on the lens, all aimed at one point on the focus plane -->
+  <line x1="140" y1="168" x2="700" y2="228" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#dof-ray)"/>
+  <line x1="140" y1="210" x2="700" y2="210" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#dof-ray)"/>
+  <line x1="140" y1="252" x2="700" y2="192" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#dof-ray)"/>
+
+  <!-- the lens / aperture -->
+  <line x1="140" y1="160" x2="140" y2="260" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="140" cy="168" r="3.5" fill="#818cf8"/>
+  <circle cx="140" cy="210" r="3.5" fill="#818cf8"/>
+  <circle cx="140" cy="252" r="3.5" fill="#818cf8"/>
+  <text class="lbl mono" x="60" y="146" fill="#818cf8">aperture</text>
+  <text class="lbl dim"  x="34" y="312">random_in_unit_disk()</text>
+  <text class="lbl dim"  x="34" y="328">picks a point per sample</text>
+
+  <!-- convergence point -->
+  <circle cx="440" cy="210" r="6.5" fill="#34d399"/>
+
+  <!-- spread markers -->
+  <line x1="300" y1="186" x2="300" y2="234" stroke="#f87171" stroke-width="5" stroke-linecap="round" stroke-opacity="0.85"/>
+  <line x1="640" y1="188" x2="640" y2="232" stroke="#f87171" stroke-width="5" stroke-linecap="round" stroke-opacity="0.85"/>
+
+  <!-- labels for the planes -->
+  <text class="lbl ok"   x="440" y="96"  text-anchor="middle">focus plane</text>
+  <text class="lbl mono ok" x="440" y="332" text-anchor="middle">dist_to_focus</text>
+  <text class="lbl dim"  x="440" y="350" text-anchor="middle">every lens sample agrees here → sharp</text>
+
+  <text class="lbl bad"  x="300" y="110" text-anchor="middle">too near</text>
+  <text class="lbl bad"  x="640" y="110" text-anchor="middle">too far</text>
+  <text class="lbl dim"  x="300" y="366" text-anchor="middle">samples disagree</text>
+  <text class="lbl dim"  x="640" y="366" text-anchor="middle">samples disagree</text>
+  <text class="lbl dim"  x="470" y="384" text-anchor="middle">— and averaging disagreement is blur</text>
+
+  <!-- focus distance dimension -->
+  <line x1="140" y1="286" x2="440" y2="286" stroke="#9ca3af" stroke-width="1" marker-start="url(#dof-dim)" marker-end="url(#dof-dim)"/>
+
+  <text class="lbl dim" x="34" y="410">aperture = 0 collapses the lens to a single point: every ray leaves the same place, nothing can disagree, and the whole image is sharp.</text>
+</svg>

@@ -19,7 +19,9 @@ Four files, all from that same first commit: `Vector3.h`, `Vector3.cpp`, `Ray.h`
 
 The most interesting thing in here, if you come from realtime rendering, is the camera. It has no view matrix. It has no projection matrix. It does not transform the world into camera space. Once you see what it does instead, a lot of ray tracing clicks into place.
 
-<!-- IMAGE: diagram of the camera basis (u, v, w) with the virtual image plane -->
+&nbsp;
+
+![The camera as this code actually models it: an origin, three perpendicular unit vectors, and a rectangle floating in space. `u` is camera-right, `v` is camera-up, and `w` points backward — from the target toward the eye, not the way the camera looks. Every ray starts at the origin and is aimed at a point on that rectangle](/images/blog/raytracer/camera_basis_diagram.svg)
 
 ## `Ray` is four lines of idea
 
@@ -125,6 +127,10 @@ $$
 &nbsp;
 
 So roughly four attempts for every three points. Cheap.
+
+&nbsp;
+
+![Rejection sampling, drawn. Points are picked uniformly in the square — which is trivial, two independent numbers — and kept only if they land inside the inscribed disk, which is not trivial to sample directly. The crosses are the wasted draws. There are always some, and on average the loop runs 1.27 times](/images/blog/raytracer/rejection_sampling_disk.svg)
 
 &nbsp;
 
@@ -292,6 +298,10 @@ So this jitters the ray's starting point across a disk of radius `lens_radius`, 
 &nbsp;
 
 Objects at that distance stay sharp, because all those rays agree. Objects nearer or farther get sampled from slightly different angles, so averaging the samples blurs them. That's depth of field — not a post-process, not a blur kernel, just geometry.
+
+&nbsp;
+
+![Rays leaving three different points on the lens, all aimed at the same point on the focus plane. There they agree exactly, and the average of agreeing samples is a sharp point. Nearer or further along, they have spread apart, and the average of disagreeing samples is a blur. Setting the aperture to zero collapses the lens to a single point, nothing can disagree, and the whole image is sharp](/images/blog/raytracer/thin_lens_dof.svg)
 
 &nbsp;
 
