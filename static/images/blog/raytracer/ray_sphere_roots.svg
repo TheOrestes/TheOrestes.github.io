@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" width="760" height="560" role="img" aria-label="A ray intersecting a sphere at two points, the near and far roots of the quadratic, with the surface normal at the near hit, and the three discriminant cases below">
+  <defs>
+    <marker id="rs-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+    <marker id="rs-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <style>
+    .lbl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13px; fill: #d1d5db; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .dim  { fill: #9ca3af; font-size: 11.5px; }
+    .lead { stroke: #6b7280; stroke-width: 1; }
+    .cap  { font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+  </style>
+
+  <!-- ================= main figure ================= -->
+  <circle cx="330" cy="190" r="100" fill="#818cf8" fill-opacity="0.07" stroke="#818cf8" stroke-width="1.6"/>
+  <circle cx="330" cy="190" r="3.5" fill="#818cf8"/>
+  <text class="lbl mono" x="340" y="184" fill="#818cf8">C</text>
+
+  <!-- radius to the near hit -->
+  <line x1="330" y1="190" x2="255" y2="257" stroke="#818cf8" stroke-width="1.1" stroke-dasharray="4 4"/>
+  <text class="lbl mono" x="296" y="214" fill="#818cf8">r</text>
+
+  <!-- the ray -->
+  <line x1="60" y1="330" x2="700" y2="90" stroke="#e5e7eb" stroke-width="1.8" marker-end="url(#rs-ray)"/>
+  <circle cx="60" cy="330" r="5" fill="#e5e7eb"/>
+  <text class="lbl mono" x="30" y="326" fill="#e5e7eb">O</text>
+  <text class="lbl dim"  x="14" y="344">ray origin</text>
+  <text class="lbl mono" x="150" y="272" fill="#e5e7eb">D</text>
+
+  <!-- hit points -->
+  <circle cx="255" cy="257" r="6" fill="#34d399"/>
+  <circle cx="430" cy="191" r="6" fill="#f87171"/>
+
+  <!-- near root label, left of the sphere -->
+  <line class="lead" x1="228" y1="243" x2="250" y2="254"/>
+  <text class="lbl mono" x="222" y="230" text-anchor="end" fill="#34d399">t₁ = (−b − √disc) / 2a</text>
+  <text class="lbl dim"  x="222" y="246" text-anchor="end" fill="#34d399">near root · entry · tried first</text>
+
+  <!-- far root label, right of the sphere and below the ray -->
+  <line class="lead" x1="452" y1="222" x2="434" y2="196"/>
+  <text class="lbl mono" x="460" y="236" fill="#f87171">t₂ = (−b + √disc) / 2a</text>
+  <text class="lbl dim"  x="460" y="252" fill="#f87171">far root · exit · used when t₁ falls</text>
+  <text class="lbl dim"  x="460" y="267" fill="#f87171">outside [t_min, t_max]</text>
+
+  <!-- normal at the near hit -->
+  <line x1="255" y1="257" x2="203" y2="303" stroke="#fbbf24" stroke-width="2.4" marker-end="url(#rs-n)"/>
+  <text class="lbl mono" x="196" y="322" fill="#fbbf24">N</text>
+  <line class="lead" x1="205" y1="330" x2="150" y2="344"/>
+  <text class="lbl dim" x="112" y="348">(P − C) / radius</text>
+  <text class="lbl dim" x="112" y="363">— already unit length</text>
+
+  <text class="lbl dim" x="470" y="316">a sphere is hit twice, or not at all.</text>
+  <text class="lbl dim" x="470" y="333">The quadratic hands you both answers.</text>
+
+  <!-- ================= discriminant cases ================= -->
+  <line x1="30" y1="392" x2="730" y2="392" stroke="#374151" stroke-width="1"/>
+  <text class="lbl" x="30" y="420">The discriminant is the geometry</text>
+
+  <!-- miss -->
+  <circle cx="170" cy="492" r="36" fill="none" stroke="#818cf8" stroke-width="1.4" stroke-opacity="0.6"/>
+  <line x1="100" y1="442" x2="248" y2="424" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text class="cap" x="170" y="548" fill="#f87171">b² − 4ac &lt; 0 · miss</text>
+
+  <!-- tangent -->
+  <circle cx="390" cy="492" r="36" fill="none" stroke="#818cf8" stroke-width="1.4" stroke-opacity="0.6"/>
+  <line x1="318" y1="456" x2="462" y2="456" stroke="#e5e7eb" stroke-width="1.5"/>
+  <circle cx="390" cy="456" r="4.5" fill="#fbbf24"/>
+  <text class="cap" x="390" y="548" fill="#fbbf24">= 0 · tangent, counted as a miss</text>
+
+  <!-- two hits -->
+  <circle cx="600" cy="492" r="36" fill="none" stroke="#818cf8" stroke-width="1.4" stroke-opacity="0.6"/>
+  <line x1="530" y1="516" x2="670" y2="468" stroke="#e5e7eb" stroke-width="1.5"/>
+  <circle cx="566" cy="504" r="4.5" fill="#34d399"/>
+  <circle cx="634" cy="480" r="4.5" fill="#f87171"/>
+  <text class="cap" x="600" y="548" fill="#34d399">&gt; 0 · two hits</text>
+</svg>
