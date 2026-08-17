@@ -112,6 +112,14 @@ Then the join becomes a detach:
 
 &nbsp;
 
+Those two changes turn out to be load-bearing together, which I only worked out by trying to reproduce this on the older commit and crashing instantly. The mutex is a local variable inside `Trace`. With `join()` it outlives the workers, because `Trace` sits there waiting for them. Detach them and `Trace` returns straight away, destroying the mutex while sixteen threads are still calling `lock()` through a pointer to it.
+
+&nbsp;
+
+So dropping the locks isn't tidying that happens to share a commit with the detach — detaching without dropping them doesn't run at all. I doubt I reasoned it out in that order at the time. More likely I detached the threads, watched it fall over, and took the locks out because they were the obvious thing in the way.
+
+&nbsp;
+
 Two smaller things in the same commit. A `copyBuffer` that had been duplicating the entire framebuffer every frame is gone. And debug builds drop to a single thread:
 
 &nbsp;
