@@ -5,11 +5,11 @@ tags = ["raytracing", "materials", "math", "cpp"]
 description = "Lambertian, Metal and a dielectric — three surfaces, one virtual function, and a piece of glass that flips a coin."
 +++
 
-Last post ended with a `HitRecord` carrying a `Material*` at a class that didn't exist. Here it is, and it turns out to be the smallest of the three abstractions in this renderer.
+Last post ended with a `HitRecord` carrying a `Material*` pointed at a class I hadn't written yet. Here it is, and it turned out to be the smallest of the three abstractions in the whole renderer.
 
 &nbsp;
 
-Geometry answers *where*. Materials answer *what happens next*. And "what happens next" is the entire lighting model — there is no shading equation in this code, no light loop, no BRDF evaluation. There is one function that takes an incoming ray and produces an outgoing one.
+Geometry answers *where*. Materials answer *what happens next*. And "what happens next" is my entire lighting model — I wrote no shading equation, no light loop, no BRDF evaluation. Just one function that takes an incoming ray and produces an outgoing one.
 
 ## `Material` is one virtual function too
 
@@ -23,15 +23,15 @@ public:
 
 &nbsp;
 
-Structurally identical to `Hitable` from last post: a single pure virtual, returning `bool`, with the interesting results handed back through out-parameters. The whole renderer is two of these interfaces pointed at each other.
+Structurally identical to `Hitable` from last post: a single pure virtual returning `bool`, with the interesting results handed back through out-parameters. My whole renderer is two of these interfaces pointed at each other.
 
 &nbsp;
 
-The `bool` means *did the ray survive*. `scattered` is where it goes next. `attenuation` is what happens to its colour on the way — and the word is doing precise work, because it is a multiplier, not a colour.
+The `bool` means *did the ray survive*. `scattered` is where it goes next. `attenuation` is what happens to its colour on the way — and I chose that word carefully, because it's a multiplier, not a colour.
 
 &nbsp;
 
-You can see why in the tracer's recursion, which post 1 showed the top of:
+You can see why in the recursion, which post 1 showed the top of:
 
 &nbsp;
 
@@ -58,11 +58,11 @@ $$
 
 &nbsp;
 
-componentwise, with each $a_i$ the albedo of a surface it touched. Nothing in this renderer emits light. **The sky is the only light source**, and every pixel you see is sky light that survived some number of multiplications on the way to the eye.
+componentwise, with each $a_i$ the albedo of a surface it touched. Nothing in my renderer emits light. **The sky is the only light source**, and every pixel is sky light that survived some number of multiplications on the way to the eye.
 
 &nbsp;
 
-Which also explains where black comes from. Not from a shadow test — there isn't one — but from a product of numbers below 1, and from that `depth < 50` cutoff returning `Vector3(0, 0, 0)` outright for rays that never escape.
+Which also explains where black comes from. Not from a shadow test — I never wrote one — but from a product of numbers below 1, and from that `depth < 50` cutoff returning `Vector3(0, 0, 0)` outright for rays that never escape.
 
 ## Lambertian: aim at a random point in a tangent sphere
 
@@ -78,11 +78,11 @@ virtual bool Scatter(const Ray& r_in, const HitRecord& rec, Vector3& attenuation
 
 &nbsp;
 
-Three lines, and the first one is the whole diffuse lighting model.
+Three lines, and the first one is my whole diffuse lighting model.
 
 &nbsp;
 
-`rec.P + rec.N` is the centre of a unit sphere sitting exactly on top of the surface, tangent at the hit point — the normal is unit length, so stepping one unit along it from $P$ lands you one radius above the surface. Add a random point from inside that sphere and you have a target. Aim there.
+`rec.P + rec.N` is the centre of a unit sphere sitting exactly on top of the surface, tangent at the hit point — the normal is unit length, so stepping one unit along it from $P$ lands you one radius above the surface. Add a random point from inside that sphere and I have a target. Aim there.
 
 &nbsp;
 
@@ -100,15 +100,15 @@ $$
 
 &nbsp;
 
-which is why the sphere has to be tangent rather than centred at $P$. A sphere centred on the hit point would scatter rays *into* the surface half the time. Offsetting it by $\vec{N}$ biases every direction outward, and biases them toward the normal — directions near $\vec{N}$ have more of the sphere behind them than directions near the horizon. That bias is the cosine falloff you know from `N · L`, arrived at without ever computing a dot product.
+which is why the sphere has to be tangent rather than centred at $P$. A sphere centred on the hit point would scatter rays *into* the surface half the time. Offsetting it by $\vec{N}$ biases every direction outward, and biases them toward the normal — directions near $\vec{N}$ have more of the sphere behind them than directions near the horizon. That bias is the cosine falloff I knew from `N · L`, arrived at without ever computing a dot product.
 
 &nbsp;
 
-Note what is *not* here. No light position. No `N · L`. No shadow ray. A Lambertian surface does not ask where the light is; it throws the ray somewhere plausible and lets the recursion find out.
+Note what *isn't* here. No light position. No `N · L`. No shadow ray. A Lambertian surface never asks where the light is; it throws the ray somewhere plausible and lets the recursion find out. That still strikes me as a lovely trade.
 
 &nbsp;
 
-Two smaller things. `attenuation = Albedo` unconditionally, and the function always returns `true` — a Lambertian surface in this renderer never absorbs a ray outright, it only dims it. And `Ray(rec.P, target - rec.P)` hands over an unnormalized direction again, which is the third post in a row where that's true and still fine, because every intersection test computes $a = \vec{D} \cdot \vec{D}$ rather than assuming it is 1.
+Two smaller things. `attenuation = Albedo` unconditionally and the function always returns `true`, so a Lambertian surface here never absorbs a ray outright, it only dims it. And `Ray(rec.P, target - rec.P)` hands over an unnormalized direction again — third post running where that's true and still fine, because every intersection test computes $a = \vec{D} \cdot \vec{D}$ rather than assuming it is 1.
 
 ## Metal: reflect, then rough it up
 
@@ -121,7 +121,7 @@ return (dot(scatterd.GetRayDirection(), rec.N) > 0);
 
 &nbsp;
 
-`Reflect` is one line, and it's worth writing out because it's the same trick as the tangent sphere — geometry standing in for a formula:
+`Reflect` is one line, and worth writing out because it's the same trick as the tangent sphere — geometry standing in for a formula:
 
 &nbsp;
 
@@ -144,7 +144,7 @@ $(\vec{v} \cdot \vec{n})\,\vec{n}$ is the part of the incoming direction that ru
 
 &nbsp;
 
-Then `fuzz` perturbs the result — a random offset from the unit sphere, scaled. At `fuzz = 0` it's a perfect mirror. Larger values smear the reflection into something brushed. The constructor clamps it:
+Then `fuzz` perturbs the result — a random offset from the unit sphere, scaled. At `fuzz = 0` I get a perfect mirror. Larger values smear the reflection into something brushed. The constructor clamps it:
 
 &nbsp;
 
@@ -174,15 +174,15 @@ $$
 
 &nbsp;
 
-If the fuzz offset is large enough to push the scattered ray *below* the surface it just bounced off, the material gives up and reports the ray as dead — and `TraceColor` turns that into black. So fuzz doesn't only blur a metal, it darkens it, most visibly at grazing angles where the reflected direction already lies close to the surface and a small nudge is enough to bury it. With `fuzz` unclamped above 1 the offset could exceed the reflected vector's own length and rays would be buried constantly.
+If the fuzz offset is large enough to push the scattered ray *below* the surface it just bounced off, the material gives up and reports the ray as dead — and `TraceColor` turns that into black. So fuzz doesn't only blur a metal, it darkens it, most visibly at grazing angles where the reflected direction already lies close to the surface and a small nudge is enough to bury it. That's why the clamp is there: unclamped above 1, the offset could exceed the reflected vector's own length and I'd be burying rays constantly.
 
 ## Transparent: the one that flips a coin
 
-This is the longest of the three and the only one whose author left a question mark in it. Worth taking in pieces.
+This is the longest of the three, and the only one where I left a question mark in the code for myself. Worth taking in pieces.
 
 &nbsp;
 
-First, which way are we going through the surface?
+First, which way am I going through the surface?
 
 &nbsp;
 
@@ -203,7 +203,7 @@ else
 
 &nbsp;
 
-`Sphere::hit` from last post always returns the outward normal, $(\vec{P} - \vec{C})/r$, with no idea whether you were inside or outside. So the material works it out from the sign of $\vec{d} \cdot \vec{N}$: positive means the ray is travelling *with* the normal, which can only happen on the way out. In that case the normal gets flipped and the index ratio inverted, because glass-to-air is the reciprocal of air-to-glass.
+`Sphere::hit` from last post always returns the outward normal, $(\vec{P} - \vec{C})/r$, with no idea whether I was inside or outside. So the material works it out from the sign of $\vec{d} \cdot \vec{N}$: positive means the ray is travelling *with* the normal, which can only happen on the way out. Then I flip the normal and invert the index ratio, because glass-to-air is the reciprocal of air-to-glass.
 
 &nbsp;
 
@@ -250,7 +250,7 @@ $$
 
 &nbsp;
 
-When it goes negative there is no angle that satisfies Snell, and physically that is **total internal reflection** — light trying to leave a dense medium at too shallow an angle cannot escape and reflects back inside. `Refract` returns `false`, and the caller sets `reflect_prob = 1.0f`. It is the same "is there a real root" question as the ray-sphere test, answering a completely different one.
+When it goes negative there's no angle that satisfies Snell, and physically that's **total internal reflection** — light trying to leave a dense medium at too shallow an angle can't escape and turns back inside. `Refract` returns `false` and I set `reflect_prob = 1.0f`. It's the same "is there a real root" question the ray-sphere test asks, answering something completely different, which I enjoyed more than I probably should have.
 
 &nbsp;
 
@@ -279,7 +279,7 @@ $$
 
 &nbsp;
 
-Schlick's approximation, and the reason glass looks like glass. $R_0$ is the reflectance when you look straight at the surface — for $n = 1.5$ that's about 4%, which is why a window facing you is mostly transparent. The $(1 - \cos\theta)^5$ term drives it toward 1 at grazing angles, which is why the same window becomes a mirror when you look along it. One number, one power, and you get the effect that makes rendered glass convincing.
+Schlick's approximation, and the reason glass looks like glass. $R_0$ is the reflectance looking straight at the surface — for $n = 1.5$ that's about 4%, which is why a window facing you is mostly transparent. The $(1 - \cos\theta)^5$ term drives it toward 1 at grazing angles, which is why the same window becomes a mirror when you look along it. One number and one power for the effect that makes rendered glass convincing.
 
 &nbsp;
 
@@ -301,11 +301,11 @@ else
 
 &nbsp;
 
-A real surface does both at once: some light reflects, the rest transmits. This code does one or the other, chosen at random, weighted by `reflect_prob`.
+A real surface does both at once: some light reflects, the rest transmits. My code does one or the other, chosen at random, weighted by `reflect_prob`. I genuinely wasn't sure this was right when I wrote it — hence the comment.
 
 &nbsp;
 
-It works because of the sampling loop from post 1. A single ray gives you a coin flip, which is meaningless. Average enough of them and the fraction that reflected converges on $R(\theta)$ — the split you wanted in the first place. It is Monte Carlo integration, arrived at by someone who found the logic unclear and wrote it anyway, and it is also why glass is the first thing to look wrong at low sample counts while the diffuse surfaces already look fine.
+It works because of the sampling loop from post 1. A single ray gives a coin flip, which is meaningless. Average enough of them and the fraction that reflected converges on $R(\theta)$ — the split I wanted in the first place. It's Monte Carlo integration, and I'd written it before I could name it. It's also why glass is the first thing to look wrong at low sample counts while the diffuse surfaces already look fine.
 
 &nbsp;
 
@@ -319,15 +319,15 @@ attenuation = Vector3(1, 1, 1);
 
 &nbsp;
 
-Glass takes nothing. Every other material dims the ray by its albedo; this one multiplies by 1 and passes the light through untouched. There is no coloured glass here and no absorption with distance — a ray can cross the sphere and come out exactly as bright as it went in.
+Glass takes nothing. Every other material dims the ray by its albedo; this one multiplies by 1 and passes the light through untouched. I have no coloured glass and no absorption with distance yet — a ray crosses the sphere and comes out exactly as bright as it went in. Both are things I'd like to add.
 
 ## Where this leaves us
 
-That's the entire renderer. Rays from a camera with no matrices, a quadratic that decides what they meet, and three materials deciding what happens next — all of it recursive, all of it converging on an answer by averaging noise, and all of it in that one 852-line first commit.
+And that's the entire renderer. Rays from a camera with no matrices, a quadratic deciding what they meet, and three materials deciding what happens next — all of it recursive, all of it converging by averaging noise, and all of it inside that one 852-line first commit.
 
 &nbsp;
 
-From here the story stops being about what the renderer computes and starts being about how long it takes.
+From here it stops being about what my renderer computes and starts being about how long it makes me wait.
 
 &nbsp;
 

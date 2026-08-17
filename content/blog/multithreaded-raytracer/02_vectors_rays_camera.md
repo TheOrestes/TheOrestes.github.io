@@ -5,23 +5,23 @@ tags = ["raytracing", "math", "camera", "cpp"]
 description = "Vector3, Ray, and a camera that builds an orthonormal basis instead of a projection matrix — plus why the sky is a lerp."
 +++
 
-Last post was about where the pixels go. This one is about what gets computed before they get there.
+Last post was about where I put the pixels. This one is about what I compute before they get there.
 
 &nbsp;
 
-Four files, all from that same first commit: `Vector3.h`, `Vector3.cpp`, `Ray.h`, and `Helper.h`, plus `Camera.h`. Together they're maybe 250 lines. They're also the entire mathematical foundation of the renderer — there is no third-party math library anywhere in this project, no GLM, nothing. Everything is hand-rolled.
+Four files, all from that same first commit: `Vector3.h`, `Vector3.cpp`, `Ray.h`, and `Helper.h`, plus `Camera.h`. Together they're maybe 250 lines, and they're the entire mathematical foundation of the renderer. I pulled in no third-party math library for this — no GLM, nothing — and hand-rolled all of it, mostly because writing it myself was the point.
 
 &nbsp;
 
-`Vector3.h` and `Vector3.cpp` hold exactly what you'd expect — three public floats, the usual arithmetic operators, dot, cross, and length — and the same type doubles as the renderer's color type throughout.
+`Vector3.h` and `Vector3.cpp` hold exactly what you'd expect — three public floats, the usual arithmetic operators, dot, cross, and length — and I use the same type as the renderer's colour type throughout.
 
 &nbsp;
 
-The most interesting thing in here, if you come from realtime rendering, is the camera. It has no view matrix. It has no projection matrix. It does not transform the world into camera space. Once you see what it does instead, a lot of ray tracing clicks into place.
+The part I find most interesting, coming from realtime rendering, is the camera. It has no view matrix. It has no projection matrix. It never transforms the world into camera space. Once I understood what it does instead, a lot of ray tracing clicked into place.
 
 &nbsp;
 
-![The camera as this code actually models it: an origin, three perpendicular unit vectors, and a rectangle floating in space. `u` is camera-right, `v` is camera-up, and `w` points backward — from the target toward the eye, not the way the camera looks. Every ray starts at the origin and is aimed at a point on that rectangle](/images/blog/raytracer/camera_basis_diagram.svg)
+![The camera as I actually model it: an origin, three perpendicular unit vectors, and a rectangle floating in space. `u` is camera-right, `v` is camera-up, and `w` points backward — from the target toward the eye, not the way the camera looks. Every ray starts at the origin and is aimed at a point on that rectangle](/images/blog/raytracer/camera_basis_diagram.svg)
 
 ## `Ray` is four lines of idea
 
@@ -70,7 +70,7 @@ One detail with consequences: **the constructor does not normalize the direction
 
 &nbsp;
 
-That's fine as long as everyone is consistent about it, and it saves a square root per ray. It's the kind of decision that's completely invisible until it isn't.
+That's fine as long as I stay consistent about it, and it saves a square root per ray. It's the kind of decision that stays completely invisible until it isn't.
 
 ## `Helper` is where the randomness lives
 
@@ -162,7 +162,7 @@ $$
 
 &nbsp;
 
-Just under half of all attempts are discarded. The loop still terminates quickly, but this is a genuinely hot path — it runs on every diffuse bounce of every ray — and "throw away half your random numbers" is the sort of thing that shows up in a profile later.
+Just under half of all attempts get discarded. The loop still terminates quickly, but this is a genuinely hot path — it runs on every diffuse bounce of every ray — and "throw away half your random numbers" is the sort of thing I expect to find staring back at me from a profile later.
 
 &nbsp;
 
@@ -170,7 +170,7 @@ Just under half of all attempts are discarded. The loop still terminates quickly
 
 ## The camera builds a basis, not a matrix
 
-Here's the part worth slowing down for.
+This is the part I want to slow down for, because it's where ray tracing stopped feeling like rasterization with extra steps.
 
 ```cpp
 Camera(Vector3 lookFrom, Vector3 lookAt, Vector3 Up, float vfov, float aspect, float aperture, float focus_dist)
@@ -194,11 +194,11 @@ Camera(Vector3 lookFrom, Vector3 lookAt, Vector3 Up, float vfov, float aspect, f
 
 &nbsp;
 
-In a rasterizer, a camera is a pair of matrices. You build a view matrix to move the world into camera space, and a projection matrix to squash camera space into clip space, and then every vertex gets pushed through both. The camera is a *transform applied to geometry*.
+In a rasterizer, a camera is a pair of matrices. I'd build a view matrix to move the world into camera space and a projection matrix to squash that into clip space, then push every vertex through both. The camera is a *transform applied to geometry*.
 
 &nbsp;
 
-Here the geometry never moves. The camera is a **coordinate frame plus a rectangle floating in world space**, and its job is to manufacture rays that start at the eye and pass through that rectangle.
+Here my geometry never moves at all. The camera is a **coordinate frame plus a rectangle floating in world space**, and its only job is to manufacture rays that start at the eye and pass through that rectangle.
 
 ### From field of view to a rectangle
 
@@ -232,7 +232,7 @@ v = cross(w, u);
 
 &nbsp;
 
-Three mutually perpendicular unit vectors, built with two cross products.
+Three mutually perpendicular unit vectors, built with two cross products. That's the whole camera.
 
 &nbsp;
 
@@ -240,11 +240,11 @@ Note the direction of $\vec{w}$: it's `lookFrom - lookAt`, which points **from t
 
 &nbsp;
 
-$\vec{u}$ comes from crossing the world up vector with $\vec{w}$, giving camera-right. $\vec{v}$ is then $\vec{w} \times \vec{u}$, giving camera-up — and it needs no normalization, because the cross product of two perpendicular unit vectors is already unit length. Small thing, one square root saved, and a nice signal that whoever wrote it was thinking.
+$\vec{u}$ comes from crossing the world up vector with $\vec{w}$, giving camera-right. $\vec{v}$ is then $\vec{w} \times \vec{u}$, giving camera-up — and it needs no normalization, because the cross product of two perpendicular unit vectors is already unit length. Small thing, one square root saved, and I was quietly pleased with myself for noticing.
 
 &nbsp;
 
-If the world up vector were ever parallel to $\vec{w}$ — looking straight up or straight down — that first cross product would be the zero vector and the basis would collapse. This is the classic gimbal-ish failure of every `lookAt` implementation ever written, and like most of them, this one doesn't guard against it.
+If the world up vector were ever parallel to $\vec{w}$ — looking straight up or straight down — that first cross product would be the zero vector and the basis would collapse. That's the classic gimbal-ish failure of every `lookAt` ever written, and I don't guard against it yet — my camera never looks straight down, so it hasn't come up. It's on the list.
 
 ### The image plane
 
@@ -285,7 +285,7 @@ Ray get_ray(float s, float t)
 
 &nbsp;
 
-Strip out the lens and this reads simply: origin at the eye, direction toward the point on the image plane, computed as target minus origin.
+Strip out the lens and it reads simply: origin at the eye, direction toward the point on the image plane, computed as target minus origin.
 
 &nbsp;
 
@@ -293,7 +293,7 @@ The lens is what makes it interesting. A pinhole camera has everything in focus,
 
 &nbsp;
 
-So this jitters the ray's starting point across a disk of radius `lens_radius`, then subtracts that same `offset` from the direction so the ray still aims at the same target. Every ray for a given pixel starts somewhere slightly different but converges on the same point at `focus_dist`.
+So I jitter the ray's starting point across a disk of radius `lens_radius`, then subtract that same `offset` from the direction so it still aims at the same target. Every ray for a given pixel starts somewhere slightly different but converges on the same point at `focus_dist`.
 
 &nbsp;
 
@@ -314,7 +314,7 @@ float aperture = 0.0f;
 
 &nbsp;
 
-With `aperture = 0.0f`, `lens_radius` is zero, `offset` is the zero vector, and the whole lens calculation collapses back into a pinhole. The feature is fully implemented and switched off — the same pattern as `nSamples = 1` from last post. The machinery goes in first, tuned to do nothing, and gets turned on later.
+With `aperture = 0.0f`, `lens_radius` is zero, `offset` is the zero vector, and the whole lens calculation collapses back into a pinhole. So the feature is fully written and switched off — the same thing I did with `nSamples = 1` last post. I like building the machinery first with the knob at zero; it means turning it on later is one number rather than a rewrite.
 
 &nbsp;
 
@@ -371,7 +371,7 @@ Then blend white at the bottom to a pale blue $(0.5, 0.7, 1.0)$ at the top.
 
 &nbsp;
 
-There is no skybox. No cubemap, no environment texture, no sphere at infinity with a material on it. The background of every image in this renderer is a two-line function of the ray's $y$ component.
+There's no skybox. No cubemap, no environment texture, no sphere at infinity with a material on it. The background of every image I've rendered is a two-line function of the ray's $y$ component.
 
 &nbsp;
 
@@ -379,7 +379,7 @@ And because it's a function rather than a texture, it's automatically correct fr
 
 &nbsp;
 
-Which is a genuinely elegant thing to get for four lines of code.
+For four lines of code, I still think that's a wonderful deal.
 
 &nbsp;
 
@@ -391,11 +391,11 @@ A ray that's really just $P(t) = \vec{O} + t\vec{D}$, a camera made of three per
 
 &nbsp;
 
-No matrices, no math library, no external dependencies of any kind. About 250 lines, and every future post builds on this.
+No matrices, no math library, no external dependencies of any kind. About 250 lines, and everything I build after this sits on top of it.
 
 &nbsp;
 
-Next we need something for those rays to actually hit.
+Next I need something for those rays to actually hit.
 
 ---
 

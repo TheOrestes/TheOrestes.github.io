@@ -6,10 +6,26 @@ Input: one `NN-*.md` diff file. Output: one markdown post for
 
 ## Voice
 
+**First person, always.** This is my project and my code. Write as "I" — never
+in the third person, never "the author", and don't narrate the commits as if
+they belong to someone else.
+
 Casual, funny, technically witty. Dry humour beats jokey humour — the comedy
 comes from noticing what the code actually does, not from adding punchlines on
-top. Never smug about past decisions; the point is "here is what happened and
-why it's interesting", not "look at this idiot".
+top. Enthusiastic, but not breathless.
+
+**Rough edges are mentioned, not exhibited.** Where the code has a bug, a race
+or a shortcut, say it plainly once, as something I already know about, with a
+note on what I'd do about it later. Don't build a section around it, don't tally
+them up, and don't treat finding one as a reveal.
+
+**Don't diminish a commit.** No "this commit does nothing major", no "a refactor
+that changes nothing". Every commit was a step taken for a reason; say what the
+reason was.
+
+**When the numbers disappoint, take it on the chin.** If a measurement shows the
+approach didn't help, report it straight, call it a good learning experience, and
+say what I'd try next. Don't spin it into a win and don't pile on.
 
 ## Truth to the diff
 

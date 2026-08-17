@@ -9,7 +9,7 @@ Last post ended with a camera that can turn any pixel into a ray. Which is lovel
 
 &nbsp;
 
-This post fixes that. Three small headers — `Hitable.h`, `HitableList.h`, `Sphere.h` — and by the end of them the renderer can answer the only question it actually cares about: *given this ray, what is the nearest thing in front of it, and what does the surface look like there?*
+So this post is where I give it something. Three small headers — `Hitable.h`, `HitableList.h`, `Sphere.h` — and by the end of them my renderer can answer the only question it really cares about: *given this ray, what is the nearest thing in front of it, and what does the surface look like there?*
 
 &nbsp;
 
@@ -17,7 +17,7 @@ This post fixes that. Three small headers — `Hitable.h`, `HitableList.h`, `Sph
 
 ## Everything is a `Hitable`
 
-The abstraction is one virtual function.
+I gave it one virtual function.
 
 &nbsp;
 
@@ -31,19 +31,19 @@ public:
 
 &nbsp;
 
-That is the entire interface. Not "draw yourself", not "give me your vertices" — just *can this ray hit you, and if so, tell me about it.*
+That's the entire interface. Not "draw yourself", not "give me your vertices" — just *can this ray hit you, and if so, tell me about it.*
 
 &nbsp;
 
-Worth sitting with how different that is from the pipeline you know. In rasterization, geometry has to be expressible as triangles, because the hardware only knows how to fill triangles. A sphere is not a sphere; it is a few hundred triangles pretending, and the illusion gets worse the closer you look at the silhouette.
+It took me a moment to appreciate how different that is from the pipeline I came from. In rasterization, geometry has to be expressible as triangles, because the hardware only knows how to fill triangles. A sphere isn't a sphere; it's a few hundred triangles pretending, and the illusion gets worse the closer you look at the silhouette.
 
 &nbsp;
 
-Here a sphere is a centre and a radius, and its silhouette is exact at any zoom level, because nothing is ever tessellated. The only requirement to join the scene is being able to answer a question about a line. Triangles will show up eventually, and when they do they will be one implementation of `Hitable` among several, not the privileged primitive everything else has to imitate.
+Here a sphere is a centre and a radius, and its silhouette is exact at any zoom level, because I never tessellate anything. The only requirement to join the scene is being able to answer a question about a line. Triangles turn up later in this series, and when they do they're one implementation of `Hitable` among several rather than the privileged primitive everything else has to imitate.
 
 &nbsp;
 
-The `t_min` and `t_max` parameters bound the search. A hit is only interesting if it lands inside that interval — which gives the caller a way to say "I only care about things between here and there" without every primitive inventing its own convention.
+The `t_min` and `t_max` parameters bound the search. A hit is only interesting if it lands inside that interval, which lets me say "I only care about things between here and there" without every primitive inventing its own convention.
 
 ## The hit record is the surface, packaged
 
@@ -63,19 +63,19 @@ Four fields: how far along the ray the hit happened, where that is in space, whi
 
 &nbsp;
 
-`P` is redundant and stored anyway. Given $t$ you can always recover the point with $P(t) = \vec{O} + t\vec{D}$ from last post — but you'd be recomputing it at every stage that wants it, so it gets cached once at the moment of the hit. That is the entire justification, and it's a good one.
+`P` is redundant and I store it anyway. Given $t$ I can always recover the point with $P(t) = \vec{O} + t\vec{D}$ from last post — but I'd be recomputing it at every stage that wants it, so I cache it once at the moment of the hit. That's the entire justification, and I think it's a good one.
 
 &nbsp;
 
-`mat_ptr` is the interesting one, because **materials do not exist yet.** `Hitable.h` forward-declares `class Material;` and stores a pointer to a type that has no definition anywhere in this post. The hit record is built to carry information it has no way to use, because the author already knew what was coming.
+`mat_ptr` is the interesting one, because **materials don't exist yet.** `Hitable.h` forward-declares `class Material;` and stores a pointer to a type with no definition anywhere in this post. I built the hit record to carry information it had no way to use, because I already knew what was coming next.
 
 &nbsp;
 
-This is the same pattern as `nSamples = 1` and `aperture = 0.0f` from the last two posts — the shape of the thing arrives before the thing does.
+Same pattern as `nSamples = 1` and `aperture = 0.0f` from the last two posts. I keep laying the shape of a thing down before the thing itself, and so far it keeps paying off.
 
 ## The sphere, or: the quadratic formula in disguise
 
-Here is the part that made me want to write this post.
+This is the part that made me want to write this post.
 
 &nbsp;
 
@@ -123,11 +123,11 @@ float discriminant = b * b - 4 * a* c;
 
 &nbsp;
 
-Four dot products and some arithmetic. There is no ray-sphere algorithm to look up, no special-cased geometry routine — the intersection test *is* the quadratic formula, applied to an equation you can derive on a napkin.
+Four dot products and some arithmetic. I didn't look up a ray-sphere algorithm and there's no special-cased geometry routine — the intersection test *is* the quadratic formula, applied to an equation you can derive on a napkin.
 
 &nbsp;
 
-Note $a = \vec{D} \cdot \vec{D}$ rather than $1$. Last post flagged that `Ray` never normalizes its direction, and this is where that comes home: the code cannot assume $\|\vec{D}\| = 1$, so it computes $a$ honestly instead of dropping it.
+Note $a = \vec{D} \cdot \vec{D}$ rather than $1$. Last post I mentioned that `Ray` never normalizes its direction, and this is where that comes home: I can't assume $\|\vec{D}\| = 1$, so I compute $a$ honestly instead of dropping it.
 
 ### The discriminant is the geometry
 
@@ -143,7 +143,7 @@ $b^2 - 4ac$ is doing something more interesting than usual here. In the abstract
 
 &nbsp;
 
-A ray that hits a sphere hits it *twice*. Front and back. That is obvious once stated and easy to forget, and it's why the code has to decide which of the two answers it wants.
+A ray that hits a sphere hits it *twice*. Front and back. Obvious once stated and easy to forget, and it's why I have to decide which of the two answers I want.
 
 &nbsp;
 
@@ -153,7 +153,7 @@ if (discriminant > 0)
 
 &nbsp;
 
-Strictly greater, so the tangent case counts as a miss. Mathematically that discards a real intersection; practically it's a set of measure zero and floating point was never going to land on it anyway. A tangent ray contributes nothing you'd notice.
+Strictly greater, so the tangent case counts as a miss. Mathematically I'm discarding a real intersection; practically it's a set of measure zero and floating point was never going to land on it anyway. A tangent ray contributes nothing I'd notice.
 
 ### Two roots, nearest first
 
@@ -179,7 +179,7 @@ The quadratic formula with the minus sign first. Since $\sqrt{\text{disc}}$ and 
 
 &nbsp;
 
-The far root is not a fallback for tidiness. It's what you get when the near hit is behind you — when the ray origin is *inside* the sphere. Then the entry point sits at negative $t$, fails the interval test, and the exit point is the one you actually want. A renderer that only ever computed the near root would work fine right up until something needed to see out from inside a piece of glass.
+The far root isn't there for tidiness. It's what I need when the near hit is behind the ray's origin — when the origin is *inside* the sphere. Then the entry point sits at negative $t$, fails the interval test, and the exit point is the one I actually want. Computing only the near root would have worked fine right up until something needed to see out from inside a piece of glass.
 
 ### The normal comes out free
 
@@ -191,15 +191,15 @@ rec.N = (rec.P - center) / radius;
 
 &nbsp;
 
-The direction from centre to surface point, which is the outward normal by definition. What's nice is the second half: that vector already has length exactly $r$, so dividing by `radius` normalizes it. No `sqrt`, no `normalize()` call — the geometry hands you a unit vector if you divide by the number you already have.
+The direction from centre to surface point, which is the outward normal by definition. What I like is the second half: that vector already has length exactly $r$, so dividing by `radius` normalizes it. No `sqrt`, no `normalize()` call — the geometry hands me a unit vector if I divide by the number I already have.
 
 &nbsp;
 
-Small thing. But it's the second time in three posts that this code has avoided a square root by noticing something true about the shape rather than reaching for the general-purpose function, and that adds up.
+Small thing. But it's the second time in three posts I've dodged a square root by noticing something true about the shape instead of reaching for the general-purpose function, and those add up.
 
 ## The list is your depth buffer
 
-One primitive is not a scene. `HitableList` is a `Hitable` that owns other `Hitable`s — the composite pattern, and the reason the renderer never needs to know how many kinds of geometry exist.
+One primitive isn't a scene. `HitableList` is a `Hitable` that owns other `Hitable`s — the composite pattern, and the reason my renderer never needs to know how many kinds of geometry exist.
 
 &nbsp;
 
@@ -221,15 +221,15 @@ for (int i = 0; i < list_size; i++)
 
 &nbsp;
 
-Six lines that replace a piece of dedicated hardware.
+Six lines doing the job of a piece of dedicated hardware.
 
 &nbsp;
 
-`closest_so_far` starts at `tmax` and shrinks every time something is hit. It is passed *back in* as the `tmax` for the next object — so once you've found something at $t = 3$, every remaining primitive is asked a narrower question: "do you hit this ray closer than 3?" Anything behind fails its own interval test and never reaches the comparison.
+`closest_so_far` starts at `tmax` and shrinks every time something is hit, and it's passed *back in* as the `tmax` for the next object. So once I've found something at $t = 3$, every remaining primitive gets asked a narrower question: "do you hit this ray closer than 3?" Anything behind fails its own interval test and never reaches the comparison.
 
 &nbsp;
 
-That is a depth buffer. Not an analogy — the same job, resolved the same way, by a running minimum instead of a per-pixel memory allocation. In rasterization you write depths into a buffer because triangles arrive in arbitrary order and you need somewhere to remember the winner. Here the loop *is* the ordering, one pixel at a time, so the winner fits in a local variable.
+That's a depth buffer. Not an analogy — the same job, resolved the same way, by a running minimum instead of a per-pixel allocation. In rasterization you write depths into a buffer because triangles arrive in arbitrary order and you need somewhere to remember the winner. Here the loop *is* the ordering, one pixel at a time, so the winner fits in a local variable.
 
 &nbsp;
 
@@ -241,27 +241,27 @@ That is a depth buffer. Not an analogy — the same job, resolved the same way, 
 
 &nbsp;
 
-Two details in those six lines are worth a raised eyebrow. `closest_so_far` is a `double` while `t`, `tmin` and `tmax` are all `float` — a lone widening in otherwise uniformly single-precision code, doing nothing that a `float` wouldn't. And `rec = temp_rec` copies the whole record every time a nearer hit is found, rather than at the end.
+Two things in those six lines I'd tidy given another pass: `closest_so_far` is a `double` while `t`, `tmin` and `tmax` are all `float`, which is a lone widening in otherwise single-precision code doing nothing a `float` wouldn't. And `rec = temp_rec` copies the whole record every time a nearer hit is found rather than once at the end.
 
 &nbsp;
 
-The scan is linear. Every ray asks every object in the scene whether it was hit, which is $O(n)$ per ray, and with a ray per sample per pixel that multiplies out fast. For five spheres it is completely fine. It is going to stop being fine, and the fix — a bounding volume hierarchy — is a long way down this series.
+The scan is linear. Every ray asks every object in the scene whether it was hit, which is $O(n)$ per ray, and with a ray per sample per pixel that multiplies out fast. For five spheres it's completely fine. It won't stay fine, and the fix — a bounding volume hierarchy — is a long way down this series.
 
 ## A note on the headers
 
-Both `HitableList::hit` and `Sphere::hit` are *defined* in their headers, outside the class body and without `inline`. That's a one-definition-rule violation waiting for a second translation unit to include them.
+I defined both `HitableList::hit` and `Sphere::hit` in their headers, outside the class body and without `inline`. That's a one-definition-rule violation waiting for a second translation unit to include them.
 
 &nbsp;
 
-It doesn't bite here, because there is barely a second translation unit to speak of. It's the kind of thing that stays invisible for years and then surfaces the first time someone splits a file.
+It doesn't bite yet, because there's barely a second translation unit to speak of. It's the kind of thing that stays invisible for years and then surfaces the first time I split a file — another one for the list.
 
 ## Where this leaves us
 
-There is now a scene. Rays go out, the quadratic decides what they meet, the list decides which answer wins, and a `HitRecord` comes back describing a point in space and the direction the surface faces there.
+So there's a scene now. Rays go out, the quadratic decides what they meet, the list decides which answer wins, and a `HitRecord` comes back describing a point in space and the direction the surface faces there.
 
 &nbsp;
 
-What is still missing is any notion of what a surface *does* to a ray. `mat_ptr` is sitting in the hit record, pointing at a class that doesn't exist, waiting.
+What's still missing is any notion of what a surface *does* to a ray. `mat_ptr` is sitting in the hit record pointing at a class I haven't written yet.
 
 &nbsp;
 
