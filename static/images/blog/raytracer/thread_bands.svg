@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="760" height="430" role="img" aria-label="The image cut into horizontal bands, one per thread, with the shared boundary row rendered by two threads and leftover rows at the bottom when the height does not divide evenly">
+  <defs>
+    <pattern id="tb-left" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#f87171" stroke-width="2.6" stroke-opacity="0.55"/>
+    </pattern>
+  </defs>
+  <style>
+    .lbl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13px; fill: #d1d5db; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .dim  { fill: #9ca3af; font-size: 12px; }
+    .tid  { font-family: ui-monospace, monospace; font-size: 12px; fill: #c7d2fe; }
+  </style>
+
+  <!-- bands -->
+  <rect x="60" y="70"  width="420" height="50" fill="#818cf8" fill-opacity="0.20"/>
+  <rect x="60" y="120" width="420" height="50" fill="#818cf8" fill-opacity="0.11"/>
+  <rect x="60" y="170" width="420" height="50" fill="#818cf8" fill-opacity="0.20"/>
+  <rect x="60" y="220" width="420" height="50" fill="#818cf8" fill-opacity="0.11"/>
+  <rect x="60" y="270" width="420" height="50" fill="#818cf8" fill-opacity="0.20"/>
+  <rect x="60" y="320" width="420" height="50" fill="#818cf8" fill-opacity="0.11"/>
+
+  <!-- leftover rows -->
+  <rect x="60" y="370" width="420" height="20" fill="url(#tb-left)"/>
+  <rect x="60" y="370" width="420" height="20" fill="none" stroke="#f87171" stroke-width="1.2" stroke-dasharray="4 3"/>
+
+  <!-- frame -->
+  <rect x="60" y="70" width="420" height="320" fill="none" stroke="#818cf8" stroke-width="1.6"/>
+
+  <!-- thread labels -->
+  <text class="tid" x="72" y="100">thread 0</text>
+  <text class="tid" x="72" y="150">thread 1</text>
+  <text class="tid" x="72" y="200">thread 2</text>
+  <text class="tid" x="72" y="250">thread 3</text>
+  <text class="tid" x="72" y="300">thread 4</text>
+  <text class="tid" x="72" y="350">thread 5</text>
+
+  <!-- shared boundary rows -->
+  <line x1="60" y1="120" x2="480" y2="120" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="60" y1="170" x2="480" y2="170" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="60" y1="220" x2="480" y2="220" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="60" y1="270" x2="480" y2="270" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="60" y1="320" x2="480" y2="320" stroke="#fbbf24" stroke-width="3"/>
+
+  <!-- callout to one boundary -->
+  <line x1="480" y1="220" x2="516" y2="212" stroke="#6b7280" stroke-width="1"/>
+  <text class="lbl mono" x="522" y="208" fill="#fbbf24">rendered twice</text>
+
+  <!-- callout to leftovers -->
+  <line x1="480" y1="380" x2="516" y2="386" stroke="#6b7280" stroke-width="1"/>
+  <text class="lbl mono" x="522" y="390" fill="#f87171">rendered by nobody</text>
+
+  <!-- right-hand notes -->
+  <text class="lbl mono" x="522" y="86" fill="#818cf8">T = hardware_concurrency()</text>
+  <text class="lbl dim"  x="522" y="106">one thread per band,</text>
+  <text class="lbl dim"  x="522" y="124">spawned and joined per render</text>
+
+  <text class="lbl mono" x="522" y="158">band i =</text>
+  <text class="lbl mono" x="522" y="176">[ i·⌊H/T⌋ , (i+1)·⌊H/T⌋ ]</text>
+
+  <text class="lbl dim"  x="522" y="238">inclusive at both ends, so</text>
+  <text class="lbl dim"  x="522" y="256">consecutive bands share the</text>
+  <text class="lbl dim"  x="522" y="274">row between them</text>
+
+  <text class="lbl mono" x="522" y="316">H − T·⌊H/T⌋</text>
+  <text class="lbl dim"  x="522" y="336">rows the division threw away.</text>
+  <text class="lbl dim"  x="522" y="354">At H = 540 that is zero for 12</text>
+  <text class="lbl dim"  x="522" y="372">threads, and 12 rows for 16.</text>
+
+  <text class="lbl dim" x="60" y="416">the bands do not overlap in pixels — what they share is the device context underneath them</text>
+</svg>
