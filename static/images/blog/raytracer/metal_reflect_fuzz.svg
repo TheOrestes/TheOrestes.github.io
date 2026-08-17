@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" width="760" height="470" role="img" aria-label="Metal reflection: the mirror direction from v minus twice its normal component, then a fuzz sphere around that direction, with one perturbed ray pushed below the surface and killed">
+  <defs>
+    <marker id="mt-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+    <marker id="mt-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="mt-dead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <pattern id="mt-hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#374151" stroke-width="3"/>
+    </pattern>
+  </defs>
+
+  <style>
+    .lbl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13px; fill: #d1d5db; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .dim  { fill: #9ca3af; font-size: 12px; }
+  </style>
+
+  <rect x="60" y="310" width="640" height="44" fill="url(#mt-hatch)" opacity="0.65"/>
+  <line x1="60" y1="310" x2="700" y2="310" stroke="#9ca3af" stroke-width="1.8"/>
+
+  <!-- fuzz sphere around the mirror direction -->
+  <circle cx="570" cy="250" r="123" fill="#818cf8" fill-opacity="0.06" stroke="#818cf8" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text class="lbl mono" x="496" y="126" fill="#818cf8">fuzz · RandomInUnitSphere()</text>
+
+  <!-- incoming, grazing -->
+  <line x1="90" y1="250" x2="326" y2="309" stroke="#e5e7eb" stroke-width="1.7" marker-end="url(#mt-ray)"/>
+  <text class="lbl mono" x="118" y="238">v</text>
+  <text class="lbl dim"  x="90" y="222">incoming, grazing</text>
+
+  <!-- normal -->
+  <line x1="330" y1="310" x2="330" y2="224" stroke="#fbbf24" stroke-width="2.6" marker-end="url(#mt-n)"/>
+  <text class="lbl mono" x="340" y="238" fill="#fbbf24">N</text>
+
+  <!-- mirror direction -->
+  <line x1="330" y1="310" x2="566" y2="251" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <circle cx="570" cy="250" r="4" fill="#9ca3af"/>
+  <text class="lbl mono dim" x="392" y="286">v − 2(v·n)n</text>
+
+  <!-- surviving scattered samples -->
+  <line x1="330" y1="310" x2="612" y2="164" stroke="#e5e7eb" stroke-width="1.6" marker-end="url(#mt-ray)"/>
+  <line x1="330" y1="310" x2="524" y2="302" stroke="#e5e7eb" stroke-width="1.6" marker-end="url(#mt-ray)"/>
+  <circle cx="612" cy="164" r="4.5" fill="#34d399"/>
+  <circle cx="524" cy="302" r="4.5" fill="#34d399"/>
+
+  <!-- the one that gets buried -->
+  <line x1="330" y1="310" x2="574" y2="361" stroke="#f87171" stroke-width="1.7" marker-end="url(#mt-dead)"/>
+  <circle cx="574" cy="361" r="4.5" fill="#f87171"/>
+  <text class="lbl mono" x="590" y="366" fill="#f87171">→ dies</text>
+
+  <!-- hit point -->
+  <circle cx="330" cy="310" r="5.5" fill="#e5e7eb"/>
+  <text class="lbl mono" x="306" y="332">P</text>
+
+  <text class="lbl dim" x="60" y="400">fuzz = 0 · the scattered ray is exactly the mirror direction</text>
+  <text class="lbl dim" x="60" y="422">fuzz &gt; 0 · a random point in a sphere of that radius around it, clamped to 1 by the constructor</text>
+  <text class="lbl dim" x="60" y="450" fill="#f87171">dot(d, N) ≤ 0 · pushed below the surface, so Scatter returns false and the ray dies</text>
+</svg>
