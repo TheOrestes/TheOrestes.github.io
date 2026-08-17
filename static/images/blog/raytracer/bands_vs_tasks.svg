@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-label="Left: one band per thread, where a thread that finishes a cheap band sits idle while another is still working. Right: one task per row into a pool of workers, where a worker that finishes early takes the next row.">
+  <style>
+    .ttl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13.5px; fill: #c7d2fe; }
+    .lbl  { font-family: system-ui, sans-serif; font-size: 12px; fill: #d1d5db; }
+    .dim  { font-family: system-ui, sans-serif; font-size: 11.5px; fill: #9ca3af; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; }
+  </style>
+
+  <!-- ============ left: one band per thread ============ -->
+  <text class="ttl" x="40" y="34">one band per thread</text>
+  <text class="dim" x="40" y="52">assigned up front, before anyone knows what it costs</text>
+
+  <!-- bands: width shows work done, colour shows busy vs idle -->
+  <rect x="40" y="74"  width="230" height="26" fill="#199e70" fill-opacity="0.85"/>
+  <rect x="270" y="74" width="60"  height="26" fill="#1f2937"/>
+  <rect x="40" y="106" width="120" height="26" fill="#199e70" fill-opacity="0.85"/>
+  <rect x="160" y="106" width="170" height="26" fill="#1f2937"/>
+  <rect x="40" y="138" width="290" height="26" fill="#199e70" fill-opacity="0.85"/>
+  <rect x="40" y="170" width="95"  height="26" fill="#199e70" fill-opacity="0.85"/>
+  <rect x="135" y="170" width="195" height="26" fill="#1f2937"/>
+  <rect x="40" y="202" width="165" height="26" fill="#199e70" fill-opacity="0.85"/>
+  <rect x="205" y="202" width="125" height="26" fill="#1f2937"/>
+
+  <text class="mono dim" x="336" y="92">thread 0</text>
+  <text class="mono dim" x="336" y="124">thread 1</text>
+  <text class="mono dim" x="336" y="156">thread 2</text>
+  <text class="mono dim" x="336" y="188">thread 3</text>
+  <text class="mono dim" x="336" y="220">thread 4</text>
+
+  <line x1="330" y1="66" x2="330" y2="236" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text class="dim" x="330" y="254" text-anchor="middle" fill="#f87171">everyone waits for the slowest band</text>
+
+  <rect x="40" y="286" width="14" height="12" fill="#199e70" fill-opacity="0.85"/>
+  <text class="dim" x="60" y="296">tracing</text>
+  <rect x="130" y="286" width="14" height="12" fill="#1f2937"/>
+  <text class="dim" x="150" y="296">idle, with rows still unrendered elsewhere</text>
+
+  <!-- divider -->
+  <line x1="400" y1="30" x2="400" y2="330" stroke="#374151" stroke-width="1"/>
+
+  <!-- ============ right: one task per row ============ -->
+  <text class="ttl" x="430" y="34">one task per row</text>
+  <text class="dim" x="430" y="52">540 tasks, taken by whichever worker is free</text>
+
+  <rect x="430" y="74"  width="286" height="26" fill="#c98500" fill-opacity="0.85"/>
+  <rect x="430" y="106" width="290" height="26" fill="#c98500" fill-opacity="0.85"/>
+  <rect x="430" y="138" width="284" height="26" fill="#c98500" fill-opacity="0.85"/>
+  <rect x="430" y="170" width="288" height="26" fill="#c98500" fill-opacity="0.85"/>
+  <rect x="430" y="202" width="286" height="26" fill="#c98500" fill-opacity="0.85"/>
+
+  <!-- task boundaries inside each worker's timeline -->
+  <g stroke="#070709" stroke-width="1.6">
+    <line x1="486" y1="74" x2="486" y2="100"/><line x1="552" y1="74" x2="552" y2="100"/><line x1="600" y1="74" x2="600" y2="100"/><line x1="668" y1="74" x2="668" y2="100"/>
+    <line x1="470" y1="106" x2="470" y2="132"/><line x1="546" y1="106" x2="546" y2="132"/><line x1="622" y1="106" x2="622" y2="132"/>
+    <line x1="500" y1="138" x2="500" y2="164"/><line x1="560" y1="138" x2="560" y2="164"/><line x1="640" y1="138" x2="640" y2="164"/><line x1="684" y1="138" x2="684" y2="164"/>
+    <line x1="478" y1="170" x2="478" y2="196"/><line x1="590" y1="170" x2="590" y2="196"/><line x1="656" y1="170" x2="656" y2="196"/>
+    <line x1="512" y1="202" x2="512" y2="228"/><line x1="574" y1="202" x2="574" y2="228"/><line x1="648" y1="202" x2="648" y2="228"/>
+  </g>
+
+  <text class="mono dim" x="724" y="92">w0</text>
+  <text class="mono dim" x="724" y="124">w1</text>
+  <text class="mono dim" x="724" y="156">w2</text>
+  <text class="mono dim" x="724" y="188">w3</text>
+  <text class="mono dim" x="724" y="220">w4</text>
+
+  <line x1="720" y1="66" x2="720" y2="236" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text class="dim" x="600" y="254" text-anchor="middle" fill="#34d399">they finish together</text>
+
+  <text class="dim" x="430" y="296">a worker that finishes a cheap row immediately takes another</text>
+
+  <!-- footer -->
+  <text class="lbl" x="40" y="344">Same total work either way. The difference is when a core is allowed to find out there is more of it.</text>
+  <text class="dim" x="40" y="368">Bands get decided before the render starts, so a band of empty sky and a band full of glass</text>
+  <text class="dim" x="40" y="386">receive the same share of the image and nothing like the same share of the work.</text>
+</svg>

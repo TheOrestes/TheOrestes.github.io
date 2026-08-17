@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" width="760" height="450" role="img" aria-label="Render time against samples per pixel for four configurations. Writing pixels into a buffer instead of calling SetPixel makes sixteen threads roughly two and a half times faster than one; with SetPixel they were level.">
+  <style>
+    .ttl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; fill: #e5e7eb; }
+    .sub  { font-family: system-ui, sans-serif; font-size: 12px; fill: #9ca3af; }
+    .ax   { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; fill: #9ca3af; }
+    .lgd  { font-family: system-ui, sans-serif; font-size: 12px; fill: #d1d5db; }
+    .note { font-family: system-ui, sans-serif; font-size: 12px; fill: #9ca3af; }
+  </style>
+
+  <text class="ttl" x="40" y="30">Where the time was actually going</text>
+  <text class="sub" x="40" y="50">960 × 540, commit 7d1cdb1, 16-core machine — same tracing throughout, only the pixel's destination changes</text>
+
+  <!-- grid -->
+  <line x1="90" y1="340" x2="600" y2="340" stroke="#374151" stroke-width="1"/>
+  <line x1="90" y1="270" x2="600" y2="270" stroke="#1f2937" stroke-width="1"/>
+  <line x1="90" y1="200" x2="600" y2="200" stroke="#1f2937" stroke-width="1"/>
+  <line x1="90" y1="130" x2="600" y2="130" stroke="#1f2937" stroke-width="1"/>
+  <line x1="90" y1="60"  x2="600" y2="60"  stroke="#1f2937" stroke-width="1"/>
+  <line x1="90" y1="60"  x2="90"  y2="340" stroke="#374151" stroke-width="1"/>
+
+  <text class="ax" x="80" y="344" text-anchor="end">0</text>
+  <text class="ax" x="80" y="274" text-anchor="end">3</text>
+  <text class="ax" x="80" y="204" text-anchor="end">6</text>
+  <text class="ax" x="80" y="134" text-anchor="end">9</text>
+  <text class="ax" x="80" y="64"  text-anchor="end">12</text>
+  <text class="sub" x="34" y="200" text-anchor="middle" transform="rotate(-90 34 200)">wall clock, seconds</text>
+
+  <text class="ax" x="90"  y="362" text-anchor="middle">2</text>
+  <text class="ax" x="192" y="362" text-anchor="middle">4</text>
+  <text class="ax" x="294" y="362" text-anchor="middle">8</text>
+  <text class="ax" x="396" y="362" text-anchor="middle">16</text>
+  <text class="ax" x="498" y="362" text-anchor="middle">32</text>
+  <text class="ax" x="600" y="362" text-anchor="middle">64</text>
+  <text class="sub" x="345" y="388" text-anchor="middle">samples per pixel</text>
+
+  <!-- SetPixel, 1 thread -->
+  <polyline fill="none" stroke="#3987e5" stroke-width="2" points="90,268 192,261 294,247 396,219 498,167 600,76"/>
+  <circle cx="90"  cy="268" r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="192" cy="261" r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="294" cy="247" r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="396" cy="219" r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="498" cy="167" r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="600" cy="76"  r="4" fill="#3987e5" stroke="#070709" stroke-width="1.8"/>
+
+  <!-- SetPixel, 16 threads -->
+  <polyline fill="none" stroke="#d95926" stroke-width="2" points="90,170 192,170 294,170 396,160 498,142 600,104"/>
+  <circle cx="90"  cy="170" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="192" cy="170" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="294" cy="170" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="396" cy="160" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="498" cy="142" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="600" cy="104" r="4" fill="#d95926" stroke="#070709" stroke-width="1.8"/>
+
+  <!-- buffer, 1 thread -->
+  <polyline fill="none" stroke="#199e70" stroke-width="2" points="90,331 192,326 294,312 396,291 498,242 600,142"/>
+  <circle cx="90"  cy="331" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="192" cy="326" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="294" cy="312" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="396" cy="291" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="498" cy="242" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="600" cy="142" r="4" fill="#199e70" stroke="#070709" stroke-width="1.8"/>
+
+  <!-- buffer, 16 threads -->
+  <polyline fill="none" stroke="#c98500" stroke-width="2" points="90,333 192,333 294,328 396,317 498,300 600,258"/>
+  <circle cx="90"  cy="333" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="192" cy="333" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="294" cy="328" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="396" cy="317" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="498" cy="300" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+  <circle cx="600" cy="258" r="4" fill="#c98500" stroke="#070709" stroke-width="1.8"/>
+
+  <!-- the extra point: shared ray counter removed as well -->
+  <circle cx="600" cy="305" r="6" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+  <line x1="594" y1="311" x2="470" y2="404" stroke="#6b7280" stroke-width="1"/>
+  <text class="note" x="150" y="414">and 1.5s once the shared ray counter also stops being shared</text>
+
+  <!-- direct labels -->
+  <circle cx="620" cy="76"  r="4" fill="#3987e5"/><text class="lgd" x="630" y="80">SetPixel · 1 thread</text>
+  <circle cx="620" cy="104" r="4" fill="#d95926"/><text class="lgd" x="630" y="108">SetPixel · 16 threads</text>
+  <circle cx="620" cy="142" r="4" fill="#199e70"/><text class="lgd" x="630" y="146">buffer · 1 thread</text>
+  <circle cx="620" cy="258" r="4" fill="#c98500"/><text class="lgd" x="630" y="262">buffer · 16 threads</text>
+</svg>
