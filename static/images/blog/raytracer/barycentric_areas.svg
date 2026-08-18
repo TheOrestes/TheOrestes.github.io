@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440" role="img" aria-label="Barycentric coordinates as area ratios: the point P splits the triangle into three sub-triangles, and each vertex's weight is the area of the sub-triangle opposite it divided by the whole.">
+  <style>
+    .ttl  { font-family: system-ui, sans-serif; font-size: 13px; fill: #c7d2fe; }
+    .lbl  { font-family: system-ui, sans-serif; font-size: 12.5px; fill: #d1d5db; }
+    .dim  { font-family: system-ui, sans-serif; font-size: 11.5px; fill: #9ca3af; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; }
+    .warn { fill: #f87171; }
+  </style>
+
+  <text class="ttl" x="30" y="32">a point inside a triangle is three areas</text>
+
+  <polygon points="120,320 420,320 270,110" fill="none" stroke="#6b7280" stroke-width="1.4"/>
+
+  <polygon points="120,320 420,320 285,235" fill="#3987e5" fill-opacity="0.34" stroke="#3987e5" stroke-width="1"/>
+  <polygon points="420,320 270,110 285,235" fill="#d95926" fill-opacity="0.34" stroke="#d95926" stroke-width="1"/>
+  <polygon points="270,110 120,320 285,235" fill="#199e70" fill-opacity="0.34" stroke="#199e70" stroke-width="1"/>
+
+  <circle cx="285" cy="235" r="5" fill="#e5e7eb"/>
+  <text class="mono" x="294" y="252" fill="#e5e7eb">P</text>
+
+  <circle cx="120" cy="320" r="4" fill="#9ca3af"/>
+  <circle cx="420" cy="320" r="4" fill="#9ca3af"/>
+  <circle cx="270" cy="110" r="4" fill="#9ca3af"/>
+  <text class="mono dim" x="96"  y="340">v0</text>
+  <text class="mono dim" x="428" y="340">v1</text>
+  <text class="mono dim" x="262" y="100">v2</text>
+
+  <text class="mono" x="240" y="300" fill="#3987e5">A2</text>
+  <text class="mono" x="336" y="222" fill="#d95926">A0</text>
+  <text class="mono" x="196" y="222" fill="#199e70">A1</text>
+
+  <text class="dim" x="30" y="372">each sub-triangle is opposite one vertex —</text>
+  <text class="dim" x="30" y="390">its share of the whole is that vertex's weight</text>
+
+  <text class="mono" x="470" y="90"  fill="#e5e7eb">λi = Ai / A</text>
+  <text class="dim"  x="470" y="110">and they sum to 1</text>
+
+  <text class="mono" x="470" y="152" fill="#e5e7eb">uv = λ0·uv0</text>
+  <text class="mono" x="470" y="172" fill="#e5e7eb">   + λ1·uv1</text>
+  <text class="mono" x="470" y="192" fill="#e5e7eb">   + λ2·uv2</text>
+  <text class="dim"  x="470" y="214">the same weights interpolate</text>
+  <text class="dim"  x="470" y="232">normals, and anything else</text>
+  <text class="dim"  x="470" y="250">the vertices carry</text>
+
+  <text class="dim" x="470" y="292">The area of a triangle is half the</text>
+  <text class="dim" x="470" y="310">magnitude of the cross product of</text>
+  <text class="dim" x="470" y="328">two of its edges — so the normal</text>
+  <text class="dim" x="470" y="346">I already compute carries the area</text>
+  <text class="dim" x="470" y="364">in its length, before I normalise it.</text>
+
+  <line x1="30" y1="412" x2="730" y2="412" stroke="#374151" stroke-width="1"/>
+  <text class="mono warn" x="30" y="434">glm: v.length() is 3, the component count.  glm::length(v) is the magnitude.</text>
+</svg>
