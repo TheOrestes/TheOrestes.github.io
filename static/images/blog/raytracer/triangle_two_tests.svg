@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440" role="img" aria-label="Left: intersecting the ray with the triangle's plane to find t. Right: three cross products deciding whether that point lies inside the triangle.">
+  <defs>
+    <marker id="tt-ray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+    <marker id="tt-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="tt-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#818cf8"/>
+    </marker>
+  </defs>
+  <style>
+    .ttl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 13.5px; fill: #c7d2fe; }
+    .lbl  { font-family: system-ui, sans-serif; font-size: 12.5px; fill: #d1d5db; }
+    .dim  { font-family: system-ui, sans-serif; font-size: 11.5px; fill: #9ca3af; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; }
+  </style>
+
+  <!-- ================= step 1: the plane ================= -->
+  <text class="ttl" x="40" y="32">1 · where does the ray meet the plane?</text>
+
+  <path d="M60,270 L285,305 L335,205 L110,168 z" fill="#818cf8" fill-opacity="0.10" stroke="#818cf8" stroke-width="1.4"/>
+
+  <line x1="55" y1="58" x2="196" y2="234" stroke="#e5e7eb" stroke-width="1.7" marker-end="url(#tt-ray)"/>
+  <line x1="200" y1="240" x2="248" y2="300" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <circle cx="55" cy="58" r="4.5" fill="#e5e7eb"/>
+  <text class="mono" x="30" y="52" fill="#e5e7eb">O</text>
+  <text class="mono dim" x="112" y="140">D</text>
+
+  <line x1="198" y1="237" x2="222" y2="150" stroke="#fbbf24" stroke-width="2.4" marker-end="url(#tt-n)"/>
+  <text class="mono" x="228" y="146" fill="#fbbf24">N</text>
+
+  <circle cx="198" cy="237" r="5" fill="#34d399"/>
+  <text class="mono" x="206" y="258" fill="#34d399">P</text>
+
+  <text class="mono" x="40" y="342" fill="#818cf8">N · P = d</text>
+  <text class="dim"  x="40" y="360">the plane, with d = N · V0</text>
+
+  <text class="mono" x="40" y="392" fill="#34d399">t = (d − N · O) / (N · D)</text>
+  <text class="dim"  x="40" y="410">substitute the ray and solve</text>
+  <text class="dim"  x="40" y="428">|N · D| &lt; 0.001 means parallel — no answer exists</text>
+
+  <line x1="390" y1="24" x2="390" y2="416" stroke="#374151" stroke-width="1"/>
+
+  <!-- ================= step 2: inside or outside ================= -->
+  <text class="ttl" x="420" y="32">2 · is that point inside the triangle?</text>
+
+  <path d="M450,300 L700,300 L575,140 z" fill="#199e70" fill-opacity="0.12" stroke="#199e70" stroke-width="1.6"/>
+
+  <!-- edges as vectors -->
+  <line x1="450" y1="300" x2="694" y2="300" stroke="#818cf8" stroke-width="2" marker-end="url(#tt-e)"/>
+  <line x1="700" y1="300" x2="579" y2="146" stroke="#818cf8" stroke-width="2" marker-end="url(#tt-e)"/>
+  <line x1="575" y1="140" x2="453" y2="294" stroke="#818cf8" stroke-width="2" marker-end="url(#tt-e)"/>
+
+  <text class="mono" x="560" y="318" fill="#818cf8">e0</text>
+  <text class="mono" x="654" y="228" fill="#818cf8">e1</text>
+  <text class="mono" x="482" y="222" fill="#818cf8">e2</text>
+
+  <text class="mono dim" x="430" y="316">V0</text>
+  <text class="mono dim" x="704" y="316">V1</text>
+  <text class="mono dim" x="566" y="130">V2</text>
+
+  <!-- a point inside -->
+  <circle cx="572" cy="248" r="5" fill="#34d399"/>
+  <text class="mono" x="530" y="252" fill="#34d399">P</text>
+  <text class="dim" x="524" y="270" fill="#34d399">all three ≥ 0</text>
+
+  <!-- a point outside -->
+  <circle cx="672" cy="212" r="5" fill="#f87171"/>
+  <text class="dim" x="628" y="196" fill="#f87171">one goes negative</text>
+
+  <text class="mono" x="420" y="360" fill="#e5e7eb">dot(N, cross(e0, P − V0)) ≥ 0</text>
+  <text class="dim"  x="420" y="380">and the same for e1 and e2</text>
+  <text class="dim"  x="420" y="404">each cross product points along N when P is on the</text>
+  <text class="dim"  x="420" y="422">inside of that edge, and against it when P is outside</text>
+</svg>
