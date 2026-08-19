@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-label="Ray-triangle queries for the same frame with no acceleration, one bounding box per mesh, and the BVH: 7.04 billion, 2.06 billion, and 157 million respectively.">
+  <style>
+    .ttl  { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; fill: #e5e7eb; }
+    .sub  { font-family: system-ui, sans-serif; font-size: 12px; fill: #9ca3af; }
+    .ax   { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; fill: #9ca3af; }
+    .lbl  { font-family: system-ui, sans-serif; font-size: 12.5px; fill: #d1d5db; }
+    .val  { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12.5px; }
+    .note { font-family: system-ui, sans-serif; font-size: 12px; fill: #9ca3af; }
+  </style>
+
+  <text class="ttl" x="40" y="30">How many triangles the rays actually asked about</text>
+  <text class="sub" x="40" y="50">deer, 1503 triangles · 640 × 480 · 8 samples · commit cbb7202 with the corrected slab test</text>
+
+  <line x1="200" y1="84" x2="200" y2="268" stroke="#374151" stroke-width="1"/>
+  <line x1="330" y1="84" x2="330" y2="262" stroke="#1f2937" stroke-width="1"/>
+  <line x1="460" y1="84" x2="460" y2="262" stroke="#1f2937" stroke-width="1"/>
+  <line x1="590" y1="84" x2="590" y2="262" stroke="#1f2937" stroke-width="1"/>
+  <line x1="720" y1="84" x2="720" y2="262" stroke="#1f2937" stroke-width="1"/>
+
+  <text class="ax" x="200" y="286" text-anchor="middle">0</text>
+  <text class="ax" x="330" y="286" text-anchor="middle">2B</text>
+  <text class="ax" x="460" y="286" text-anchor="middle">4B</text>
+  <text class="ax" x="590" y="286" text-anchor="middle">6B</text>
+  <text class="ax" x="720" y="286" text-anchor="middle">8B</text>
+  <text class="sub" x="460" y="308" text-anchor="middle">ray-triangle queries</text>
+
+  <text class="lbl" x="190" y="112" text-anchor="end">no acceleration</text>
+  <rect x="200" y="96" width="458" height="26" rx="4" fill="#3987e5"/>
+  <text class="val" x="668" y="114" fill="#d1d5db">7,044,126,633</text>
+
+  <text class="lbl" x="190" y="172" text-anchor="end">one box per mesh</text>
+  <rect x="200" y="156" width="134" height="26" rx="4" fill="#3987e5"/>
+  <text class="val" x="344" y="174" fill="#d1d5db">2,057,204,196</text>
+
+  <text class="lbl" x="190" y="232" text-anchor="end">BVH</text>
+  <rect x="200" y="216" width="10" height="26" rx="4" fill="#199e70"/>
+  <text class="val" x="220" y="234" fill="#199e70">157,446,066</text>
+
+  <text class="note" x="40" y="348">The bar is meant to be that small. Every ray still enters the same scene and finds the same</text>
+  <text class="note" x="40" y="368">geometry — it just stops asking 1503 questions to discover that it missed. 45 times fewer</text>
+  <text class="note" x="40" y="388">triangle tests, and the frame goes from 25.0 seconds to 1.4.</text>
+</svg>
