@@ -220,7 +220,7 @@ The shape of the progress is worth watching even so. Single-threaded it fills to
 
 ## What I take from this
 
-I'm glad I measured it, and I'd have been happier if I'd measured it at the time rather than years later while writing this up.
+I'm glad I measured it, and I should have measured it before I assumed it had worked.
 
 &nbsp;
 

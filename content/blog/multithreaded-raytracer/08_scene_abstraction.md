@@ -255,7 +255,7 @@ The vector manages its own storage and knows its own length, so the *container* 
 
 &nbsp;
 
-There's also this, which I noticed writing this post rather than at the time:
+There's also this, which took me an embarrassingly long time to spot:
 
 &nbsp;
 

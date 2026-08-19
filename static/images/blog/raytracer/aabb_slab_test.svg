@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440" role="img" aria-label="The slab test: a ray enters and leaves each axis-aligned pair of planes, and the box is hit only if all those intervals overlap.">
+  <defs>
+    <marker id="ab-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/>
+    </marker>
+  </defs>
+  <style>
+    .ttl  { font-family: system-ui, sans-serif; font-size: 13px; fill: #c7d2fe; }
+    .lbl  { font-family: system-ui, sans-serif; font-size: 12px; fill: #d1d5db; }
+    .dim  { font-family: system-ui, sans-serif; font-size: 11.5px; fill: #9ca3af; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; }
+  </style>
+
+  <text class="ttl" x="30" y="30">a box is two planes per axis</text>
+
+  <line x1="100" y1="70" x2="100" y2="300" stroke="#3987e5" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="300" y1="70" x2="300" y2="300" stroke="#3987e5" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="50"  y1="120" x2="350" y2="120" stroke="#d95926" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="50"  y1="260" x2="350" y2="260" stroke="#d95926" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <rect x="100" y="120" width="200" height="140" fill="#818cf8" fill-opacity="0.10" stroke="#818cf8" stroke-width="1.4"/>
+
+  <line x1="40" y1="300" x2="360" y2="44" stroke="#e5e7eb" stroke-width="1.6" marker-end="url(#ab-r)"/>
+  <line x1="100" y1="252" x2="265" y2="120" stroke="#34d399" stroke-width="3.4"/>
+
+  <circle cx="90"  cy="260" r="3.5" fill="#d95926"/>
+  <circle cx="100" cy="252" r="3.5" fill="#3987e5"/>
+  <circle cx="265" cy="120" r="3.5" fill="#d95926"/>
+  <circle cx="300" cy="92"  r="3.5" fill="#3987e5"/>
+
+  <text class="mono dim" x="30"  y="316">ray</text>
+  <text class="mono" x="112" y="286" fill="#34d399">inside</text>
+
+  <text class="dim" x="30" y="352">The ray crosses each pair of planes once going in and once</text>
+  <text class="dim" x="30" y="370">coming out, giving an interval of t per axis. It is inside the</text>
+  <text class="dim" x="30" y="388">box wherever all of those intervals overlap — so the test is</text>
+  <text class="dim" x="30" y="406">a running max of the entries against a running min of the exits.</text>
+  <text class="dim" x="30" y="428">Empty overlap, no hit. Three axes, six divisions, no square roots.</text>
+
+  <line x1="400" y1="24" x2="400" y2="416" stroke="#374151" stroke-width="1"/>
+
+  <text class="ttl" x="430" y="30">what the swap is for</text>
+
+  <text class="dim" x="430" y="60">Whether the near plane gives the smaller t depends on which</text>
+  <text class="dim" x="430" y="78">way the ray points along that axis. If the component is</text>
+  <text class="dim" x="430" y="96">negative the two come out the wrong way round and have</text>
+  <text class="dim" x="430" y="114">to be swapped.</text>
+
+  <text class="mono" x="430" y="150" fill="#9ca3af">// Z Direction</text>
+  <text class="mono" x="430" y="168" fill="#9ca3af">float t0z = (minBound[2] - o[2]) * inv[2];</text>
+  <text class="mono" x="430" y="186" fill="#9ca3af">float t1z = (maxBound[2] - o[2]) * inv[2];</text>
+  <text class="mono" x="430" y="204" fill="#f87171">if (inv[1] &lt; 0.0f)</text>
+  <text class="mono" x="430" y="222" fill="#9ca3af">    std::swap(t0z, t1z);</text>
+
+  <text class="dim" x="430" y="256" fill="#f87171">The Z slab asks about Y.</text>
+
+  <text class="dim" x="430" y="288">Whenever a ray's Y and Z components disagree in sign, the</text>
+  <text class="dim" x="430" y="306">Z interval comes out backwards, the overlap collapses, and</text>
+  <text class="dim" x="430" y="324">the box reports a miss it should not have.</text>
+
+  <text class="dim" x="430" y="356">Camera rays mostly travel in similar directions, so they</text>
+  <text class="dim" x="430" y="374">largely agree and the picture looks fine. Scattered rays</text>
+  <text class="dim" x="430" y="392">leave in every direction — which is why it showed up in a</text>
+  <text class="dim" x="430" y="410">reflection and nowhere else.</text>
+</svg>
