@@ -209,7 +209,7 @@ Negating a dot product is the same as dotting the negation, and `distance(a, b)`
 
 &nbsp;
 
-The second one is worth a look regardless, because it compares a ray's *origin* against its *direction*. Those are a point and a vector; the distance between them isn't a meaningful quantity. Whatever that condition was supposed to catch, it isn't catching it.
+The second one is worth a look regardless, because it compares a ray's *origin* against its *direction* — a point against a vector, which normally means nothing at all. Here it means something specific: it's how `FlatColor` tells the tracer to stop bouncing, by handing back a ray whose origin and direction are the same point. That material and this condition arrived together, and I've written up how the pair works [in the next post](/blog/multithreaded-raytracer/14_application_layer/).
 
 ## Where this leaves us
 
