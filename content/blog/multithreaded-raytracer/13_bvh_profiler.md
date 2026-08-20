@@ -13,11 +13,11 @@ The obvious next move is a tree of boxes. What I did first was count.
 
 &nbsp;
 
-These three commits are in that order — two in March that add a profiler, one in April that adds the BVH. It's the right order, because "the renderer feels slow" is not a number and you can't tell whether you've improved it.
+These three commits are in that order — two that add a profiler, then one that adds the BVH. It's the right order, because "the renderer feels slow" is not a number and you can't tell whether you've improved it.
 
 &nbsp;
 
-*(A note on dates if you go looking: this series is grouped by topic rather than strictly by commit date, and the reflection fix from last post landed the day after the BVH here. The box test in this post is still the version that was about to be replaced, which turns out to matter.)*
+*(One thing to carry into this post: the box test here is still the version last post was about, the one that swaps on the wrong axis. It gets replaced immediately after the BVH lands, and it turns out to matter for the numbers.)*
 
 ## The instrument
 
@@ -118,7 +118,7 @@ Per-ray counting in a plain `int` on the stack, one atomic add at the end. That'
 
 ## Two things the first version got wrong about counting
 
-The second commit, the same day, is titled *"Added More data for profiling with uint64_t support"* — and it's the more interesting of the two.
+The second commit is titled *"Added More data for profiling with uint64_t support"* — and it's the more interesting of the two.
 
 &nbsp;
 
@@ -194,7 +194,7 @@ Six thousandths of one percent. That's the number the rest of this post exists t
 
 ## The tree
 
-A month later: `LameBVH.h`, opening with a credit.
+Then `LameBVH.h` arrives, opening with a credit.
 
 &nbsp;
 
@@ -368,7 +368,7 @@ The table above uses the corrected slab test. Built exactly as it stands in this
 
 &nbsp;
 
-Eighteen percent of the deer's real intersections, discarded. Putting that test into every node of a tree instead of once per mesh is what made it impossible to keep missing, and it was replaced the following day — which is where last post picked it up.
+Eighteen percent of the deer's real intersections, discarded. Putting that test into every node of a tree instead of once per mesh is what made it impossible to keep missing, and it was replaced in the very next commit — which is where last post picked it up.
 
 &nbsp;
 

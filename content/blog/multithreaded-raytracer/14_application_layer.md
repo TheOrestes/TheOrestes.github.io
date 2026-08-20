@@ -177,7 +177,7 @@ Every material changes to match, and so does `Scene::Trace`. A debug counter is 
 
 &nbsp;
 
-It's the right trade at this point, because the alternative was measured and it was slow. And it's the version of this problem that gets solved properly a week later: post 13's commits hang the counters off `HitRecord` instead, which was already being passed into every one of those functions. Same locality, same single atomic add, no new parameters. I like that the good answer was already sitting in the argument list.
+It's the right trade at this point, because the alternative was measured and it was slow. And it's the version of this problem that gets solved properly a few commits on: post 13's commits hang the counters off `HitRecord` instead, which was already being passed into every one of those functions. Same locality, same single atomic add, no new parameters. I like that the good answer was already sitting in the argument list.
 
 ## FlatColor, and a ray that means stop
 
