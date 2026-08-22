@@ -1,0 +1,52 @@
+{{/*
+  Resolves a cover image URL for a project page.
+
+  Order of preference:
+    1. The page's own `cover` param. Relative paths resolve against assets/ so
+       they can be resized; a full http(s) URL is used verbatim.
+    2. Auto-derived from the final post of the linked series: its first raster
+       image. The card then always shows the project's latest visible result,
+       and updates on its own as new posts land.
+    3. Empty string — callers must render gracefully without an image.
+
+  Notes on the heuristic:
+    - Posts are ordered by file path, not date. Series filenames are numbered
+      (01_, 02_, …) so this is stable even when several posts share a date.
+    - Only png/jpg/gif are considered. The .svg files in these series are all
+      explanatory diagrams, never screenshots.
+    - The *first* image is taken, not the last: posts tend to open with the
+      scene render and close with difference/debug shots, which make poor
+      covers. Set `cover` explicitly to override a bad pick.
+
+  Returns: a URL string (possibly empty).
+*/}}
+
+{{- $src := "" -}}
+
+{{- with .Params.cover -}}
+  {{- $src = . -}}
+{{- else -}}
+  {{- with .Params.series -}}
+    {{- with site.GetPage . -}}
+      {{- with sort .RegularPages "File.Path" -}}
+        {{- $final := index . (sub (len .) 1) -}}
+        {{- $matches := findRESubmatch `!\[[^]]*\]\(([^)]+\.(?:png|jpe?g|gif))\)` $final.RawContent -}}
+        {{- with $matches -}}
+          {{- $src = index (index . 0) 1 -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Resize when the file lives in assets/; static/ and remote URLs pass through. */}}
+{{- $out := $src -}}
+{{- if and $src (not (hasPrefix $src "http")) -}}
+  {{- with resources.Get $src -}}
+    {{- with .Process "resize 900x webp q82" -}}
+      {{- $out = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $out -}}

@@ -1,0 +1,127 @@
+{{ define "main" }}
+{{- $series := "" -}}
+{{- with .Params.series -}}{{- $series = site.GetPage . -}}{{- end -}}
+{{- $cover := partial "project-cover.html" . -}}
+
+<article class="max-w-4xl mx-auto">
+  <nav class="mb-6 text-sm text-gray-500">
+    <a href="{{ "/projects/" | relURL }}" class="hover:text-indigo-300 transition-colors">← Projects</a>
+  </nav>
+
+  {{- with $cover }}
+  <div class="mb-8 rounded-sm overflow-hidden border border-gray-800/70 bg-black">
+    <img src="{{ . }}" alt="" loading="lazy" decoding="async" class="w-full h-auto" />
+  </div>
+  {{- end }}
+
+  <header class="mb-8">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
+
+    {{- with .Params.summary }}
+    <p class="mt-3 text-base sm:text-lg text-gray-400 leading-relaxed">{{ . }}</p>
+    {{- end }}
+
+    <div class="mt-5 flex flex-wrap gap-2">
+      {{- range .Params.tags }}
+      <span class="px-2 py-0.5 text-xs sm:text-sm rounded-sm border border-gray-700/70 text-gray-300 bg-black/30">
+        {{ . }}
+      </span>
+      {{- end }}
+    </div>
+  </header>
+
+  <div class="mb-8 flex flex-wrap gap-3">
+    {{- with $series }}
+    <a href="{{ .RelPermalink }}"
+      class="group inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-indigo-400/30 bg-indigo-400/5 text-sm sm:text-base text-indigo-200 transition duration-200 hover:bg-indigo-400/10 hover:border-indigo-400/50">
+      Read the series
+      <span class="text-indigo-300/70">{{ len .RegularPages }} posts</span>
+      <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+    </a>
+    {{- end }}
+
+    {{- with .Params.repo }}
+    <a href="{{ . }}" target="_blank" rel="noopener noreferrer"
+      class="group inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-gray-700/70 bg-black/30 text-sm sm:text-base text-gray-300 transition duration-200 hover:bg-white/5 hover:border-gray-600 hover:text-white">
+      <i class="devicon-github-original" aria-hidden="true"></i>
+      Source on GitHub
+      <span aria-hidden="true" class="text-gray-500 group-hover:text-gray-300">↗</span>
+    </a>
+    {{- end }}
+  </div>
+
+  {{- with .Content }}
+  <div class="border border-gray-800/70 bg-[#070709] rounded-sm p-5 sm:p-7">
+    <div class="md-content text-base sm:text-lg leading-relaxed text-gray-200">
+      {{ . }}
+    </div>
+  </div>
+  {{- end }}
+
+  {{- with .Params.gallery }}
+  <section class="mt-10">
+    <h2 class="text-xl sm:text-2xl text-white tracking-wide mb-4">Screenshots</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {{- range . }}
+      {{- $src := .src -}}
+      {{- with resources.Get .src -}}
+        {{- with .Process "resize 900x webp q82" -}}
+          {{- $src = .RelPermalink -}}
+        {{- end -}}
+      {{- end -}}
+      <figure class="rounded-sm overflow-hidden border border-gray-800/70 bg-black">
+        <img src="{{ $src }}" alt="{{ .alt }}" loading="lazy" decoding="async" class="w-full h-auto" />
+      </figure>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with $series }}
+  {{- $posts := .RegularPages.ByDate -}}
+  {{- if $posts }}
+  <section class="mt-10">
+    <h2 class="text-xl sm:text-2xl text-white tracking-wide mb-4">Posts in this series</h2>
+    <ol class="border border-gray-800/70 bg-[#070709] rounded-sm divide-y divide-gray-800/70">
+      {{- range $i, $p := $posts }}
+      <li>
+        <a href="{{ $p.RelPermalink }}"
+          class="group flex items-baseline gap-3 px-5 py-3 transition-colors hover:bg-white/5">
+          <span class="text-xs text-gray-600 tabular-nums w-6 shrink-0">{{ printf "%02d" (add $i 1) }}</span>
+          <span class="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors leading-snug">
+            {{ $p.Title }}
+          </span>
+        </a>
+      </li>
+      {{- end }}
+    </ol>
+  </section>
+  {{- end }}
+  {{- end }}
+</article>
+
+<style>
+  .md-content ul,
+  .md-content ol {
+    margin: 1rem 0;
+    padding-left: 1.35rem;
+  }
+
+  .md-content ul {
+    list-style: disc;
+  }
+
+  .md-content ol {
+    list-style: decimal;
+  }
+
+  .md-content li {
+    margin: 0.35rem 0;
+  }
+
+  .md-content pre,
+  .md-content code {
+    tab-size: 4;
+  }
+</style>
+{{ end }}
