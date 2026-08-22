@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-label="Sixteen samples inside one pixel, placed three ways: uniformly random, at grid centres, and one random point per grid cell.">
+  <style>
+    .ttl  { font-family: system-ui, sans-serif; font-size: 13px; fill: #c7d2fe; }
+    .dim  { font-family: system-ui, sans-serif; font-size: 11.5px; fill: #9ca3af; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 11.5px; fill: #d1d5db; }
+  </style>
+  <text class="ttl" x="34" y="30">sixteen samples inside one pixel</text>
+  <text class="dim" x="34" y="52">The grid is the sampler&#8217;s own 4&#215;4 subdivision — numSets = sqrt(16).</text>
+  <text class="mono" x="34" y="64">RandomSampler</text>
+  <rect x="34.0" y="74.0" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <rect x="81.5" y="169.0" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <rect x="81.5" y="121.5" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <rect x="129.0" y="121.5" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <rect x="176.5" y="121.5" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <rect x="176.5" y="74.0" width="47.5" height="47.5" fill="#d95926" fill-opacity="0.13"/>
+  <line x1="81.5" y1="74" x2="81.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="34" y1="121.5" x2="224.0" y2="121.5" stroke="#374151" stroke-width="0.8"/>
+  <line x1="129.0" y1="74" x2="129.0" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="34" y1="169.0" x2="224.0" y2="169.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="176.5" y1="74" x2="176.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="34" y1="216.5" x2="224.0" y2="216.5" stroke="#374151" stroke-width="0.8"/>
+  <rect x="34" y="74" width="190" height="190" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+  <circle cx="95.5" cy="235.3" r="3.4" fill="#3987e5"/>
+  <circle cx="157.7" cy="250.2" r="3.4" fill="#3987e5"/>
+  <circle cx="135.8" cy="194.5" r="3.4" fill="#3987e5"/>
+  <circle cx="45.0" cy="167.6" r="3.4" fill="#3987e5"/>
+  <circle cx="41.1" cy="181.6" r="3.4" fill="#3987e5"/>
+  <circle cx="47.3" cy="246.8" r="3.4" fill="#3987e5"/>
+  <circle cx="114.7" cy="106.9" r="3.4" fill="#3987e5"/>
+  <circle cx="57.5" cy="221.6" r="3.4" fill="#3987e5"/>
+  <circle cx="153.2" cy="83.9" r="3.4" fill="#3987e5"/>
+  <circle cx="143.6" cy="188.6" r="3.4" fill="#3987e5"/>
+  <circle cx="219.5" cy="255.1" r="3.4" fill="#3987e5"/>
+  <circle cx="197.1" cy="209.0" r="3.4" fill="#3987e5"/>
+  <circle cx="61.4" cy="241.6" r="3.4" fill="#3987e5"/>
+  <circle cx="92.6" cy="108.9" r="3.4" fill="#3987e5"/>
+  <circle cx="68.3" cy="153.5" r="3.4" fill="#3987e5"/>
+  <circle cx="155.4" cy="193.2" r="3.4" fill="#3987e5"/>
+  <text class="dim" x="34" y="286">6 of 16 cells empty</text>
+  <text class="dim" x="34" y="312">Two uniform randoms per sample. Nothing stops</text>
+  <text class="dim" x="34" y="330">four of them landing in one corner and none in</text>
+  <text class="dim" x="34" y="348">the next, so the pixel is unevenly covered.</text>
+  <text class="mono" x="285" y="64">RegularSampler</text>
+  <line x1="332.5" y1="74" x2="332.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="285" y1="121.5" x2="475.0" y2="121.5" stroke="#374151" stroke-width="0.8"/>
+  <line x1="380.0" y1="74" x2="380.0" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="285" y1="169.0" x2="475.0" y2="169.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="427.5" y1="74" x2="427.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="285" y1="216.5" x2="475.0" y2="216.5" stroke="#374151" stroke-width="0.8"/>
+  <rect x="285" y="74" width="190" height="190" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+  <circle cx="308.8" cy="240.2" r="3.4" fill="#3987e5"/>
+  <circle cx="308.8" cy="192.8" r="3.4" fill="#3987e5"/>
+  <circle cx="308.8" cy="145.2" r="3.4" fill="#3987e5"/>
+  <circle cx="308.8" cy="97.8" r="3.4" fill="#3987e5"/>
+  <circle cx="356.2" cy="240.2" r="3.4" fill="#3987e5"/>
+  <circle cx="356.2" cy="192.8" r="3.4" fill="#3987e5"/>
+  <circle cx="356.2" cy="145.2" r="3.4" fill="#3987e5"/>
+  <circle cx="356.2" cy="97.8" r="3.4" fill="#3987e5"/>
+  <circle cx="403.8" cy="240.2" r="3.4" fill="#3987e5"/>
+  <circle cx="403.8" cy="192.8" r="3.4" fill="#3987e5"/>
+  <circle cx="403.8" cy="145.2" r="3.4" fill="#3987e5"/>
+  <circle cx="403.8" cy="97.8" r="3.4" fill="#3987e5"/>
+  <circle cx="451.2" cy="240.2" r="3.4" fill="#3987e5"/>
+  <circle cx="451.2" cy="192.8" r="3.4" fill="#3987e5"/>
+  <circle cx="451.2" cy="145.2" r="3.4" fill="#3987e5"/>
+  <circle cx="451.2" cy="97.8" r="3.4" fill="#3987e5"/>
+  <text class="dim" x="285" y="286">every cell covered</text>
+  <text class="dim" x="285" y="312">The centre of every cell. Perfectly even — and</text>
+  <text class="dim" x="285" y="330">identical in every pixel of the image, which turns</text>
+  <text class="dim" x="285" y="348">noise into a fixed pattern you can see.</text>
+  <text class="mono" x="536" y="64">JitteredSampler</text>
+  <line x1="583.5" y1="74" x2="583.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="536" y1="121.5" x2="726.0" y2="121.5" stroke="#374151" stroke-width="0.8"/>
+  <line x1="631.0" y1="74" x2="631.0" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="536" y1="169.0" x2="726.0" y2="169.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="678.5" y1="74" x2="678.5" y2="264.0" stroke="#374151" stroke-width="0.8"/>
+  <line x1="536" y1="216.5" x2="726.0" y2="216.5" stroke="#374151" stroke-width="0.8"/>
+  <rect x="536" y="74" width="190" height="190" fill="none" stroke="#6b7280" stroke-width="1.3"/>
+  <circle cx="562.0" cy="261.0" r="3.4" fill="#3987e5"/>
+  <circle cx="538.8" cy="206.7" r="3.4" fill="#3987e5"/>
+  <circle cx="568.3" cy="148.7" r="3.4" fill="#3987e5"/>
+  <circle cx="550.9" cy="93.7" r="3.4" fill="#3987e5"/>
+  <circle cx="605.0" cy="249.8" r="3.4" fill="#3987e5"/>
+  <circle cx="621.2" cy="183.3" r="3.4" fill="#3987e5"/>
+  <circle cx="595.1" cy="141.7" r="3.4" fill="#3987e5"/>
+  <circle cx="608.4" cy="79.9" r="3.4" fill="#3987e5"/>
+  <circle cx="665.6" cy="250.3" r="3.4" fill="#3987e5"/>
+  <circle cx="677.6" cy="210.9" r="3.4" fill="#3987e5"/>
+  <circle cx="650.9" cy="133.0" r="3.4" fill="#3987e5"/>
+  <circle cx="638.2" cy="98.3" r="3.4" fill="#3987e5"/>
+  <circle cx="680.4" cy="232.3" r="3.4" fill="#3987e5"/>
+  <circle cx="714.8" cy="189.3" r="3.4" fill="#3987e5"/>
+  <circle cx="720.1" cy="154.1" r="3.4" fill="#3987e5"/>
+  <circle cx="711.5" cy="93.3" r="3.4" fill="#3987e5"/>
+  <text class="dim" x="536" y="286">every cell covered</text>
+  <text class="dim" x="536" y="312">One random point inside each cell. Even coverage</text>
+  <text class="dim" x="536" y="330">from the grid, randomness from the offset. This is</text>
+  <text class="dim" x="536" y="348">the one Initialize() actually constructs.</text>
+  <rect x="34" y="374" width="12" height="12" fill="#d95926" fill-opacity="0.13"/>
+  <text class="dim" x="54" y="384">a cell no sample landed in</text>
+</svg>
