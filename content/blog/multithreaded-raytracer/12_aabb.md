@@ -1,6 +1,6 @@
 +++
 title = "The Deer With No Legs in the Mirror"
-date = 2026-08-19T00:00:00+05:30
+date = 2026-08-19T10:00:00+05:30
 tags = ["raytracing", "performance", "debugging", "cpp"]
 description = "A bounding box around every mesh, and the one-character bug that only ever showed up in a reflection."
 +++

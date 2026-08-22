@@ -1,6 +1,6 @@
 +++
 title = "Everything That Wasn't Windows"
-date = 2026-08-20T00:00:00+05:30
+date = 2026-08-20T09:00:00+05:30
 tags = ["raytracing", "architecture", "threading", "cpp"]
 description = "Lifting the renderer out of the Win32 template it grew inside, and giving the ray counter somewhere to live that sixteen threads don't fight over."
 +++

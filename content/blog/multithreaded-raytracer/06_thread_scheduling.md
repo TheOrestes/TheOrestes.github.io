@@ -1,6 +1,6 @@
 +++
 title = "Getting the Drawing Out of the Way"
-date = 2026-08-17T00:00:00+05:30
+date = 2026-08-17T11:00:00+05:30
 tags = ["raytracing", "multithreading", "performance", "cpp"]
 description = "Three commits that stop the renderer drawing from inside the tracing loop — and the second bottleneck I only found by measuring."
 +++

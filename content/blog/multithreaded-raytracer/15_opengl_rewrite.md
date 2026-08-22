@@ -1,6 +1,6 @@
 +++
 title = "Two Triangles and a Texture"
-date = 2026-08-20T00:00:00+05:30
+date = 2026-08-20T10:00:00+05:30
 tags = ["raytracing", "opengl", "glfw", "threading", "cpp"]
 description = "Replacing the per-pixel GDI call with a texture upload and a screen-aligned quad — and the branch that came out of it."
 +++

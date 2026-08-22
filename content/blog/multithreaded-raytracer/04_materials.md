@@ -1,6 +1,6 @@
 +++
 title = "Absorb, Bounce, or Bend"
-date = 2026-08-17T00:00:00+05:30
+date = 2026-08-17T09:00:00+05:30
 tags = ["raytracing", "materials", "math", "cpp"]
 description = "Lambertian, Metal and a dielectric — three surfaces, one virtual function, and a piece of glass that flips a coin."
 +++

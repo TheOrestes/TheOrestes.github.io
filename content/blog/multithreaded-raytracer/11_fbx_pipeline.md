@@ -1,6 +1,6 @@
 +++
 title = "Name It Lambert and It Becomes Lambertian"
-date = 2026-08-19T00:00:00+05:30
+date = 2026-08-19T09:00:00+05:30
 tags = ["raytracing", "assimp", "pipeline", "cpp"]
 description = "Getting materials, textures and placement out of a Maya FBX — and a glowing tiger in a Cornell box."
 +++

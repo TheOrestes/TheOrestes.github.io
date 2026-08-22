@@ -1,6 +1,6 @@
 +++
 title = "Where the Samples Land"
-date = 2026-08-22T00:00:00+05:30
+date = 2026-08-22T09:00:00+05:30
 tags = ["raytracing", "sampling", "threading", "cpp"]
 description = "Three ways to place sixteen points inside a pixel, turning the render inside out so it refines instead of finishing, and what moving one square root does to the picture."
 +++

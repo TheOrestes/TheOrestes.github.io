@@ -1,6 +1,6 @@
 +++
 title = "Drawing a Ray Tracer With SetPixel (Yes, Really)"
-date = 2026-08-08T00:00:00+05:30
+date = 2026-08-08T09:00:00+05:30
 tags = ["raytracing", "win32", "gdi", "cpp"]
 description = "Where I started: a Win32 window, a message loop, and the slowest canvas Windows will sell you."
 +++

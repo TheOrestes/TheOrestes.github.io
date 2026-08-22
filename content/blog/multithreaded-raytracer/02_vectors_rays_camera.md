@@ -1,6 +1,6 @@
 +++
 title = "A Camera With No Matrices"
-date = 2026-08-09T00:00:00+05:30
+date = 2026-08-09T09:00:00+05:30
 tags = ["raytracing", "math", "camera", "cpp"]
 description = "Vector3, Ray, and a camera that builds an orthonormal basis instead of a projection matrix — plus why the sky is a lerp."
 +++

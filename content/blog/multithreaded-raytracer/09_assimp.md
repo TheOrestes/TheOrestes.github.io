@@ -1,6 +1,6 @@
 +++
 title = "Somebody Else's Deer"
-date = 2026-08-18T00:00:00+05:30
+date = 2026-08-18T11:00:00+05:30
 tags = ["raytracing", "assimp", "meshes", "cpp"]
 description = "Loading a model off disk with assimp, flattening it into 1503 triangles, and finding out what a linear scan costs."
 +++

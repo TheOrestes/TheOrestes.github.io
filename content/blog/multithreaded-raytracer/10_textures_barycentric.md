@@ -1,6 +1,6 @@
 +++
 title = "Three Areas and One Very Small Bug"
-date = 2026-08-18T00:00:00+05:30
+date = 2026-08-18T12:00:00+05:30
 tags = ["raytracing", "textures", "math", "cpp"]
 description = "stb_image, barycentric coordinates, and a commit that added UV interpolation without any of it working."
 +++

@@ -1,6 +1,6 @@
 +++
 title = "Seven Billion Questions"
-date = 2026-08-19T00:00:00+05:30
+date = 2026-08-19T11:00:00+05:30
 tags = ["raytracing", "performance", "bvh", "profiling", "cpp"]
 description = "Building a profiler before building the optimisation, and then a bounding volume hierarchy to answer for the numbers it reported."
 +++

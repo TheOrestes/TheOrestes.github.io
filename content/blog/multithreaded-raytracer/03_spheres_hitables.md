@@ -1,6 +1,6 @@
 +++
 title = "The Quadratic That Decides What You Can See"
-date = 2026-08-16T00:00:00+05:30
+date = 2026-08-16T09:00:00+05:30
 tags = ["raytracing", "geometry", "math", "cpp"]
 description = "Hitable, HitRecord, and a ray-sphere intersection that is just the quadratic formula wearing a trenchcoat."
 +++

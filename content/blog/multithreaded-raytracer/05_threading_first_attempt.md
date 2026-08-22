@@ -1,6 +1,6 @@
 +++
 title = "Every Thread Draws to the Same Window"
-date = 2026-08-17T00:00:00+05:30
+date = 2026-08-17T10:00:00+05:30
 tags = ["raytracing", "multithreading", "cpp", "win32"]
 description = "My first go at threading the renderer: std::thread, horizontal bands, and a measurement that did not go the way I expected."
 +++

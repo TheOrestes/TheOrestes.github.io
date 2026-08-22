@@ -1,6 +1,6 @@
 +++
 title = "The Estimator That Cancelled Itself"
-date = 2026-08-22T00:00:00+05:30
+date = 2026-08-22T10:00:00+05:30
 tags = ["raytracing", "sampling", "pbr", "cpp"]
 description = "Three commits to get importance sampling working, the first of which the commit message calls a failed attempt — and a refactor that was both correct and a no-op."
 +++

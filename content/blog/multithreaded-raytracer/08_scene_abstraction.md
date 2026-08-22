@@ -1,6 +1,6 @@
 +++
 title = "Who Owns the Spheres?"
-date = 2026-08-18T00:00:00+05:30
+date = 2026-08-18T10:00:00+05:30
 tags = ["raytracing", "architecture", "cpp"]
 description = "Three commits moving the scene from free-floating globals to something with an owner — and the one-definition-rule problem I'd been carrying since post 3."
 +++

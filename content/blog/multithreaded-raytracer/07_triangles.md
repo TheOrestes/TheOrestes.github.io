@@ -1,6 +1,6 @@
 +++
 title = "A Triangle Is Two Questions"
-date = 2026-08-18T00:00:00+05:30
+date = 2026-08-18T09:00:00+05:30
 tags = ["raytracing", "geometry", "math", "cpp"]
 description = "The first primitive that isn't a sphere: a plane intersection, three cross products, and the abstraction from post 3 finally earning its keep."
 +++
