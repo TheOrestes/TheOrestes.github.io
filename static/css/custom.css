@@ -28,26 +28,36 @@ main li,
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Fredoka", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
   color: #72b4ff;
 }
 
 code, pre, kbd, samp {
-  font-family: "Sometype Mono", monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+/* Tables carry most of this site's figures, and Plex's flatter, slightly
+   narrower digits hold a column better than Inter's rounder ones. */
+table, table td, table th {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+table th {
+  font-weight: 600;
 }
 
 nav#TableOfContents,
 nav#TableOfContents ul,
 nav#TableOfContents li,
 nav#TableOfContents a {
-  font-family: "Barlow Semi Condensed", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: italic;
@@ -65,12 +75,12 @@ header .site-title,
 header .site-name,
 header .brand,
 header .logo {
-  font-family: "Fustat", sans-serif !important;
-  font-weight: 720;
+  font-family: "Space Grotesk", sans-serif !important;
+  font-weight: 600;
 }
 
 header nav a,
 header a {
-  font-family: "Fustat", sans-serif !important;
-  font-weight: 580;
+  font-family: "Space Grotesk", sans-serif !important;
+  font-weight: 500;
 }
