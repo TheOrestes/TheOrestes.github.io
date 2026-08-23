@@ -5,6 +5,15 @@ tags= ["c++", "raytracing", "multithreading", "win32"]
 summary= "A CPU path tracer built from scratch on Win32 and GDI — no engine, no framework, no third-party math library."
 repo= "https://github.com/TheOrestes/Windows_RayTracer"
 series= "/blog/multithreaded-raytracer"
+cover= "images/covers/raytracer_cornell.jpg"
+
+[[gallery]]
+  src= "images/covers/raytracer_dof.jpg"
+  alt= "Three spheres — diffuse, glass and orange metal — with the background thrown out of focus by a wide camera aperture"
+
+[[gallery]]
+  src= "images/covers/raytracer_mesh.jpg"
+  alt= "A faceted deer mesh beside an earth-textured sphere and a glass one, the whole scene reflected in a polished orange sphere"
 +++
 
 A CPU path tracer written from the ground up, starting from an empty Win32 window and `SetPixel`. It began as a walk through the *Ray Tracing in One Weekend* books and kept going well past where those books stop.
