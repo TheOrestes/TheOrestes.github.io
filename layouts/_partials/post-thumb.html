@@ -42,18 +42,8 @@
   {{- if not $src -}}
     {{- with findRESubmatch `{{<\s*youtube\s+([A-Za-z0-9_-]{6,})\s*>}}` $raw 1 -}}
       {{- $id := index (index . 0) 1 -}}
-      {{- $remote := printf "https://img.youtube.com/vi/%s/mqdefault.jpg" $id -}}
-      {{- $src = $remote -}}
+      {{- $src = printf "https://img.youtube.com/vi/%s/mqdefault.jpg" $id -}}
       {{- $kind = "youtube" -}}
-      {{- with try (resources.GetRemote $remote) -}}
-        {{- with .Err -}}
-          {{/* keep the remote URL; the row still gets a picture */}}
-        {{- else with .Value -}}
-          {{- with .Process "resize 320x webp q80" -}}
-            {{- $src = .RelPermalink -}}
-          {{- end -}}
-        {{- end -}}
-      {{- end -}}
     {{- end -}}
   {{- end -}}
 
@@ -67,19 +57,38 @@
 
 {{- end -}}
 
-{{/* Resize local files. Post images are written as site-absolute paths
-     ("/images/blog/..."), which live in static/ -- normally out of reach of the
-     image pipeline. hugo.toml mounts static/ at assets/ as well, so stripping
-     the leading slash makes resources.Get find them. Without this the index
-     serves 1.8 MB originals into a 120px box.
+{{/* Everything that is not an SVG gets pulled through the image pipeline, so
+     the page ends up serving only local, resized webp.
 
-     SVG is skipped: these are hand-authored, already small, and resizing a
-     vector gains nothing. Remote URLs are already processed above. */}}
-{{- if and $src (ne $kind "svg") (not (hasPrefix $src "http")) -}}
-  {{- $lookup := strings.TrimPrefix "/" $src -}}
-  {{- with resources.Get $lookup -}}
-    {{- with .Process "resize 320x webp q80" -}}
-      {{- $src = .RelPermalink -}}
+     Remote (YouTube, and the GitHub-hosted images a few OpenGL posts use) is
+     fetched at build time. That removes the third-party request and, more
+     usefully, survives the source disappearing later -- githubusercontent URLs
+     are not durable. If a fetch fails the original URL is kept, so the row
+     still gets a picture rather than falling back to a tile.
+
+     Local post images are written site-absolute ("/images/blog/..."), which is
+     static/ -- normally out of reach of the pipeline. hugo.toml mounts static/
+     at assets/ too, so trimming the leading slash lets resources.Get find them.
+     Without it the index served 1.8 MB originals into a 120px box.
+
+     SVG is skipped: hand-authored, already small, and resizing a vector gains
+     nothing. */}}
+{{- if and $src (ne $kind "svg") -}}
+  {{- if hasPrefix $src "http" -}}
+    {{- with try (resources.GetRemote $src) -}}
+      {{- with .Err -}}
+        {{/* keep the original URL */}}
+      {{- else with .Value -}}
+        {{- with .Process "resize 320x webp q80" -}}
+          {{- $src = .RelPermalink -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with resources.Get (strings.TrimPrefix "/" $src) -}}
+      {{- with .Process "resize 320x webp q80" -}}
+        {{- $src = .RelPermalink -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
