@@ -1,0 +1,87 @@
+{{/*
+  Resolves a thumbnail for a blog post, in order of preference:
+
+    1. The page's own `thumb` param, if it sets one explicitly.
+    2. The first raster image in the post body. Most ray tracer posts open with
+       a render, which is exactly the right picture for the row.
+    3. The thumbnail of the post's first YouTube embed. The CUDA and OpenGL
+       series carry video rather than stills, and this is where most of their
+       thumbnails come from -- 28 of 57 posts across the site.
+    4. The first SVG diagram. Explanatory rather than a screenshot, so it is
+       tried last, and the caller badges it.
+
+  Returns a dict so the caller can badge the row and fall back to a tile:
+    { "src": <url or "">, "kind": "raster" | "youtube" | "svg" | "" }
+
+  YouTube note: mqdefault is used deliberately. It is natively 16:9 at
+  320x180, where hqdefault and sddefault are 4:3 with black bars baked into
+  the image, which no amount of CSS cropping fixes cleanly.
+
+  Remote fetch: the thumbnail is pulled at build time so the page makes no
+  third-party requests and Hugo can resize it alongside local images. If the
+  fetch fails -- offline build, deleted video, rate limit -- the remote URL is
+  used directly rather than dropping the image.
+*/}}
+
+{{- $src := "" -}}
+{{- $kind := "" -}}
+{{- $raw := .RawContent -}}
+
+{{- with .Params.thumb -}}
+  {{- $src = . -}}
+  {{- $kind = "raster" -}}
+{{- else -}}
+
+  {{/* 2. raster image in the body */}}
+  {{- with findRESubmatch `!\[[^]]*\]\(([^)]+\.(?:png|jpe?g|gif))\)` $raw 1 -}}
+    {{- $src = index (index . 0) 1 -}}
+    {{- $kind = "raster" -}}
+  {{- end -}}
+
+  {{/* 3. youtube embed */}}
+  {{- if not $src -}}
+    {{- with findRESubmatch `{{<\s*youtube\s+([A-Za-z0-9_-]{6,})\s*>}}` $raw 1 -}}
+      {{- $id := index (index . 0) 1 -}}
+      {{- $remote := printf "https://img.youtube.com/vi/%s/mqdefault.jpg" $id -}}
+      {{- $src = $remote -}}
+      {{- $kind = "youtube" -}}
+      {{- with try (resources.GetRemote $remote) -}}
+        {{- with .Err -}}
+          {{/* keep the remote URL; the row still gets a picture */}}
+        {{- else with .Value -}}
+          {{- with .Process "resize 320x webp q80" -}}
+            {{- $src = .RelPermalink -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{/* 4. svg diagram */}}
+  {{- if not $src -}}
+    {{- with findRESubmatch `!\[[^]]*\]\(([^)]+\.svg)\)` $raw 1 -}}
+      {{- $src = index (index . 0) 1 -}}
+      {{- $kind = "svg" -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- end -}}
+
+{{/* Resize local files. Post images are written as site-absolute paths
+     ("/images/blog/..."), which live in static/ -- normally out of reach of the
+     image pipeline. hugo.toml mounts static/ at assets/ as well, so stripping
+     the leading slash makes resources.Get find them. Without this the index
+     serves 1.8 MB originals into a 120px box.
+
+     SVG is skipped: these are hand-authored, already small, and resizing a
+     vector gains nothing. Remote URLs are already processed above. */}}
+{{- if and $src (ne $kind "svg") (not (hasPrefix $src "http")) -}}
+  {{- $lookup := strings.TrimPrefix "/" $src -}}
+  {{- with resources.Get $lookup -}}
+    {{- with .Process "resize 320x webp q80" -}}
+      {{- $src = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return dict "src" $src "kind" $kind -}}

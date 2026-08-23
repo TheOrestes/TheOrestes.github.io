@@ -50,3 +50,36 @@ theme = "enervoid-theme"
   guessSyntax = true
   tabWidth = 4
   style = "monokai"
+# Mount static/ into assets/ as well as static/.
+#
+# Post images live in static/, where Hugo cannot process them -- so the blog
+# index was serving 1.8 MB originals into a 120px thumbnail, 7.4 MB of images
+# on one page. Mounting the same directory at assets/ lets resources.Get find
+# them for resizing while they keep being served from their original URLs.
+#
+# Declaring any mount replaces the defaults, so every standard mount is listed.
+[module]
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "data"
+    target = "data"
+  [[module.mounts]]
+    source = "i18n"
+    target = "i18n"
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "static"
+    target = "assets"

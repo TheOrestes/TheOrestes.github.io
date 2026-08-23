@@ -1,90 +1,125 @@
 {{ define "main" }}
+{{/*
+  /blog/ grouped by series, newest first inside each group.
+
+  Reading order deliberately lives on /projects/<name>/, which already lists
+  every post in sequence next to the write-up, the repo and the screenshots.
+  This page answers "what is new" instead -- so each group leads with its most
+  recent post, and the number badge still says where that post sits in its
+  sequence.
+*/}}
 <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-12 text-gray-100">
-  <div class="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-8">
 
-    <aside class="lg:sticky lg:top-24 self-start">
-      <div class="rounded-sm border border-gray-800/70 bg-[#070709] p-4 sm:p-5">
-        <h2 class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-4">
-          Index
-        </h2>
+  <header class="mb-8">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
+    <p class="mt-2 text-sm sm:text-base text-gray-400">
+      {{ len .RegularPagesRecursive }} posts across {{ len .Sections }} projects.
+    </p>
+  </header>
 
-        <nav class="space-y-2">
-          <a href="/blog/" class="block text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
-            Projects
+  {{- range .Sections.ByWeight }}
+    {{- $accent := .Params.accent | default "#818cf8" -}}
+    {{- $asc := .RegularPages.ByDate -}}
+
+    {{/* Position in the sequence, keyed by permalink, so a newest-first row can
+         still show "13/17" without a second sort. */}}
+    {{- $pos := dict -}}
+    {{- range $i, $p := $asc -}}
+      {{- $pos = merge $pos (dict $p.RelPermalink (add $i 1)) -}}
+    {{- end -}}
+    {{- $total := len $asc -}}
+
+    <section class="mt-8 first:mt-0" style="--accent: {{ $accent }}">
+
+      <header class="flex items-start justify-between gap-4 px-4 py-3 rounded-t-sm
+                     border border-gray-800/70 border-l-[3px]"
+              style="border-left-color: {{ $accent }}; background-color: color-mix(in srgb, {{ $accent }} 7%, #0c0c10)">
+        <div class="flex gap-3 min-w-0">
+          <span class="mt-2 h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}"></span>
+          <div class="min-w-0">
+            <h2 class="text-base sm:text-lg text-white tracking-wide">{{ .Title }}</h2>
+            {{- with .Description }}
+            <p class="mt-0.5 text-sm text-gray-400 max-w-2xl">{{ . }}</p>
+            {{- end }}
+          </div>
+        </div>
+        <div class="flex flex-col items-end gap-0.5 shrink-0">
+          <span class="text-xs sm:text-sm text-gray-400 tabular-nums whitespace-nowrap">
+            {{ $total }} post{{ if ne $total 1 }}s{{ end }}
+          </span>
+          {{- with .Params.project }}
+          <a href="{{ . }}" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors whitespace-nowrap">
+            Read in order &rarr;
           </a>
-
-          {{ range .Sections.ByTitle }}
-            <a
-              href="{{ .RelPermalink }}"
-              class="block pl-3 border-l border-gray-800 text-xs text-gray-500 hover:text-cyan-300 hover:border-cyan-400/40 transition-colors"
-            >
-              {{ .Title }}
-            </a>
-          {{ end }}
-        </nav>
-      </div>
-    </aside>
-
-    <section class="min-w-0">
-      <header class="mb-8">
-        <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
-        <p class="mt-2 text-sm sm:text-base text-gray-400">
-          Total {{ len .RegularPagesRecursive }} posts here!.
-        </p>
+          {{- end }}
+        </div>
       </header>
 
-      {{- $pages := .RegularPagesRecursive.ByDate.Reverse -}}
+      <div class="border border-gray-800/70 border-t-0 bg-[#0c0c10]">
+        {{- range $asc.Reverse }}
+          {{- $t := partial "post-thumb.html" . -}}
+          {{- $n := index $pos .RelPermalink -}}
 
-      <div class="border border-gray-800/70 rounded-sm bg-[#070709] divide-y divide-gray-800/80 overflow-hidden">
-        {{- if gt (len $pages) 0 -}}
-          {{- range $pages -}}
-            {{- $panelClass := "bg-transparent" -}}
-            {{- with .CurrentSection.Params.panelClass -}}
-              {{- $panelClass = . -}}
-            {{- end -}}
+          <a href="{{ .RelPermalink }}"
+             class="group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5
+                    border-b border-gray-800/60 last:border-b-0 transition-colors hover:bg-white/5">
 
-            <a href="{{ .RelPermalink }}" class="group block px-4 sm:px-6 py-4 {{ $panelClass }} transition-colors duration-200 hover:bg-white/5">
-              <div class="grid grid-cols-12 gap-4 items-start">
-                <div class="col-span-12 md:col-span-8">
-                  <div class="text-xs sm:text-sm text-gray-500 font-mono">
-                    <span>{{ .Date.Format "Jan 02, 2006" }}</span>
-                    <span class="mx-2 text-gray-700">•</span>
-                    <span>{{ .Date.Format "15:04" }}</span>
+            <div class="relative w-20 sm:w-30 aspect-video shrink-0 overflow-hidden rounded-sm
+                        border border-gray-800/70 bg-black"
+                 {{ if not $t.src }}style="background: radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, {{ $accent }} 18%, #0c0c10), #0a0a0d)"{{ end }}>
+              {{- if $t.src }}
+                <img src="{{ $t.src }}" alt="" loading="lazy" decoding="async"
+                     class="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100" />
+                {{- if ne $t.kind "raster" }}
+                <span class="absolute right-1 bottom-0.5 px-1 py-px rounded-sm text-[0.55rem] uppercase tracking-wider
+                             bg-black/70 border border-white/15 text-gray-300">
+                  {{ if eq $t.kind "youtube" }}video{{ else }}diagram{{ end }}
+                </span>
+                {{- end }}
+              {{- else }}
+                <span class="absolute inset-0 flex items-center justify-center font-mono text-lg"
+                      style="color: {{ $accent }}">{{ printf "%02d" $n }}</span>
+              {{- end }}
+            </div>
 
-                    {{ with .CurrentSection }}
-                      {{ if ne .RelPermalink "/blog/" }}
-                        <span class="mx-2 text-gray-700">•</span>
-                        <span class="text-cyan-300">{{ .Title }}</span>
-                      {{ end }}
-                    {{ end }}
-                  </div>
-
-                  <div class="mt-1 text-lg sm:text-xl text-gray-100">
-                    <span class="relative inline-block">
-                      {{ .Title }}
-                      <span class="absolute left-0 -bottom-1 h-px w-0 bg-indigo-400 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="col-span-12 md:col-span-4 flex md:justify-end flex-wrap gap-2">
-                  {{- with .Params.tags -}}
-                    {{- range . -}}
-                      <span class="px-2 py-0.5 text-xs sm:text-sm rounded-sm border border-gray-700/70 text-gray-300 bg-black/30">
-                        #{{ . }}
-                      </span>
-                    {{- end -}}
-                  {{- end -}}
-                </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center text-xs text-gray-500">
+                <span class="pl-1.5 border-l-2 tabular-nums text-gray-200"
+                      style="border-color: {{ $accent }}">
+                  {{ printf "%02d" $n }}<span class="text-gray-500">/{{ $total }}</span>
+                </span>
+                <span class="mx-2 text-gray-700">&bull;</span>
+                <span class="font-mono">{{ .Date.Format "Jan 02, 2006" }}</span>
               </div>
-            </a>
-          {{- end -}}
-        {{- else -}}
-          <div class="px-4 sm:px-6 py-10 text-gray-400">No entries yet.</div>
-        {{- end -}}
+              <div class="mt-0.5 text-sm sm:text-base text-gray-100 leading-snug">{{ .Title }}</div>
+            </div>
+
+            <span class="shrink-0 text-gray-700 group-hover:text-indigo-400 transition-colors" aria-hidden="true">&rarr;</span>
+          </a>
+        {{- end }}
+      </div>
+
+      <div class="px-4 py-2 rounded-b-sm border border-gray-800/70 border-t-0 bg-black/20
+                  text-xs text-gray-500">
+        Newest first &middot; the full sequence is on the project page
       </div>
     </section>
+  {{- end }}
 
-  </div>
+  {{- with .RegularPages }}
+  <section class="mt-8">
+    <h2 class="text-base sm:text-lg text-white tracking-wide mb-3">Other posts</h2>
+    <div class="border border-gray-800/70 rounded-sm bg-[#0c0c10]">
+      {{- range .ByDate.Reverse }}
+      <a href="{{ .RelPermalink }}"
+         class="group block px-4 py-3 border-b border-gray-800/60 last:border-b-0 transition-colors hover:bg-white/5">
+        <div class="text-xs text-gray-500 font-mono">{{ .Date.Format "Jan 02, 2006" }}</div>
+        <div class="mt-0.5 text-sm sm:text-base text-gray-100">{{ .Title }}</div>
+      </a>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
 </main>
 {{ end }}
