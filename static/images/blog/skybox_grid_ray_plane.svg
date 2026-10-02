@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350" role="img" aria-label="A ray from the camera meets the ground plane at t equal to minus camera height divided by the ray's y component, unless a mesh is hit first.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;fill:#e5e7eb}
+.ax{stroke:#6b7280;stroke-width:1.2;fill:none}
+.grid{stroke:#374151;stroke-width:1;fill:none}
+.dash{stroke:#9ca3af;stroke-width:1;stroke-dasharray:4 3;fill:none}
+</style>
+<text class="ttl" x="20.0" y="24.0" text-anchor="start">Ray-plane intersection, side view: one division per pixel</text>
+<line class="ax" x1="30.0" y1="250.0" x2="730.0" y2="250.0"/>
+<text class="dim" x="735.0" y="254.0" text-anchor="start">y = 0</text>
+<rect x="320" y="170" width="60" height="80" fill="#374151" stroke="#9ca3af"/>
+<text class="dim" x="350.0" y="215.0" text-anchor="middle">mesh</text>
+<circle cx="80.0" cy="80.0" r="6" fill="#fbbf24"/>
+<text class="mono" x="76.0" y="68.0" text-anchor="start">camera o</text>
+<line class="dash" x1="80.0" y1="80.0" x2="80.0" y2="250.0"/>
+<text class="mono" x="72.0" y="165.0" text-anchor="end">o.y</text>
+<line class="ax" style="stroke:#34d399" x1="80.0" y1="80.0" x2="230.0" y2="250.0" marker-end="url(#a)"/>
+<circle cx="230.0" cy="250.0" r="5" fill="#34d399"/>
+<text class="lbl" x="230.0" y="270.0" text-anchor="middle">plane hit first: grid drawn</text>
+<line class="ax" style="stroke:#f87171" x1="80.0" y1="80.0" x2="320.0" y2="165.0"/>
+<line class="dash" x1="320.0" y1="165.0" x2="560.0" y2="250.0"/>
+<circle cx="320.0" cy="165.0" r="5" fill="#f87171"/>
+<circle cx="560.0" cy="250.0" r="5" fill="none" stroke="#f87171" stroke-width="1.6"/>
+<text class="mono" x="326.0" y="155.0" text-anchor="start">sceneDistance</text>
+<text class="lbl" x="560.0" y="270.0" text-anchor="middle">t &gt;= sceneDistance: discard</text>
+<text class="mono" x="20.0" y="292.0" text-anchor="start">t = -o.y / d.y</text>
+<text class="mono" x="20.0" y="310.0" text-anchor="start">hit = o + t * d,  with  d = normalize(farWorld - o)</text>
+<text class="dim" x="20.0" y="332.0" text-anchor="start">d.y near 0: the ray runs parallel to the plane.   t &lt;= 0: the plane is behind the camera.   Both discard.</text>
+</svg>
