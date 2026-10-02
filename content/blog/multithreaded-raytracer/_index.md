@@ -4,6 +4,7 @@ description: "Learning blog for documenting implementation details for Multi-thr
 
 weight: 1
 params:
+  repo: "https://github.com/TheOrestes/Windows_RayTracer"
   accent: "#f59e0b"
   project: "/projects/multithreaded_ray_tracer/"
 ---

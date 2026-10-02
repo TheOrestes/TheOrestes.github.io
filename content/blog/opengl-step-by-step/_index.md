@@ -4,6 +4,7 @@ description: "Building a renderer one commit at a time — from an empty window 
 
 weight: 3
 params:
+  repo: "https://github.com/TheOrestes/OpenGL_StepByStep"
   accent: "#a78bfa"
   project: "/projects/opengl_step_by_step/"
 ---
