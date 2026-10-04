@@ -15,6 +15,12 @@ Without interop, the frame usually takes a needlessly dramatic route: CUDA rende
 
 The cleaner approach is to let OpenGL own the texture that will be shown on screen and let CUDA access that same resource directly. The whole point is to keep the frame on the GPU and stop paying for unnecessary travel.
 
+&nbsp;
+
+![Top: the detour through CPU memory. Bottom: with interop, OpenGL creates the texture, CUDA registers it once, and each frame CUDA only borrows it between a map and an unmap call.](/images/blog/cuda_interop_flow.svg)
+
+
+
 ## The Texture Becomes the Display Target
 
 The first step is to create a normal OpenGL texture that will hold the rendered image. Nothing exotic here, just a 2D texture that acts as the on-screen destination.

@@ -113,6 +113,12 @@ $$
 
 and the accumulation buffer is cleared with `cudaMemset(...)`. So the renderer starts a fresh convergence pass instead of blending new samples with stale ones from the previous view.
 
+&nbsp;
+
+![Expected noise against sample count. Four times the samples halves the noise, so 100 samples leaves a tenth of the single-sample noise.](/images/blog/cuda_spp_noise.svg)
+
+
+
 ## Progress reporting grows up
 
 The next change adds timing and progress output to the accumulation process. Two variables are introduced:
@@ -276,6 +282,12 @@ else
 ```
 
 So the image can now answer a handy debugging question visually: *how deep are rays actually bouncing in different parts of the scene?*
+
+&nbsp;
+
+![Left: the heatmap ramp from blue to red, driven by actual bounces divided by 50. Right: an illustration of why a red patch is expensive, since neighbouring threads wait for the slowest one. The right side is not measured data.](/images/blog/cuda_heatmap_divergence.svg)
+
+
 
 ## 6. What this follow-up actually adds
 

@@ -164,6 +164,12 @@ gBVHRenderer->EnableDepthColorMode(true);
 
 The shown `GenerateLinesForDepth` implementation directly calls `GetDepthColor(targetDepth, color)`. The change list does not show `m_colorByDepth` being tested before color selection, so the flag is configured but not shown controlling a branch in the supplied renderer code.
 
+&nbsp;
+
+![Each depth gets a color from a ten-color palette and a line width that shrinks from the root to the deepest layer. The tree here is an example with maximum depth 9.](/images/blog/cuda_bvh_depth_style.svg)
+
+
+
 ## ImGui Joins the Frame
 
 The project now includes Dear ImGui source files, GLFW and OpenGL3 backend files, and corresponding Visual Studio project entries. `Main.cpp` initializes ImGui with keyboard navigation and docking enabled, then uses the OpenGL3 backend with GLSL version `#version 460`.
@@ -305,6 +311,12 @@ $$
 $$
 
 The debug boxes are drawn without depth testing and with blending and line smoothing enabled, as in the earlier renderer path.
+
+&nbsp;
+
+![One frame in drawing order. The wireframe goes over the CUDA image and the ImGui panel goes over both.](/images/blog/cuda_frame_order.svg)
+
+
 
 ## GitHub Link
 [Commit URL](https://github.com/TheOrestes/CUDA_Tracer/commit/bdfbf937fda6fd5aee370d5783b0d0ee4f83132b)

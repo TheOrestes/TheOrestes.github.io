@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" role="img" aria-label="Left: the heatmap maps bounce count divided by 50 onto a blue, green, red ramp. Right: an illustration of neighbouring GPU threads that finish after different numbers of bounces, with the early finishers waiting for the slowest.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+.ax{stroke:#6b7280;stroke-width:1.2;fill:none}
+.grid{stroke:#374151;stroke-width:1;fill:none}
+.dash{stroke:#9ca3af;stroke-width:1;stroke-dasharray:4 3;fill:none}
+</style>
+<text class="ttl" x="20" y="24" text-anchor="start">What a heatmap pixel means</text>
+<defs><linearGradient id="hm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset="0.5" stop-color="#22c55e"/><stop offset="1" stop-color="#ef4444"/></linearGradient></defs>
+<rect x="20" y="50" width="300" height="28" rx="2" fill="url(#hm)" stroke="#9ca3af" stroke-width="1"/>
+<line x1="20.0" y1="78" x2="20.0" y2="86" stroke="#9ca3af" stroke-width="1"/>
+<text class="dim" x="20.0" y="100" text-anchor="middle">0</text>
+<line x1="80.0" y1="78" x2="80.0" y2="86" stroke="#9ca3af" stroke-width="1"/>
+<text class="dim" x="80.0" y="100" text-anchor="middle">10</text>
+<line x1="170.0" y1="78" x2="170.0" y2="86" stroke="#9ca3af" stroke-width="1"/>
+<text class="dim" x="170.0" y="100" text-anchor="middle">25</text>
+<line x1="320.0" y1="78" x2="320.0" y2="86" stroke="#9ca3af" stroke-width="1"/>
+<text class="dim" x="320.0" y="100" text-anchor="middle">50</text>
+<text class="dim" x="170" y="120" text-anchor="middle">actual bounces (t = bounces / 50)</text>
+<text class="dim" x="20" y="150" text-anchor="start" fill="#60a5fa">blue: the ray escaped to the sky quickly</text>
+<text class="dim" x="20" y="166" text-anchor="start" fill="#f87171">red: the ray kept hitting things</text>
+<text class="dim" x="20" y="190" text-anchor="start">Only real hits are counted, so a ray that</text>
+<text class="dim" x="20" y="206" text-anchor="start">misses everything on its first try scores 0.</text>
+<text class="ttl" x="380" y="24" text-anchor="start">Why it matters on a GPU (illustration, not measured)</text>
+<text class="dim" x="386" y="67" text-anchor="start">thread 0</text>
+<rect x="450" y="50" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="480" y="50" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="510" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="540" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="50" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="97" text-anchor="start">thread 1</text>
+<rect x="450" y="80" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="480" y="80" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="510" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="540" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="80" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="127" text-anchor="start">thread 2</text>
+<rect x="450" y="110" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="480" y="110" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="510" y="110" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="540" y="110" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="110" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="110" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="110" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="110" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="157" text-anchor="start">thread 3</text>
+<rect x="450" y="140" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="480" y="140" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="510" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="540" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="140" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="187" text-anchor="start">thread 4</text>
+<rect x="450" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="480" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="510" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="540" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="570" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="600" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="630" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="660" y="170" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<text class="dim" x="386" y="217" text-anchor="start">thread 5</text>
+<rect x="450" y="200" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="480" y="200" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="510" y="200" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="540" y="200" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="570" y="200" width="26" height="22" rx="3" fill="#ef4444" fill-opacity="0.55" stroke="#ef4444" stroke-width="1"/>
+<rect x="600" y="200" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="200" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="200" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="247" text-anchor="start">thread 6</text>
+<rect x="450" y="230" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="480" y="230" width="26" height="22" rx="3" fill="#3b82f6" fill-opacity="0.55" stroke="#3b82f6" stroke-width="1"/>
+<rect x="510" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="540" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="230" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="386" y="277" text-anchor="start">thread 7</text>
+<rect x="450" y="260" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="480" y="260" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="510" y="260" width="26" height="22" rx="3" fill="#22c55e" fill-opacity="0.55" stroke="#22c55e" stroke-width="1"/>
+<rect x="540" y="260" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="570" y="260" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="600" y="260" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="630" y="260" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<rect x="660" y="260" width="26" height="22" rx="3" fill="none" stroke="#4b5563" stroke-width="1" stroke-dasharray="5 3"/>
+<text class="dim" x="450" y="306" text-anchor="start">bounce 1 ... 8</text>
+<text class="dim" x="380" y="330" text-anchor="start">Threads that finished early sit idle (dashed) until the slowest</text>
+<text class="dim" x="380" y="346" text-anchor="start">thread nearby is done, so a patch of red costs more than its own pixel.</text>
+</svg>

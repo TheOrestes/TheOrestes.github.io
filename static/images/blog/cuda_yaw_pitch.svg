@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 345" width="760" height="345" role="img" aria-label="Camera yaw and pitch: yaw is the angle around the vertical axis measured from minus Z toward plus X, pitch is the angle above the horizon, clamped to about 89 degrees so the camera never flips over the pole.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+.ax{stroke:#6b7280;stroke-width:1.2;fill:none}
+.grid{stroke:#374151;stroke-width:1;fill:none}
+.dash{stroke:#9ca3af;stroke-width:1;stroke-dasharray:4 3;fill:none}
+</style>
+<text class="ttl" x="20" y="24" text-anchor="start">Yaw: turning left and right (seen from above)</text>
+<circle cx="170" cy="180" r="110" fill="none" stroke="#374151" stroke-width="1.4"/>
+<line x1="170" y1="300" x2="170" y2="56" stroke="#6b7280" stroke-width="1.2" marker-end="url(#a)"/>
+<line x1="50" y1="180" x2="294" y2="180" stroke="#6b7280" stroke-width="1.2" marker-end="url(#a)"/>
+<text class="dim" x="176" y="52" text-anchor="start">-Z (default look)</text>
+<text class="dim" x="298" y="184" text-anchor="start">+X</text>
+<line x1="170" y1="180" x2="240.70663706551932" y2="95.73511125691242" stroke="#34d399" stroke-width="2.4" marker-end="url(#a)"/>
+<path d="M 170,130 A 50,50 0 0 1 202.1,141.7" fill="none" stroke="#fbbf24" stroke-width="1.6"/>
+<text class="lbl" x="184" y="122" text-anchor="start" fill="#fbbf24">yaw</text>
+<text class="mono" x="170" y="322" text-anchor="middle">yaw = atan2(dx, -dz)</text>
+<text class="ttl" x="430" y="24" text-anchor="start">Pitch: looking up and down (side view)</text>
+<line x1="500" y1="190" x2="710" y2="190" stroke="#6b7280" stroke-width="1.2"/>
+<text class="dim" x="712" y="194" text-anchor="start">horizon</text>
+<line x1="520" y1="290" x2="520" y2="70" stroke="#6b7280" stroke-width="1.2" marker-end="url(#a)"/>
+<text class="dim" x="526" y="66" text-anchor="start">+Y</text>
+<line x1="520" y1="190" x2="652.4421389288391" y2="119.57926558211638" stroke="#34d399" stroke-width="2.4" marker-end="url(#a)"/>
+<path d="M 580,190 A 60,60 0 0 0 573.0,161.8" fill="none" stroke="#fbbf24" stroke-width="1.6"/>
+<text class="lbl" x="588" y="178" text-anchor="start" fill="#fbbf24">pitch</text>
+<line x1="520" y1="190" x2="521.9546695209758" y2="78.01705814248417" stroke="#f87171" stroke-width="1.4" stroke-dasharray="5 3"/>
+<text class="dim" x="530" y="90" text-anchor="start" fill="#f87171">clamped at about 89°</text>
+<text class="dim" x="530" y="104" text-anchor="start" fill="#f87171">so the camera cannot flip over</text>
+<text class="mono" x="600" y="250" text-anchor="middle">pitch = asin(dy)</text>
+<text class="dim" x="600" y="280" text-anchor="middle">one pixel of mouse movement = 0.003 radians (about 0.17°)</text>
+</svg>

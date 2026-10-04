@@ -126,6 +126,12 @@ glDrawArrays(GL_LINES, 0, m_lineCount);
 
 No index buffer is used; each line endpoint is stored directly in the vertex buffer. The BVH boxes are taking the scenic route, but it is a very clear route.
 
+&nbsp;
+
+![One BVH node as a wireframe: eight corners, twelve edges, and two line vertices per edge, so 24 vertices per box.](/images/blog/cuda_aabb_wireframe.svg)
+
+
+
 ## Coloring Leaf and Internal Nodes
 
 Internal BVH nodes are assigned gray:
@@ -153,6 +159,12 @@ p = l \bmod 6
 $$
 
 This gives a repeating sequence of red, green, blue, yellow, magenta, and cyan. The supplied change does not establish that these colors represent depth, spatial location, traversal order, or primitive category. They are simply selected from six options by modulo arithmetic.
+
+&nbsp;
+
+![Six spheres in nested boxes on the left and the same hierarchy as a tree on the right. Internal nodes are gray and leaves cycle through six colors. The layout is an illustration, not the scene from the post.](/images/blog/cuda_bvh_tree_boxes.svg)
+
+
 
 ## Uploading Geometry
 
@@ -486,7 +498,7 @@ The changes demonstrate that host-side BVH bounds are converted into line geomet
 
 ## Closing
 
-This iteration gives the BVH a visible form: gray wireframes for internal nodes, six cycling colors for leaves, and a camera-aligned OpenGL overlay toggled with `B`. At the same time, it promotes the node count into shared state across host allocation, CUDA interface calls, and debug rendering—turning an otherwise private construction detail into a value the renderer can inspect.
+This iteration gives the BVH a visible form: gray wireframes for internal nodes, six cycling colors for leaves, and a camera-aligned OpenGL overlay toggled with `B`. At the same time, it promotes the node count into shared state across host allocation, CUDA interface calls, and debug rendering, turning an otherwise private construction detail into a value the renderer can inspect.
 
 ## GitHub Link 
 [Commit URL](https://github.com/TheOrestes/CUDA_Tracer/commit/7e77f8d0fb116db05e3a916906ccd901eeb55b04)

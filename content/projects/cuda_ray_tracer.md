@@ -20,7 +20,7 @@ A ray tracer written as a way to actually learn CUDA rather than read about it. 
 
 &nbsp;
 
-The early posts are mostly interop plumbing — getting CUDA and OpenGL to agree on who owns a buffer. Once that's working, the renderer stops being a screensaver and starts being a ray tracer.
+The early posts are mostly interop plumbing, getting CUDA and OpenGL to agree on who owns a buffer. Once that's working, the renderer stops being a screensaver and starts being a ray tracer.
 
 &nbsp;
 

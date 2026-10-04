@@ -136,6 +136,12 @@ where \(R\) is the perfect reflection, \(f\) is the fuzz factor, and \(\xi\) is 
 
 So the left sphere should look cleaner, while the right sphere should look a bit more diffuse. The renderer is finally getting out of the “everything is a Lambertian potato” phase.
 
+&nbsp;
+
+![Metal reflection: the mirror direction, then a small fuzz sphere around it. A perturbed ray that ends up below the surface is thrown away. This diagram is from the multithreaded ray tracer series.](/images/blog/raytracer/metal_reflect_fuzz.svg)
+
+
+
 ## What Did Not Change
 
 This commit does **not** change the overall rendering architecture. The scene is still built on the CPU and passed to the kernel. The object/material separation is still the same. The Lambertian path still exists and still works as before. What changed is that the renderer now has a second active material model, and the scene uses it with two extra spheres.

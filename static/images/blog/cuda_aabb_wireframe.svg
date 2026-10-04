@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350" role="img" aria-label="An axis-aligned box built from its min and max corners: eight numbered corners joined by twelve edges, four on the front face, four on the back face and four connecting them. Each edge becomes two line vertices.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+.ax{stroke:#6b7280;stroke-width:1.2;fill:none}
+.grid{stroke:#374151;stroke-width:1;fill:none}
+.dash{stroke:#9ca3af;stroke-width:1;stroke-dasharray:4 3;fill:none}
+</style>
+<text class="ttl" x="20" y="24" text-anchor="start">One BVH node: 8 corners, 12 edges, 24 vertices</text>
+<line x1="60" y1="280" x2="230" y2="280" stroke="#60a5fa" stroke-width="2.2"/>
+<line x1="230" y1="280" x2="230" y2="130" stroke="#60a5fa" stroke-width="2.2"/>
+<line x1="230" y1="130" x2="60" y2="130" stroke="#60a5fa" stroke-width="2.2"/>
+<line x1="60" y1="130" x2="60" y2="280" stroke="#60a5fa" stroke-width="2.2"/>
+<line x1="130" y1="225" x2="300" y2="225" stroke="#34d399" stroke-width="2.2"/>
+<line x1="300" y1="225" x2="300" y2="75" stroke="#34d399" stroke-width="2.2"/>
+<line x1="300" y1="75" x2="130" y2="75" stroke="#34d399" stroke-width="2.2"/>
+<line x1="130" y1="75" x2="130" y2="225" stroke="#34d399" stroke-width="2.2"/>
+<line x1="60" y1="280" x2="130" y2="225" stroke="#fbbf24" stroke-width="2.2"/>
+<line x1="230" y1="280" x2="300" y2="225" stroke="#fbbf24" stroke-width="2.2"/>
+<line x1="230" y1="130" x2="300" y2="75" stroke="#fbbf24" stroke-width="2.2"/>
+<line x1="60" y1="130" x2="130" y2="75" stroke="#fbbf24" stroke-width="2.2"/>
+<circle cx="60" cy="280" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="60" y="284" text-anchor="middle">0</text>
+<circle cx="230" cy="280" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="230" y="284" text-anchor="middle">1</text>
+<circle cx="230" cy="130" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="230" y="134" text-anchor="middle">2</text>
+<circle cx="60" cy="130" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="60" y="134" text-anchor="middle">3</text>
+<circle cx="130" cy="225" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="130" y="229" text-anchor="middle">4</text>
+<circle cx="300" cy="225" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="300" y="229" text-anchor="middle">5</text>
+<circle cx="300" cy="75" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="300" y="79" text-anchor="middle">6</text>
+<circle cx="130" cy="75" r="12" fill="#111827" stroke="#9ca3af" stroke-width="1"/>
+<text class="mono" x="130" y="79" text-anchor="middle">7</text>
+<text class="dim" x="52" y="310" text-anchor="start">0 = (min.x, min.y, min.z)</text>
+<text class="dim" x="180" y="59" text-anchor="start">6 = (max.x, max.y, max.z)</text>
+<text class="ttl" x="380" y="70" text-anchor="start">Edges, as listed in the code</text>
+<line x1="380" y1="94" x2="410" y2="94" stroke="#60a5fa" stroke-width="3"/>
+<text class="lbl" x="420" y="98" text-anchor="start">front face</text>
+<text class="mono" x="520" y="98" text-anchor="start">{0,1} {1,2} {2,3} {3,0}</text>
+<line x1="380" y1="128" x2="410" y2="128" stroke="#34d399" stroke-width="3"/>
+<text class="lbl" x="420" y="132" text-anchor="start">back face</text>
+<text class="mono" x="520" y="132" text-anchor="start">{4,5} {5,6} {6,7} {7,4}</text>
+<line x1="380" y1="162" x2="410" y2="162" stroke="#fbbf24" stroke-width="3"/>
+<text class="lbl" x="420" y="166" text-anchor="start">connectors</text>
+<text class="mono" x="520" y="166" text-anchor="start">{0,4} {1,5} {2,6} {3,7}</text>
+<text class="lbl" x="380" y="218" text-anchor="start">12 edges x 2 endpoints = 24 line vertices per box</text>
+<text class="lbl" x="380" y="240" text-anchor="start">N visible nodes = 24N vertices, drawn with GL_LINES</text>
+<text class="dim" x="380" y="262" text-anchor="start">no index buffer: shared corners are simply stored again.</text>
+</svg>

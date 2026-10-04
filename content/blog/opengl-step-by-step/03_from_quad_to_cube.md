@@ -6,7 +6,7 @@ description = "Retiring the textured quad and TextureManager in favor of an eigh
 math = true
 +++
 
-By the end of this post, our flat textured rectangle is gone, replaced by a solid, per-vertex-colored cube: eight vertices, thirty-six indices, and — for the first time in this series — geometry with a back side. That last part matters beyond this one commit. Every step from here on, camera movement, lighting, reflections, shadows, needs something three-dimensional to act on, and a quad facing the camera head-on was never going to cut it. This is the commit where the series trades its last flat surface for a shape worth building the rest of the pipeline around.
+By the end of this post, our flat textured rectangle is gone, replaced by a solid, per-vertex-colored cube: eight vertices, thirty-six indices, and, for the first time in this series, geometry with a back side. That last part matters beyond this one commit. Every step from here on, camera movement, lighting, reflections, shadows, needs something three-dimensional to act on, and a quad facing the camera head-on was never going to cut it. This is the commit where the series trades its last flat surface for a shape worth building the rest of the pipeline around.
 
 &nbsp;
 
@@ -22,7 +22,7 @@ $$
 
 ## Out With the Texture Manager
 
-`TextureManager`, with its `Load2DTextureFromFile()` and the still-unused `LoadCubemapFromFile()`, is gone — not refactored, not commented out, just deleted, along with the `stb_image` dependency path in the `.vcxproj`. This commit doesn't sample a single pixel from an image. Color, for now, goes back to being something you assign per vertex in C++, the way it was two posts ago.
+`TextureManager`, with its `Load2DTextureFromFile()` and the still-unused `LoadCubemapFromFile()`, is gone: not refactored, not commented out, just deleted, along with the `stb_image` dependency path in the `.vcxproj`. This commit doesn't sample a single pixel from an image. Color, for now, goes back to being something you assign per vertex in C++, the way it was two posts ago.
 
 ## The Vertex Gets a Different Passenger
 
@@ -82,7 +82,7 @@ The index buffer spells out exactly which three corners make each triangle, face
 | Left (\(x=-1\)) | 4,0,3,7 | `4,0,3` / `3,7,4` |
 | Right (\(x=1\)) | 1,5,6,2 | `1,5,6` / `6,2,1` |
 
-Twelve triangles, thirty-six numbers, one cube. No new geometric ideas here beyond the quad's — just six quads glued together and pointed outward.
+Twelve triangles, thirty-six numbers, one cube. No new geometric ideas here beyond the quad's, just six quads glued together and pointed outward.
 
 ## Two Ways to Build the Same Cube
 
@@ -109,7 +109,7 @@ glm::mat4 TRS = glm::scale(TR, vecScale);
 matWorld = TRS;
 ```
 
-So `SetRotation()`'s \(45^\circ\) is set, stored in `vecRotationAxis` and `m_fAngle`, and then never consulted again this commit. The cube's actual on-screen spin comes entirely from `angle` accumulating `dt` every frame — continuous rotation around \(y\), not a fixed \(45^\circ\) pose.
+So `SetRotation()`'s \(45^\circ\) is set, stored in `vecRotationAxis` and `m_fAngle`, and then never consulted again this commit. The cube's actual on-screen spin comes entirely from `angle` accumulating `dt` every frame, continuous rotation around \(y\), not a fixed \(45^\circ\) pose.
 
 ## Buffers: Same Recipe, Bigger Portions
 
@@ -189,7 +189,7 @@ void main()
 }
 ```
 
-`brightColor` shows up at output location \(1\) again, still unassigned, still unused — the same guest from the first post's fragment shader, still waiting for an invitation to do something. This commit doesn't configure a second render target or write to it, so treat its presence as scaffolding, not functionality.
+`brightColor` shows up at output location \(1\) again, still unassigned, still unused: the same guest from the first post's fragment shader, still waiting for an invitation to do something. This commit doesn't configure a second render target or write to it, so treat its presence as scaffolding, not functionality.
 
 ## Why Depth Testing Finally Matters
 
@@ -217,4 +217,4 @@ $$
 \text{framebuffer}.
 $$
 
-What changed is the payload flowing through it: four vertices became eight, six indices became thirty-six, a texture coordinate became a color, and a flat rectangle became a solid whose faces can finally get in each other's way. We gave up the ability to wear an image so that we could stand up in three dimensions instead — a fair trade, and the last time this series will be satisfied with something that doesn't have a back side.
+What changed is the payload flowing through it: four vertices became eight, six indices became thirty-six, a texture coordinate became a color, and a flat rectangle became a solid whose faces can finally get in each other's way. We gave up the ability to wear an image so that we could stand up in three dimensions instead, a fair trade, and the last time this series will be satisfied with something that doesn't have a back side.

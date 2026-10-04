@@ -6,7 +6,7 @@ description = "Mouse-look camera, Snell's law refraction, Fresnel via Schlick, S
 math = true
 +++
 
-In this post, we mostly talk about making the renderer feel less like a demo held together with optimism. One of them, however, sneaks in actual physics — the transparent material is now real, and it bends light the way real glass does.
+In this post, we mostly talk about making the renderer feel less like a demo held together with optimism. One of them, however, sneaks in actual physics: the transparent material is now real, and it bends light the way real glass does.
 
 &nbsp;
 
@@ -88,7 +88,13 @@ $$
 \Delta \leq 0\
 $$ 
 
-the angle of incidence is past the critical angle and total internal reflection occurs — the ray bounces back instead of passing through.
+the angle of incidence is past the critical angle and total internal reflection occurs. The ray bounces back instead of passing through.
+
+&nbsp;
+
+![Left: a ray entering glass bends toward the normal and a weak reflection splits off. Right: at a shallow angle inside the glass there is no refracted ray, so everything reflects (total internal reflection). This diagram is from the multithreaded ray tracer series.](/images/blog/raytracer/refraction_tir.svg)
+
+
 
 ## Entering vs Exiting
 
@@ -138,7 +144,7 @@ __host__ __device__ inline float3 operator-(const float3& a)
 
 ## Schlick Approximation for Fresnel
 
-Real glass does not just refract — it also partially reflects, and how much it reflects depends on the viewing angle. The renderer now computes this with Schlick's approximation:
+Real glass does not just refract. It also partially reflects, and how much it reflects depends on the viewing angle. The renderer now computes this with Schlick's approximation:
 
 $$
 R(\theta) = R_0 + (1 - R_0)(1 - \cos\theta)^5
@@ -182,6 +188,12 @@ currentColor = currentColor * make_float3(1.0f, 1.0f, 1.0f);
 
 Which is just a polite way of saying the material does not attenuate anything.
 
+&nbsp;
+
+![Schlick's curve for glass and water, computed from the formula in the post. The IoR values are examples, the post does not fix one. Head on, only a few percent reflects. At grazing angles nearly all of it does.](/images/blog/cuda_schlick_curve.svg)
+
+
+
 ## Mouse Look Arrives
 
 Separate from the glass work, the camera now rotates with right mouse drag. Right mouse button press captures the cursor and hides it. Mouse movement while held calls `gCamera.Rotate()`. Button release restores the cursor.
@@ -221,6 +233,12 @@ constexpr float max_pitch = 1.553343f;
 ```
 
 After each rotation, the camera rebuilds its basis vectors and recomputes viewport corners so ray generation stays consistent.
+
+&nbsp;
+
+![Yaw turns the camera around the vertical axis, measured from the default look direction toward +X. Pitch tilts it above the horizon and is clamped at about 89 degrees so the camera cannot flip over the pole.](/images/blog/cuda_yaw_pitch.svg)
+
+
 
 ## Samples Per Pixel Becomes the Real Counter
 

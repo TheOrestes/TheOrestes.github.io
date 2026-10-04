@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 385" width="760" height="385" role="img" aria-label="Noise against samples per pixel on log axes: noise falls as one over the square root of the sample count, so 4 times the samples halves the noise and 100 samples leaves a tenth of the single-sample noise.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+.ax{stroke:#6b7280;stroke-width:1.2;fill:none}
+.grid{stroke:#374151;stroke-width:1;fill:none}
+.dash{stroke:#9ca3af;stroke-width:1;stroke-dasharray:4 3;fill:none}
+</style>
+<text class="ttl" x="20" y="24" text-anchor="start">Noise against samples per pixel (expected, relative to 1 sample)</text>
+<line x1="80" y1="50.0" x2="700" y2="50.0" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="72" y="54.0" text-anchor="end">1</text>
+<line x1="80" y1="175.0" x2="700" y2="175.0" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="72" y="179.0" text-anchor="end">0.1</text>
+<line x1="80" y1="300.0" x2="700" y2="300.0" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="72" y="304.0" text-anchor="end">0.01</text>
+<line x1="80.0" y1="50" x2="80.0" y2="300" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="80.0" y="318" text-anchor="middle">1</text>
+<line x1="286.66666666666663" y1="50" x2="286.66666666666663" y2="300" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="286.66666666666663" y="318" text-anchor="middle">10</text>
+<line x1="493.3333333333333" y1="50" x2="493.3333333333333" y2="300" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="493.3333333333333" y="318" text-anchor="middle">100</text>
+<line x1="700.0" y1="50" x2="700.0" y2="300" stroke="#374151" stroke-width="1"/>
+<text class="dim" x="700.0" y="318" text-anchor="middle">1000</text>
+<line x1="80" y1="50" x2="80" y2="300" stroke="#6b7280" stroke-width="1.2"/>
+<line x1="80" y1="300" x2="700" y2="300" stroke="#6b7280" stroke-width="1.2"/>
+<polyline points="80.0,50.0 90.3,53.1 100.7,56.2 111.0,59.4 121.3,62.5 131.7,65.6 142.0,68.8 152.3,71.9 162.7,75.0 173.0,78.1 183.3,81.2 193.7,84.4 204.0,87.5 214.3,90.6 224.7,93.8 235.0,96.9 245.3,100.0 255.7,103.1 266.0,106.3 276.3,109.4 286.7,112.5 297.0,115.6 307.3,118.8 317.7,121.9 328.0,125.0 338.3,128.1 348.7,131.2 359.0,134.4 369.3,137.5 379.7,140.6 390.0,143.8 400.3,146.9 410.7,150.0 421.0,153.1 431.3,156.2 441.7,159.4 452.0,162.5 462.3,165.6 472.7,168.8 483.0,171.9 493.3,175.0 503.7,178.1 514.0,181.2 524.3,184.4 534.7,187.5 545.0,190.6 555.3,193.8 565.7,196.9 576.0,200.0 586.3,203.1 596.7,206.2 607.0,209.4 617.3,212.5 627.7,215.6 638.0,218.8 648.3,221.9 658.7,225.0 669.0,228.1 679.3,231.2 689.7,234.4 700.0,237.5" fill="none" stroke="#60a5fa" stroke-width="2.4"/>
+<circle cx="80.0" cy="50.0" r="4.5" fill="#fbbf24" stroke="#fbbf24" stroke-width="1.4"/>
+<circle cx="204.4257315411122" cy="87.62874945799766" r="4.5" fill="#fbbf24" stroke="#fbbf24" stroke-width="1.4"/>
+<circle cx="493.3333333333333" cy="175.0" r="4.5" fill="#fbbf24" stroke="#fbbf24" stroke-width="1.4"/>
+<text class="dim" x="90.0" y="42.0" text-anchor="start">1 sample: noise 1.0</text>
+<text class="dim" x="214.4257315411122" y="79.62874945799766" text-anchor="start">4 samples: 0.5</text>
+<line x1="493.3333333333333" y1="175.0" x2="493.3333333333333" y2="300" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text class="lbl" x="501.3333333333333" y="165.0" text-anchor="start" fill="#fbbf24">targetSPP = 100: noise 0.1</text>
+<text class="dim" x="390" y="340" text-anchor="middle">samples per pixel (log scale)</text>
+<text class="dim" x="390" y="372" text-anchor="middle">Ten times cleaner needs a hundred times the samples, which is why the render stops at a fixed count.</text>
+</svg>

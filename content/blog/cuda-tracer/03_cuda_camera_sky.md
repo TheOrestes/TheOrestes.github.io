@@ -138,6 +138,12 @@ This is the classic “miss shader” move: if the ray hits nothing, color the b
 
 That makes the framebuffer look like a sky gradient rather than a procedural animation. It is simple, but it immediately feels more like a renderer looking into a world instead of a screensaver! 
 
+&nbsp;
+
+![Left: a pixel's u and v pick a point on the image plane, and the camera ray runs through it. Right: the miss color blends from white to sky blue depending on how far up the ray points.](/images/blog/cuda_pixel_ray_sky.svg)
+
+
+
 ## Writing the Final Pixel Is Still the Same Last Step
 
 Once the miss color is computed, the kernel packs it into a `float4` and writes it to the surface:

@@ -201,9 +201,15 @@ case RT::TRANSPARENT:
 }
 ```
 
-Only Lambertian shading is implemented right now. The other material types are placeholders, but they are not fake placeholders — the plumbing is genuinely there now.
+Only Lambertian shading is implemented right now. The other material types are placeholders, but they are not fake placeholders. The plumbing is genuinely there now.
 
 That is the key value of this commit. It does not add metal, phong, or transparency behavior yet. It adds the *shape* of a renderer that can support them without turning into spaghetti with a CUDA license.
+
+&nbsp;
+
+![How scene data reaches a bounce. The host builds an object list and a material list. A hit only reports a MaterialID, and the material table decides how the ray scatters.](/images/blog/cuda_scene_dataflow.svg)
+
+
 
 ## The Scene Setup Moves to the Host
 

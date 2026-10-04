@@ -192,7 +192,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 The minification filter is `GL_LINEAR_MIPMAP_LINEAR`, which selects and linearly blends mipmap levels while linearly filtering within them. The magnification filter is `GL_LINEAR`, so enlarged texels are smoothly interpolated rather than shown as nearest-neighbor blocks.
 
-The texture manager also adds a cubemap-loading function that expects six specifically named files—`posx.jpg`, `negx.jpg`, `posy.jpg`, `negy.jpg`, `posz.jpg`, and `negz.jpg`. Nothing in this commit binds or samples a cubemap; it is utility code added alongside the 2D texture path.
+The texture manager also adds a cubemap-loading function that expects six specifically named files: `posx.jpg`, `negx.jpg`, `posy.jpg`, `negy.jpg`, `posz.jpg`, and `negz.jpg`. Nothing in this commit binds or samples a cubemap; it is utility code added alongside the 2D texture path.
 
 ## Vertex Shader Changes
 

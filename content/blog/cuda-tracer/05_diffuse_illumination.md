@@ -127,6 +127,12 @@ currentColor = currentColor * rec.Albedo;
 
 So after one bounce, the ray is tinted by the first surface. After two bounces, it is tinted again. Light is now paying rent at every wall it touches.
 
+&nbsp;
+
+![The bounce loop. The throughput starts white and is multiplied by the albedo at every hit. When a ray finally escapes, the pixel is the throughput times the sky color. The example path uses the two sphere colors from this post.](/images/blog/cuda_bounce_loop.svg)
+
+
+
 ## Diffuse Scattering Enters the Chat
 
 When a ray hits geometry, it no longer stops. Instead, a new target is built:
@@ -146,6 +152,12 @@ This is the classic “normal plus random vector” diffuse scatter approximatio
 &nbsp;
 
 In spirit, it is aiming for diffuse reflection where outgoing light is distributed according to the surface orientation. Not a perfect BRDF sermon yet, but definitely no longer flat-color kindergarten.
+
+&nbsp;
+
+![Diffuse scattering: a unit sphere sits on top of the hit point, one normal-length up, and the new ray is aimed at a random point inside it. This diagram is from the multithreaded ray tracer series.](/images/blog/raytracer/lambertian_scatter.svg)
+
+
 
 ## The Sky Becomes the Light Source
 

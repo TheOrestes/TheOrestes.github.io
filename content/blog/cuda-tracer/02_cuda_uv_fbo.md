@@ -57,6 +57,12 @@ glBlitFramebuffer(
 
 This is a nice simplification. OpenGL is no longer asked to draw geometry just to show the image; it simply copies the color buffer from the framebuffer-backed texture into the window. It is a very direct “here are the pixels, please show them” kind of move.
 
+&nbsp;
+
+![The path from a CUDA thread to the window: the kernel writes into a shared texture through a surface object, and OpenGL copies that texture to the screen with a blit. Below it, the steps RunRayTracingKernel performs around each launch.](/images/blog/cuda_display_path.svg)
+
+
+
 ## The CUDA Side Becomes Real
 
 ```cpp
@@ -93,6 +99,12 @@ The code even leaves a warning comment right above it:
 ```
 
 That comment earns its capital letters. `surf2Dwrite` expects a byte offset in the horizontal direction, not a plain pixel index, so this is one of those details that looks tiny and ruins everything when wrong.
+
+&nbsp;
+
+![One thread handles one pixel and turns its x and y into u and v. surf2Dwrite wants a horizontal offset in bytes, and a float4 pixel is 16 bytes, which is why the x * sizeof(float4) comment is in capitals.](/images/blog/cuda_thread_grid.svg)
+
+
 
 ## The Interop Path Gets Wrapped in One Function
 
