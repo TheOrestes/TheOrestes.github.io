@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Janus layers: the Sandbox executable links the Janus static library. Inside Janus, Core holds platform code with no graphics headers, and RHI/D3D12 is the only place d3d12.h is included. RHI/Vulkan is planned and drawn dashed. GLFW and spdlog sit beside Core.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+</style>
+<text class="ttl" x="20" y="24">Who is allowed to include what</text>
+<rect x="20" y="44" width="720" height="46" rx="6" fill="#60a5fa" fill-opacity="0.12" stroke="#60a5fa" stroke-width="1.4"/>
+<text class="lbl" x="380" y="72" text-anchor="middle">Sandbox.exe  (owns main)</text>
+<line x1="380" y1="92" x2="380" y2="112" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="20" y="116" width="720" height="168" rx="8" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text class="dim" x="32" y="134">janus.lib  (static library)</text>
+<rect x="36" y="146" width="330" height="124" rx="6" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-width="1.4"/>
+<text class="lbl" x="201" y="168" text-anchor="middle">Core/</text>
+<text class="dim" x="201" y="190" text-anchor="middle">Log, Window, Input, Math, FileSystem</text>
+<text class="dim" x="201" y="210" text-anchor="middle">GLFW and spdlog live here</text>
+<text class="mono" x="201" y="246" text-anchor="middle">zero graphics API headers</text>
+<rect x="386" y="146" width="170" height="124" rx="6" fill="#fbbf24" fill-opacity="0.12" stroke="#fbbf24" stroke-width="1.4"/>
+<text class="lbl" x="471" y="168" text-anchor="middle">RHI/D3D12/</text>
+<text class="dim" x="471" y="190" text-anchor="middle">Core.cpp, D3D12Common.h</text>
+<text class="mono" x="471" y="246" text-anchor="middle">only home of d3d12.h</text>
+<rect x="572" y="146" width="152" height="124" rx="6" fill="none" stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text class="lbl" x="648" y="168" text-anchor="middle">RHI/Vulkan/</text>
+<text class="dim" x="648" y="190" text-anchor="middle">not written yet</text>
+<text class="mono" x="648" y="246" text-anchor="middle">only home of vulkan.h</text>
+</svg>
