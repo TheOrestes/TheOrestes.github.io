@@ -1,6 +1,6 @@
 {{- /* header.html - top-level navbar for site */ -}}
 <div class="sticky absolute top-0 z-50">
-  <nav class="w-full border-b border-gray-800 bg-[#070709]/95 backdrop-blur-sm text-gray-100">
+  <nav class="w-full border-b border-[color:var(--line)] bg-[color:var(--bg)]/95 backdrop-blur-sm text-gray-100">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="flex items-center justify-between h-16">
         <!-- Left: avatar + title -->
@@ -10,9 +10,9 @@
 
             <img src='{{ with site.Params.avatar }}{{ . | relURL }}{{ else }}{{ "/images/avatar.jpg" | relURL }}{{ end
               }}' alt="{{ site.Title }}"
-              class="w-10 h-10 rounded-sm border-2 border-gray-700 object-cover transition-transform duration-300 transform group-hover:scale-105"
+              class="w-10 h-10 rounded-sm border border-[color:var(--line)] object-cover transition-transform duration-300 transform group-hover:scale-105"
               style="animation: border-breathe 4s ease-in-out infinite;" />
-            <span class="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-wide">
+            <span class="text-white text-lg sm:text-xl md:text-2xl font-semibold tracking-tight">
               {{ site.Title }}
               <span class="inline-block ml-2" style="animation: flicker 1.6s steps(2, end) infinite;">_</span>
             </span>
@@ -73,15 +73,15 @@
 
     @keyframes border-breathe {
       0% {
-        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.06);
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 10%, transparent);
       }
 
       50% {
-        box-shadow: 0 0 18px 6px rgba(99, 102, 241, 0.03);
+        box-shadow: 0 0 18px 6px color-mix(in srgb, var(--accent) 5%, transparent);
       }
 
       100% {
-        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.06);
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 10%, transparent);
       }
     }
   </style>
@@ -95,6 +95,7 @@
       btn.addEventListener('click', () => {
         const open = menu.classList.toggle('hidden') === false;
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       });
     })();
   </script>

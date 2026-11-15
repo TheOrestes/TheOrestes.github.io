@@ -1,22 +1,22 @@
 {{ define "main" }}
 
-<section class="relative border border-gray-200/20 bg-[color:var(--surface)] rounded-2xl p-8 md:p-12 text-gray-300">
-  <div class="flex flex-col md:flex-row-reverse items-center md:items-start gap-10 md:gap-12">
+<section class="relative border border-[color:var(--line)] bg-[color:var(--surface)] rounded-lg p-6 sm:p-8 md:p-10">
+  <div class="flex flex-col md:flex-row-reverse items-center md:items-start gap-8 md:gap-10">
 
     <div class="shrink-0">
       <img
         src="/images/profile.jpg"
         alt="Profile photo of the site author"
-        class="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover object-center border-2 border-[color:var(--line)] shadow-lg"
+        class="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover object-center border border-[color:var(--line)]"
       />
     </div>
 
     <div class="flex-1 max-w-3xl text-center md:text-left">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold mb-6 tracking-wide">
+      <h1 class="text-3xl sm:text-4xl font-semibold mb-5 tracking-tight">
         About Me
       </h1>
 
-      <div class="space-y-6 text-base sm:text-lg md:text-xl leading-relaxed
+      <div class="space-y-4 text-base sm:text-lg leading-[1.75]
                   [&_a]:text-[color:var(--accent)]
                   [&_a]:underline
                   [&_a:hover]:text-white
@@ -36,8 +36,8 @@
 {{- /* Series entry points: one row per blog series, in reading order. "Start"
        is the first post by file path (files are numbered 01_, 02_, ...), the
        same ordering project-cover.html relies on. */ -}}
-<section class="mt-12" aria-labelledby="home-series">
-  <h2 id="home-series" class="text-xl sm:text-2xl mb-3">Series</h2>
+<section class="mt-16 sm:mt-20" aria-labelledby="home-series">
+  <h2 id="home-series" class="text-2xl sm:text-3xl mb-4">Series</h2>
   <div class="border border-[color:var(--line)] rounded-lg bg-[color:var(--surface)] overflow-hidden">
     {{- range (site.GetPage "/blog").Sections.ByWeight }}
     {{- $accent := .Params.accent | default "#818cf8" -}}
@@ -70,19 +70,25 @@
 </section>
 
 {{- $posts := where site.RegularPages "Section" "blog" -}}
-<section class="mt-12" aria-labelledby="latest-posts">
-  <div class="flex items-baseline justify-between gap-3 mb-3">
-    <h2 id="latest-posts" class="text-xl sm:text-2xl">Latest posts</h2>
+<section class="mt-16 sm:mt-20" aria-labelledby="latest-posts">
+  <div class="flex items-baseline justify-between gap-3 mb-4">
+    <h2 id="latest-posts" class="text-2xl sm:text-3xl">Latest posts</h2>
     <a href="{{ "/blog/" | relURL }}" class="text-sm sm:text-base text-[color:var(--accent)] hover:text-white">All posts &rarr;</a>
   </div>
   <div class="border border-[color:var(--line)] rounded-lg bg-[color:var(--surface)] overflow-hidden">
     {{- range first 5 $posts.ByDate.Reverse }}
     {{- $accent := .Parent.Params.accent | default "#818cf8" -}}
+    {{/* Position in the series by date, the same ordering the /blog/ page uses. */}}
+    {{- $pos := 0 -}}
+    {{- $me := .RelPermalink -}}
+    {{- range $i, $p := .Parent.RegularPages.ByDate }}{{ if eq $p.RelPermalink $me }}{{ $pos = add $i 1 }}{{ end }}{{ end -}}
     <a href="{{ .RelPermalink }}"
        class="flex items-center gap-3 sm:gap-4 px-4 py-3 border-b border-[color:var(--line)] last:border-b-0 transition-colors hover:bg-white/5">
-      <span class="h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}"></span>
-      <span class="flex-1 min-w-0 text-base sm:text-lg text-gray-100">{{ .Title }}</span>
-      <span class="hidden sm:inline text-xs px-2 py-0.5 rounded border border-[color:var(--line)] text-gray-500">{{ .Parent.Title }}</span>
+      <span class="h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}" aria-hidden="true"></span>
+      <span class="flex-1 min-w-0">
+        <span class="block text-base sm:text-lg text-gray-100 leading-snug">{{ .Title }}</span>
+        <span class="block mt-0.5 text-sm text-gray-500">{{ .Parent.Title }} <span class="font-num">&middot; {{ printf "%02d" $pos }}/{{ printf "%02d" (len .Parent.RegularPages) }}</span></span>
+      </span>
       <span class="font-num text-sm text-gray-500 whitespace-nowrap">{{ .Date.Format "Jan 02, 2006" }}</span>
     </a>
     {{- end }}
@@ -90,9 +96,9 @@
 </section>
 
 {{- with site.GetPage "/projects" }}
-<section class="mt-12" aria-labelledby="home-projects">
-  <div class="flex items-baseline justify-between gap-3 mb-3">
-    <h2 id="home-projects" class="text-xl sm:text-2xl">Projects</h2>
+<section class="mt-16 sm:mt-20" aria-labelledby="home-projects">
+  <div class="flex items-baseline justify-between gap-3 mb-4">
+    <h2 id="home-projects" class="text-2xl sm:text-3xl">Projects</h2>
     <a href="{{ .RelPermalink }}" class="text-sm sm:text-base text-[color:var(--accent)] hover:text-white">All projects &rarr;</a>
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
