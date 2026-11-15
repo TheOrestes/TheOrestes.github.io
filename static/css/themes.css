@@ -11,9 +11,11 @@
 /* ---------- 1 Viewport ---------- */
 html[data-theme="viewport"] { --bg: #090c11; --surface: #0e131b; --line: #1b2431; --text: #c5cbd6; --muted: #8995a8; --heading: #a6d3ff; --accent: #6fb1ff; }
 html[data-theme="viewport"] body {
-  /* Dot grid: one small dot every 24px. */
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--muted) 36%, transparent) 1px, transparent 1.3px);
-  background-size: 24px 24px;
+  /* Dot grid: a small dot every 24px and a bold accent-tinted dot every 120px (minor and major grid). */
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 1.6px, transparent 1.9px),
+    radial-gradient(circle, color-mix(in srgb, var(--muted) 32%, transparent) 1px, transparent 1.3px);
+  background-size: 120px 120px, 24px 24px;
 }
 html[data-theme="viewport"] header nav { border-bottom: 2px solid; border-image: linear-gradient(90deg, #f8717199 0 33%, #4ade8099 33% 66%, #60a5fa99 66%) 1; }
 
