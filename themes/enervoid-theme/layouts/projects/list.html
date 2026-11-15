@@ -23,7 +23,7 @@
     {{- $external := or (hasPrefix $href "http://") (hasPrefix $href "https://") -}}
 
     <a href="{{ $href }}"
-      class="group block border border-gray-800/80 bg-[#070709] rounded-sm p-5 transition duration-200 hover:-translate-y-0.5 hover:bg-white/5 hover:border-[color:var(--accent)]/30 hover:ring-1 hover:ring-[color:var(--accent)]/20 motion-reduce:hover:translate-y-0"
+      class="group block border border-[color:var(--line)] bg-[color:var(--surface)] rounded-sm p-5 transition duration-200 hover:-translate-y-0.5 hover:bg-white/5 hover:border-[color:var(--accent)]/30 hover:ring-1 hover:ring-[color:var(--accent)]/20 motion-reduce:hover:translate-y-0"
       {{ if $external }}target="_blank" rel="noopener noreferrer" {{ end }}>
       <div class="flex items-start justify-between gap-3">
         <h2 class="text-lg sm:text-xl text-white tracking-wide leading-snug">

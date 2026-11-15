@@ -9,7 +9,7 @@
   </nav>
 
   {{- with $cover }}
-  <div class="mb-8 rounded-sm overflow-hidden border border-gray-800/70 bg-black">
+  <div class="mb-8 rounded-sm overflow-hidden border border-[color:var(--line)] bg-black">
     <img src="{{ . }}" alt="" loading="lazy" decoding="async" class="w-full h-auto" />
   </div>
   {{- end }}
@@ -51,7 +51,7 @@
   </div>
 
   {{- with .Content }}
-  <div class="border border-gray-800/70 bg-[#070709] rounded-sm p-5 sm:p-7">
+  <div class="border border-[color:var(--line)] bg-[color:var(--surface)] rounded-sm p-5 sm:p-7">
     <div class="md-content text-base sm:text-lg leading-relaxed text-gray-200">
       {{ . }}
     </div>
@@ -69,7 +69,7 @@
           {{- $src = .RelPermalink -}}
         {{- end -}}
       {{- end -}}
-      <figure class="rounded-sm overflow-hidden border border-gray-800/70 bg-black">
+      <figure class="rounded-sm overflow-hidden border border-[color:var(--line)] bg-black">
         <img src="{{ $src }}" alt="{{ .alt }}" loading="lazy" decoding="async" class="w-full h-auto" />
       </figure>
       {{- end }}
@@ -82,7 +82,7 @@
   {{- if $posts }}
   <section class="mt-10">
     <h2 class="text-xl sm:text-2xl text-white tracking-wide mb-4">Posts in this series</h2>
-    <ol class="border border-gray-800/70 bg-[#070709] rounded-sm divide-y divide-gray-800/70">
+    <ol class="border border-[color:var(--line)] bg-[color:var(--surface)] rounded-sm divide-y divide-gray-800/70">
       {{- range $i, $p := $posts }}
       <li>
         <a href="{{ $p.RelPermalink }}"

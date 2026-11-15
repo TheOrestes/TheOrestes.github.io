@@ -13,12 +13,12 @@
     {{- range $pages -}}
     {{- $cover := partial "project-cover.html" . -}}
     <a href="{{ .RelPermalink }}"
-      class="group flex flex-col border border-gray-800/80 bg-[#070709] rounded-sm overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:bg-white/5 hover:border-[color:var(--accent)]/30 hover:ring-1 hover:ring-[color:var(--accent)]/20 motion-reduce:hover:translate-y-0">
+      class="group flex flex-col border border-[color:var(--line)] bg-[color:var(--surface)] rounded-sm overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:bg-white/5 hover:border-[color:var(--accent)]/30 hover:ring-1 hover:ring-[color:var(--accent)]/20 motion-reduce:hover:translate-y-0">
       {{- with $cover }}
       {{/* object-contain, not cover: source renders range from square (500x500)
            to 16:9, and cropping them loses real content. Black matte blends
            into the card, so letterboxing reads as intentional. */}}
-      <div class="aspect-[16/9] w-full overflow-hidden bg-black border-b border-gray-800/80">
+      <div class="aspect-[16/9] w-full overflow-hidden bg-black border-b border-[color:var(--line)]">
         <img src="{{ . }}" alt="" loading="lazy" decoding="async"
           class="h-full w-full object-contain opacity-90 transition duration-300 group-hover:opacity-100 group-hover:scale-[1.02]" />
       </div>

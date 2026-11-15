@@ -9,7 +9,7 @@
 
   {{- $pages := .RegularPages.ByDate.Reverse -}}
 
-  <div class="border border-gray-800/70 rounded-sm bg-[#070709] divide-y divide-gray-800/80 overflow-hidden">
+  <div class="border border-[color:var(--line)] rounded-sm bg-[color:var(--surface)] divide-y divide-gray-800/80 overflow-hidden">
     {{- if gt (len $pages) 0 -}}
     {{- range $pages -}}
     <a href="{{ .RelPermalink }}" class="group block px-4 sm:px-6 py-4 transition-colors duration-200 hover:bg-white/5">
