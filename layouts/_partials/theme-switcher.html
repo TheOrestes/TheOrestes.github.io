@@ -1,7 +1,7 @@
 {{- /* Dev-only (hugo server): lets you flip between the design directions.
        Not rendered in production builds. */ -}}
 <div id="theme-switcher" role="group" aria-label="Design direction (dev only)">
-  {{- range slice (dict "k" "" "n" "Current") (dict "k" "viewport" "n" "Viewport") (dict "k" "debug" "n" "Debug views") (dict "k" "diff" "n" "Diff gutter") (dict "k" "notebook" "n" "Notebook") }}
+  {{- range slice (dict "k" "" "n" "Current") (dict "k" "viewport" "n" "Viewport") (dict "k" "debug" "n" "Debug views") (dict "k" "diff" "n" "Diff gutter") (dict "k" "notebook" "n" "Notebook") (dict "k" "6030" "n" "60-30-10") }}
   <button type="button" data-theme-pick="{{ .k }}">{{ .n }}</button>
   {{- end }}
 </div>

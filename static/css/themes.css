@@ -44,3 +44,16 @@ html[data-theme="notebook"] body { background-image: repeating-linear-gradient(t
 html[data-theme="notebook"] #swup > div { max-width: 60rem; }
 html[data-theme="notebook"] .md-content p, html[data-theme="notebook"] .md-content li { line-height: 2rem; }
 html[data-theme="notebook"] .md-content figure figcaption::before { content: "Fig. "; color: var(--accent); }
+
+/* ---------- 5 60-30-10 ----------
+   60% #5A6068 page ground, 30% #1C1D20 surfaces (header, footer, cards, code),
+   10% #FF5F00 accent. Orange is only 2.1:1 on the 60% grey, so it is used for
+   fills, underlines and links that sit on 30% surfaces; text that sits straight
+   on the 60% ground stays near-white (5.7:1 and up). */
+html[data-theme="6030"] { --bg: #5A6068; --surface: #1C1D20; --line: #34373d; --text: #f1f3f7; --muted: #dfe3ea; --heading: #ffffff; --accent: #FF5F00; }
+html[data-theme="6030"] header nav, html[data-theme="6030"] footer > div { background: var(--surface); border-color: #34373d; }
+html[data-theme="6030"] .text-gray-300, html[data-theme="6030"] .text-gray-400,
+html[data-theme="6030"] .text-gray-500, html[data-theme="6030"] .text-gray-600 { color: var(--muted); }
+html[data-theme="6030"] .diagram-scroll { background: var(--surface); }
+html[data-theme="6030"] .on-bg { color: #ffffff; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+html[data-theme="6030"] main a:hover .series-dot { filter: none; }
