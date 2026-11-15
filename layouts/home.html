@@ -1,25 +1,25 @@
 {{ define "main" }}
 
-<section class="relative border border-gray-200/20 bg-[#070709] rounded-2xl p-8 md:p-12 text-gray-300">
+<section class="relative border border-gray-200/20 bg-[color:var(--surface)] rounded-2xl p-8 md:p-12 text-gray-300">
   <div class="flex flex-col md:flex-row-reverse items-center md:items-start gap-10 md:gap-12">
 
     <div class="shrink-0">
       <img
         src="/images/profile.jpg"
-        alt="Your profile photo"
-        class="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover object-center border-2 border-cyan-300/40 shadow-lg"
+        alt="Profile photo of the site author"
+        class="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover object-center border-2 border-[color:var(--line)] shadow-lg"
       />
     </div>
 
     <div class="flex-1 max-w-3xl text-center md:text-left">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-cyan-300 mb-6 tracking-wide">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold mb-6 tracking-wide">
         About Me
       </h1>
 
       <div class="space-y-6 text-base sm:text-lg md:text-xl leading-relaxed
-                  [&_a]:text-blue-200
+                  [&_a]:text-[color:var(--accent)]
                   [&_a]:underline
-                  [&_a:hover]:text-blue-100
+                  [&_a:hover]:text-white
                   [&_a]:transition-colors
                   [&_a]:duration-200">
 
@@ -32,5 +32,51 @@
 
   </div>
 </section>
+
+{{- $posts := where site.RegularPages "Section" "blog" -}}
+<section class="mt-12" aria-labelledby="latest-posts">
+  <div class="flex items-baseline justify-between gap-3 mb-3">
+    <h2 id="latest-posts" class="text-xl sm:text-2xl">Latest posts</h2>
+    <a href="{{ "/blog/" | relURL }}" class="text-sm sm:text-base text-[color:var(--accent)] hover:text-white">All posts &rarr;</a>
+  </div>
+  <div class="border border-[color:var(--line)] rounded-lg bg-[color:var(--surface)] overflow-hidden">
+    {{- range first 5 $posts.ByDate.Reverse }}
+    {{- $accent := .Parent.Params.accent | default "#818cf8" -}}
+    <a href="{{ .RelPermalink }}"
+       class="flex items-center gap-3 sm:gap-4 px-4 py-3 border-b border-[color:var(--line)] last:border-b-0 transition-colors hover:bg-white/5">
+      <span class="h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}"></span>
+      <span class="flex-1 min-w-0 text-base sm:text-lg text-gray-100">{{ .Title }}</span>
+      <span class="hidden sm:inline text-xs px-2 py-0.5 rounded border border-[color:var(--line)] text-gray-500">{{ .Parent.Title }}</span>
+      <span class="font-num text-sm text-gray-500 whitespace-nowrap">{{ .Date.Format "Jan 02, 2006" }}</span>
+    </a>
+    {{- end }}
+  </div>
+</section>
+
+{{- with site.GetPage "/projects" }}
+<section class="mt-12" aria-labelledby="home-projects">
+  <div class="flex items-baseline justify-between gap-3 mb-3">
+    <h2 id="home-projects" class="text-xl sm:text-2xl">Projects</h2>
+    <a href="{{ .RelPermalink }}" class="text-sm sm:text-base text-[color:var(--accent)] hover:text-white">All projects &rarr;</a>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {{- range .RegularPages.ByDate.Reverse }}
+    {{- $cover := partial "project-cover.html" . -}}
+    <a href="{{ .RelPermalink }}"
+       class="group flex flex-col border border-[color:var(--line)] bg-[color:var(--surface)] rounded-lg overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:border-[color:var(--accent)] motion-reduce:hover:translate-y-0">
+      {{- with $cover }}
+      <div class="aspect-[16/9] w-full overflow-hidden bg-black border-b border-[color:var(--line)]">
+        <img src="{{ . }}" alt="" loading="lazy" decoding="async" class="h-full w-full object-contain opacity-90 group-hover:opacity-100 transition" />
+      </div>
+      {{- end }}
+      <div class="p-4">
+        <h3 class="text-lg text-white">{{ .Title }}</h3>
+        <p class="mt-1 text-sm sm:text-base text-gray-400 leading-snug">{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 110 }}{{ end }}</p>
+      </div>
+    </a>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
 
 {{ end }}

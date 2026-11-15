@@ -1,3 +1,21 @@
+/* One place for colour and type.
+   Fonts: Inter for text, Space Grotesk for headings and every number,
+   SUSE Mono for code. Tailwind utilities in the templates still set layout,
+   but colours below are tokens so a palette change is a one-file edit. */
+:root {
+  --bg: #08090c;
+  --surface: #0e1016;
+  --line: #20253a;
+  --text: #c9ccd6;
+  --muted: #8b93a7;      /* about 6:1 on --surface, was grey-500 at about 4:1 */
+  --heading: #8ec2ff;
+  --accent: #7aa7ff;
+  --focus: #ffd166;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-code: "SUSE Mono", ui-monospace, monospace;
+}
+
 body,
 p,
 li,
@@ -20,32 +38,40 @@ main,
 main p,
 main li,
 .font-jersey {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  color: #bdbdbd;
+  color: var(--text);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-display);
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
-  color: #72b4ff;
+  color: var(--heading);
+  scroll-margin-top: 5rem; /* clear the sticky header when jumping to an anchor */
 }
 
-code, pre, kbd, samp {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+/* Numbers: dates, counts, read times, table-style figures. */
+.font-num,
+.tabular-nums {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Code, including the callout labels that use Tailwind's font-mono. */
+code, pre, kbd, samp, .font-mono {
+  font-family: var(--font-code);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
 }
 
-/* Tables carry most of this site's figures, and Plex's flatter, slightly
-   narrower digits hold a column better than Inter's rounder ones. */
+/* Tables carry figures; Inter's tabular digits hold a column well. */
 table, table td, table th {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
 }
 
@@ -53,14 +79,49 @@ table th {
   font-weight: 600;
 }
 
+/* Muted text: raise grey-500 / grey-600 to the token so small text passes 4.5:1. */
+html .text-gray-500,
+html .text-gray-600 {
+  color: var(--muted);
+}
+
+/* Reading comfort in posts. */
+.md-content p,
+.md-content li {
+  line-height: 1.75;
+}
+.md-content > p {
+  max-width: 75ch;
+}
+.md-content a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+/* Keyboard focus: the browser default disappears on near-black. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 nav#TableOfContents,
 nav#TableOfContents ul,
 nav#TableOfContents li,
 nav#TableOfContents a {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   font-optical-sizing: auto;
   font-weight: 500;
-  font-style: italic;
+  font-style: normal;
 }
 
 nav#TableOfContents a {
@@ -75,12 +136,56 @@ header .site-title,
 header .site-name,
 header .brand,
 header .logo {
-  font-family: "Space Grotesk", sans-serif !important;
+  font-family: var(--font-display) !important;
   font-weight: 600;
 }
 
 header nav a,
 header a {
-  font-family: "Space Grotesk", sans-serif !important;
+  font-family: var(--font-display) !important;
   font-weight: 500;
 }
+
+/* Heading anchors, code copy button, reading progress. */
+.anchor {
+  margin-left: 0.4em;
+  font-size: 0.8em;
+  color: var(--line);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor,
+.anchor:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.copy-btn {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text);
+  background: #141722;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.copy-btn:hover { border-color: var(--accent); }
+
+#read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent);
+  z-index: 60;
+}
+
+/* Inlined SVG diagrams (see render-image.html). On narrow screens they keep a
+   readable minimum width and scroll sideways inside their own box instead of
+   shrinking the labels to a few pixels. */
+.diagram-scroll { overflow-x: auto; }
+svg.diagram { display: block; width: 100%; height: auto; min-width: min(100%, 620px); }
+@media (max-width: 640px) { svg.diagram { min-width: 620px; } }

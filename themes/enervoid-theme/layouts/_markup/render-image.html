@@ -1,3 +1,41 @@
+{{- /*
+  SVG diagrams are inlined instead of loaded as <img>, so they pick up the
+  page's fonts and can be scaled and scrolled by CSS. Three things make that
+  safe for files that were written to stand alone:
+    - ids (arrow markers) are prefixed per file, or every diagram on a page
+      would resolve url(#a) to the first one;
+    - the file's <style> is wrapped in a per-file class using CSS nesting, so
+      one diagram's .ttl cannot restyle another's;
+    - system-ui / ui-monospace are swapped for the site's font variables.
+  Anything that is not a local .svg falls through to the <img> below.
+*/ -}}
+{{- $svgRes := false -}}
+{{- $su := urls.Parse .Destination -}}
+{{- if and (not $su.IsAbs) (strings.HasSuffix $su.Path ".svg") -}}
+  {{- with resources.Get (strings.TrimPrefix "/" $su.Path) -}}{{- $svgRes = . -}}{{- end -}}
+{{- end -}}
+{{- if $svgRes -}}
+  {{- $alt := "" -}}
+  {{- with .PlainText -}}{{- $alt = . -}}{{- else -}}{{- $alt = .Text -}}{{- end -}}
+  {{- $k := printf "dg%s" (substr (md5 $su.Path) 0 6) -}}
+  {{- $c := $svgRes.Content | replaceRE `<\?xml[^>]*\?>` "" -}}
+  {{- $c = $c | replaceRE `id="([^"]+)"` (printf `id="%s-$1"` $k) -}}
+  {{- $c = $c | replaceRE `url\(#([^)]+)\)` (printf `url(#%s-$1)` $k) -}}
+  {{- $c = $c | replaceRE `href="#([^"]+)"` (printf `href="#%s-$1"` $k) -}}
+  {{- $c = $c | replaceRE `(?s)<style>(.*?)</style>` (printf `<style>.%s{$1}</style>` $k) -}}
+  {{- $c = $c | replaceRE `font-family:\s*system-ui[^;"}]*` "font-family:var(--font-display)" -}}
+  {{- $c = $c | replaceRE `font-family:\s*ui-monospace[^;"}]*` "font-family:var(--font-code)" -}}
+  {{- $c = $c | replaceRE `font-family="ui-monospace[^"]*"` `font-family="var(--font-code)"` -}}
+  {{- $c = replace $c "<svg " (printf `<svg class="diagram %s" ` $k) 1 -}}
+  {{- $w := 760 -}}
+  {{- with findRESubmatch `viewBox="0 0 ([0-9.]+) [0-9.]+"` $svgRes.Content 1 -}}{{- $w = int (float (index (index . 0) 1)) -}}{{- end }}
+<figure class="my-6 mx-auto" style="max-width: {{ $w }}px">
+  <div class="diagram-scroll rounded-md border border-[color:var(--line)] bg-black/20">{{ $c | safeHTML }}</div>
+  {{- with $alt }}
+  <figcaption class="mt-2 text-sm text-gray-400" aria-hidden="true">{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- else -}}
 {{- $u := urls.Parse .Destination -}}
 {{- $src := $u.String -}}
 {{- $res := false -}} {{/* must be in outer scope */}}
@@ -50,4 +88,6 @@
 {{- else -}}
 <img class="mx-auto my-6 rounded-md border border-gray-800/70 bg-black/20" src="{{ $src | safeURL }}" loading="lazy" decoding="async"
   alt="{{ $alt }}">
+{{- end -}}
+
 {{- end -}}

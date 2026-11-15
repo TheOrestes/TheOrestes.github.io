@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-11-15T11:56:30.882Z",
+        "reason": "user confirmed: chose Space Grotesk for headings and numbers in this session"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-15T11:56:31.036Z",
+        "reason": "user confirmed: chose Inter for body text in this session"
+      }
+    ]
+  }
+}

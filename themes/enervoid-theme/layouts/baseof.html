@@ -22,6 +22,23 @@
   <footer>
     {{ partial "footer.html" . }}
   </footer>
+
+  <script>
+    // Delegated, so it keeps working after swup swaps the page content.
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('.copy-btn');
+      if (!b) return;
+      var code = b.closest('.my-7').querySelector('code');
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1400); };
+      try { navigator.clipboard.writeText(code.textContent).then(done, done); } catch (err) { done(); }
+    });
+    window.addEventListener('scroll', function () {
+      var bar = document.getElementById('read-progress');
+      if (!bar) return;
+      var max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? Math.min(100, scrollY / max * 100) : 0) + '%';
+    }, { passive: true });
+  </script>
 </body>
 
 </html>

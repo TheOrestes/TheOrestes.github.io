@@ -15,7 +15,7 @@
     <a href="{{ .RelPermalink }}" class="group block px-4 sm:px-6 py-4 transition-colors duration-200 hover:bg-white/5">
       <div class="grid grid-cols-12 gap-4 items-start">
         <div class="col-span-12 md:col-span-8">
-          <div class="text-xs sm:text-sm text-gray-500 font-mono">
+          <div class="text-xs sm:text-sm text-gray-500 font-num">
             <span>{{ .Date.Format "Jan 02, 2006" }}</span>
             <span class="mx-2 text-gray-700">•</span>
             <span>{{ .Date.Format "15:04" }}</span>
@@ -25,7 +25,7 @@
             <span class="relative inline-block">
               {{ .Title }}
               <span
-                class="absolute left-0 -bottom-1 h-px w-0 bg-indigo-400 transition-all duration-300 group-hover:w-full"></span>
+                class="absolute left-0 -bottom-1 h-px w-0 bg-[color:var(--accent)] transition-all duration-300 group-hover:w-full"></span>
             </span>
           </div>
         </div>
