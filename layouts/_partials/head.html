@@ -14,5 +14,5 @@
 <link rel="stylesheet" href="/css/custom.css">
 <link rel="stylesheet" href="/css/themes.css">
 {{- if hugo.IsServer }}
-<script>try{var t=localStorage.getItem("pxd-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem("pxd-theme"),g=localStorage.getItem("pxd-grid");if(t)document.documentElement.dataset.theme=t;if(g)document.documentElement.dataset.grid=g}catch(e){}</script>
 {{- end }}

@@ -1,19 +1,37 @@
-{{- /* Dev-only (hugo server): lets you flip between the design directions.
-       Not rendered in production builds. */ -}}
+{{- /* Dev-only (hugo server): lets you flip between the design directions and
+       the Viewport grid variants. Not rendered in production builds. */ -}}
 <div id="theme-switcher" role="group" aria-label="Design direction (dev only)">
-  {{- range slice (dict "k" "" "n" "Current") (dict "k" "viewport" "n" "Viewport") (dict "k" "debug" "n" "Debug views") (dict "k" "diff" "n" "Diff gutter") (dict "k" "notebook" "n" "Notebook") (dict "k" "6030" "n" "60-30-10") }}
-  <button type="button" data-theme-pick="{{ .k }}">{{ .n }}</button>
-  {{- end }}
+  <div class="row">
+    {{- range slice (dict "k" "" "n" "Current") (dict "k" "viewport" "n" "Viewport") (dict "k" "debug" "n" "Debug views") (dict "k" "diff" "n" "Diff gutter") (dict "k" "notebook" "n" "Notebook") (dict "k" "6030" "n" "60-30-10") }}
+    <button type="button" data-theme-pick="{{ .k }}">{{ .n }}</button>
+    {{- end }}
+  </div>
+  <div class="row" role="group" aria-label="Viewport grid">
+    <span class="lbl">Viewport grid</span>
+    {{- range slice (dict "k" "lines" "n" "Lines") (dict "k" "lines-strong" "n" "Lines (strong)") (dict "k" "dots" "n" "Dots only") (dict "k" "dots-bold" "n" "Dots + bold dots") (dict "k" "dots-plus" "n" "Dots + plus") }}
+    <button type="button" data-grid-pick="{{ .k }}">{{ .n }}</button>
+    {{- end }}
+  </div>
 </div>
 <script>
   (function () {
     var root = document.documentElement, bar = document.getElementById('theme-switcher');
-    function mark() { var cur = root.dataset.theme || ''; bar.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.themePick === cur); }); }
+    function mark() {
+      var cur = root.dataset.theme || '', grid = root.dataset.grid || 'lines';
+      bar.querySelectorAll('[data-theme-pick]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.themePick === cur); });
+      bar.querySelectorAll('[data-grid-pick]').forEach(function (b) { b.setAttribute('aria-pressed', cur === 'viewport' && b.dataset.gridPick === grid); });
+    }
+    function save(k, v) { try { localStorage.setItem(k, v); } catch (err) {} }
     bar.addEventListener('click', function (e) {
       var b = e.target.closest('button'); if (!b) return;
-      var k = b.dataset.themePick;
-      if (k) root.dataset.theme = k; else delete root.dataset.theme;
-      try { localStorage.setItem('pxd-theme', k); } catch (err) {}
+      if ('themePick' in b.dataset) {
+        var k = b.dataset.themePick;
+        if (k) root.dataset.theme = k; else delete root.dataset.theme;
+        save('pxd-theme', k);
+      } else if ('gridPick' in b.dataset) {
+        root.dataset.theme = 'viewport'; root.dataset.grid = b.dataset.gridPick;
+        save('pxd-theme', 'viewport'); save('pxd-grid', b.dataset.gridPick);
+      }
       mark();
     });
     mark();

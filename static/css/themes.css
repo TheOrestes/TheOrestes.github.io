@@ -2,8 +2,10 @@
    Each one is a token set plus a few decorations; with no data-theme the
    site is the current look. Fonts stay fixed (Space Grotesk / Inter / SUSE Mono). */
 
-#theme-switcher { position: fixed; z-index: 70; right: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 4px; max-width: calc(100vw - 24px);
+#theme-switcher { position: fixed; z-index: 70; right: 12px; bottom: 12px; display: flex; flex-direction: column; gap: 4px; max-width: calc(100vw - 24px);
   padding: 6px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--bg) 92%, #000); }
+#theme-switcher .row { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+#theme-switcher .lbl { font: 500 12px var(--font-body); color: var(--muted); padding: 0 6px; }
 #theme-switcher button { font: 500 13px var(--font-body); color: var(--text); background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
 #theme-switcher button:hover { border-color: var(--accent); }
 #theme-switcher button[aria-pressed="true"] { background: var(--accent); color: #07101f; }
@@ -18,6 +20,31 @@ html[data-theme="viewport"] body {
     linear-gradient(color-mix(in srgb, var(--muted) 20%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in srgb, var(--muted) 20%, transparent) 1px, transparent 1px);
   background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+}
+/* Viewport grid variants, chosen from the switcher's second row. With no choice the base rule above (Lines) applies. */
+html[data-theme="viewport"][data-grid="lines-strong"] body {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--line) 30%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 30%, transparent) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+}
+html[data-theme="viewport"][data-grid="dots"] body {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--muted) 36%, transparent) 1px, transparent 1.3px);
+  background-size: 24px 24px;
+}
+html[data-theme="viewport"][data-grid="dots-bold"] body {
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 1.6px, transparent 1.9px),
+    radial-gradient(circle, color-mix(in srgb, var(--muted) 20%, transparent) 1px, transparent 1.3px);
+  background-size: 120px 120px, 24px 24px;
+}
+html[data-theme="viewport"][data-grid="dots-plus"] body {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M56 60h8M60 56v8' stroke='%236fb1ff' stroke-opacity='.55' stroke-width='.8' fill='none'/%3E%3C/svg%3E"),
+    radial-gradient(circle, color-mix(in srgb, var(--muted) 20%, transparent) 1px, transparent 1.3px);
+  background-size: 120px 120px, 24px 24px;
 }
 html[data-theme="viewport"] header nav { border-bottom: 2px solid; border-image: linear-gradient(90deg, #f8717199 0 33%, #4ade8099 33% 66%, #60a5fa99 66%) 1; }
 
