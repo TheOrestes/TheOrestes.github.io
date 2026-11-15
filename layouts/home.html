@@ -33,6 +33,42 @@
   </div>
 </section>
 
+{{- /* Series entry points: one row per blog series, in reading order. "Start"
+       is the first post by file path (files are numbered 01_, 02_, ...), the
+       same ordering project-cover.html relies on. */ -}}
+<section class="mt-12" aria-labelledby="home-series">
+  <h2 id="home-series" class="text-xl sm:text-2xl mb-3">Series</h2>
+  <div class="border border-[color:var(--line)] rounded-lg bg-[color:var(--surface)] overflow-hidden">
+    {{- range (site.GetPage "/blog").Sections.ByWeight }}
+    {{- $accent := .Params.accent | default "#818cf8" -}}
+    {{- $ordered := sort .RegularPages ".File.Path" -}}
+    {{- $latest := index .RegularPages.ByDate.Reverse 0 -}}
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 px-4 py-4 border-b border-[color:var(--line)] last:border-b-0">
+      <div class="flex gap-3 min-w-0 flex-1">
+        <span class="mt-2.5 h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}" aria-hidden="true"></span>
+        <div class="min-w-0">
+          <h3 class="text-lg sm:text-xl">
+            <a href="{{ .Params.project | default .RelPermalink | relURL }}" class="!text-[color:var(--heading)] hover:underline underline-offset-4">{{ .Title }}</a>
+          </h3>
+          {{- with .Description }}
+          <p class="mt-1 text-sm sm:text-base text-gray-400 leading-snug line-clamp-2">{{ . }}</p>
+          {{- end }}
+        </div>
+      </div>
+      <div class="flex items-center gap-x-5 gap-y-1 flex-wrap pl-5 sm:pl-0 sm:justify-end text-sm sm:text-base">
+        <span class="font-num text-gray-500 whitespace-nowrap">{{ len .RegularPages }} post{{ if ne (len .RegularPages) 1 }}s{{ end }}</span>
+        {{- with index $ordered 0 }}
+        <a href="{{ .RelPermalink }}" class="text-[color:var(--accent)] hover:text-white whitespace-nowrap">Start here &rarr;</a>
+        {{- end }}
+        {{- if gt (len .RegularPages) 1 }}
+        <a href="{{ $latest.RelPermalink }}" class="text-[color:var(--accent)] hover:text-white whitespace-nowrap">Latest &rarr;</a>
+        {{- end }}
+      </div>
+    </div>
+    {{- end }}
+  </div>
+</section>
+
 {{- $posts := where site.RegularPages "Section" "blog" -}}
 <section class="mt-12" aria-labelledby="latest-posts">
   <div class="flex items-baseline justify-between gap-3 mb-3">
