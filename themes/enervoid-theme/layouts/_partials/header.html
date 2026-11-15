@@ -10,8 +10,7 @@
 
             <img src='{{ with site.Params.avatar }}{{ . | relURL }}{{ else }}{{ "/images/avatar.jpg" | relURL }}{{ end
               }}' alt="{{ site.Title }}"
-              class="w-10 h-10 rounded-sm border border-[color:var(--line)] object-cover transition-transform duration-300 transform group-hover:scale-105"
-              style="animation: border-breathe 4s ease-in-out infinite;" />
+              class="w-10 h-10 rounded-sm border border-[color:var(--line)] object-cover transition-transform duration-300 transform group-hover:scale-105" />
             <span class="text-white text-lg sm:text-xl md:text-2xl font-semibold tracking-tight">
               {{ site.Title }}
               <span class="inline-block ml-2" style="animation: flicker 1.6s steps(2, end) infinite;">_</span>
@@ -71,19 +70,6 @@
       }
     }
 
-    @keyframes border-breathe {
-      0% {
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 10%, transparent);
-      }
-
-      50% {
-        box-shadow: 0 0 18px 6px color-mix(in srgb, var(--accent) 5%, transparent);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 10%, transparent);
-      }
-    }
   </style>
 
   <!-- Tiny toggle script (vanilla JS) -->
