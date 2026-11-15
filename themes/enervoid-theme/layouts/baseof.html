@@ -23,8 +23,6 @@
     {{ partial "footer.html" . }}
   </footer>
 
-  {{- if hugo.IsServer }}{{ partial "theme-switcher.html" . }}{{ end }}
-
   <script>
     // Delegated, so it keeps working after swup swaps the page content.
     document.addEventListener('click', function (e) {
