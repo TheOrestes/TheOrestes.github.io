@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 230" width="760" height="230" role="img" aria-label="A fence is a counter. The CPU queues Signal 1, Signal 2 and Signal 3 between batches of GPU work. The GPU raises the counter as it passes each one. The CPU can wait until the counter reaches a number.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+</style>
+<text class="ttl" x="20" y="24">The queue is a line of work, the fence is a counter</text>
+<text class="lbl" x="20" y="74">queue</text>
+<rect x="80" y="50" width="110" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="135" y="75" text-anchor="middle">frame work</text>
+<rect x="196" y="50" width="70" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="mono" x="231" y="75" text-anchor="middle">Signal 1</text>
+<rect x="272" y="50" width="110" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="327" y="75" text-anchor="middle">frame work</text>
+<rect x="388" y="50" width="70" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="mono" x="423" y="75" text-anchor="middle">Signal 2</text>
+<rect x="464" y="50" width="110" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="519" y="75" text-anchor="middle">frame work</text>
+<rect x="580" y="50" width="70" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="mono" x="615" y="75" text-anchor="middle">Signal 3</text>
+<line x1="231" y1="94" x2="231" y2="134" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#a)"/>
+<text class="lbl" x="20" y="164">fence</text>
+<rect x="80" y="136" width="90" height="44" rx="5" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-width="1.4"/><text class="mono" x="125" y="163" text-anchor="middle">value = 1</text>
+<text class="dim" x="250" y="163">GPU reached Signal 1, so everything before it is done</text>
+<text class="lbl" x="380" y="210" text-anchor="middle">The CPU asks "is the counter at 2 yet?" and sleeps if not. The counter only ever goes up.</text>
+</svg>

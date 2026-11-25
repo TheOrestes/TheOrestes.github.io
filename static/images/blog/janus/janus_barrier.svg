@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" width="760" height="250" role="img" aria-label="A barrier sits between earlier work and later work and does three jobs: sync, access and layout.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;fill:#e5e7eb}
+</style>
+<text class="ttl" x="20" y="24">One barrier, three questions</text>
+<rect x="20" y="50" width="150" height="56" rx="6" fill="#60a5fa" fill-opacity="0.12" stroke="#60a5fa" stroke-width="1.4"/>
+<text class="lbl" x="95" y="74" text-anchor="middle">Earlier work</text><text class="dim" x="95" y="92" text-anchor="middle">clear the back buffer</text>
+<line x1="172" y1="78" x2="298" y2="78" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="300" y="40" width="160" height="76" rx="6" fill="#f87171" fill-opacity="0.12" stroke="#f87171" stroke-width="1.4"/>
+<text class="mono" x="380" y="84" text-anchor="middle">BARRIER</text>
+<line x1="462" y1="78" x2="588" y2="78" stroke="#e5e7eb" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="590" y="50" width="150" height="56" rx="6" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-width="1.4"/>
+<text class="lbl" x="665" y="74" text-anchor="middle">Later work</text><text class="dim" x="665" y="92" text-anchor="middle">show it on screen</text>
+<text class="mono" x="40" y="156">Sync</text><text class="lbl" x="120" y="156">when may the later work start?</text>
+<text class="mono" x="40" y="186">Access</text><text class="lbl" x="120" y="186">whose writes must the later work see? (cache flush)</text>
+<text class="mono" x="40" y="216">Layout</text><text class="lbl" x="120" y="216">how are the bytes arranged for the next user? (textures only)</text>
+</svg>

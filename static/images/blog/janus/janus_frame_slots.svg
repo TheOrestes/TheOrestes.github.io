@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="Frames 0 to 3 alternating between slot 0 and slot 1. Frame 2 reuses slot 0 and waits for fence value 1 from frame 0; frame 3 reuses slot 1 and waits for value 2 from frame 1." font-family="Space Grotesk, Inter, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker></defs>
+<text x="20" y="96" fill="#c7d2fe" font-size="14" font-weight="700">Slot 0</text>
+<text x="20" y="114" fill="#9ca3af" font-size="11">tray A</text>
+<text x="20" y="196" fill="#c7d2fe" font-size="14" font-weight="700">Slot 1</text>
+<text x="20" y="214" fill="#9ca3af" font-size="11">tray B</text>
+<line x1="140" y1="140" x2="740" y2="140" stroke="#2a2f3a" stroke-dasharray="4 4"/>
+<g font-size="13" fill="#e5e7eb">
+<rect x="150" y="70" width="130" height="56" rx="6" fill="#1e2433" stroke="#4b5563"/>
+<text x="215" y="92" text-anchor="middle" font-weight="700">Frame 0</text>
+<text x="215" y="112" text-anchor="middle" fill="#86efac">signal 1</text>
+<rect x="300" y="170" width="130" height="56" rx="6" fill="#1e2433" stroke="#4b5563"/>
+<text x="365" y="192" text-anchor="middle" font-weight="700">Frame 1</text>
+<text x="365" y="212" text-anchor="middle" fill="#86efac">signal 2</text>
+<rect x="450" y="70" width="130" height="56" rx="6" fill="#1e2433" stroke="#fbbf24"/>
+<text x="515" y="88" text-anchor="middle" font-weight="700">Frame 2</text>
+<text x="515" y="104" text-anchor="middle" fill="#fbbf24">wait ≥ 1</text>
+<text x="515" y="120" text-anchor="middle" fill="#86efac">signal 3</text>
+<rect x="600" y="170" width="130" height="56" rx="6" fill="#1e2433" stroke="#fbbf24"/>
+<text x="665" y="188" text-anchor="middle" font-weight="700">Frame 3</text>
+<text x="665" y="204" text-anchor="middle" fill="#fbbf24">wait ≥ 2</text>
+<text x="665" y="220" text-anchor="middle" fill="#86efac">signal 4</text>
+</g>
+<path d="M215,68 C215,22 515,22 515,66" fill="none" stroke="#fbbf24" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="365" y="20" text-anchor="middle" fill="#fbbf24" font-size="12">same tray: wait for its old value 1</text>
+<path d="M365,228 C365,274 665,274 665,230" fill="none" stroke="#fbbf24" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="515" y="286" text-anchor="middle" fill="#fbbf24" font-size="12">same tray: wait for its old value 2</text>
+<text x="380" y="318" text-anchor="middle" fill="#fca5a5" font-size="12">✗ Frame 2 waiting for 3 would deadlock: 3 is signalled only after frame 2 itself runs</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" width="760" height="250" role="img" aria-label="CPU and GPU timelines. The CPU records frame N plus 1 while the GPU executes frame N, so the GPU runs one frame behind the CPU.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e5e7eb"/></marker></defs>
+<style>
+.ttl{font-family:'Space Grotesk',system-ui,sans-serif;font-size:13px;fill:#c7d2fe}
+.lbl{font-family:'Space Grotesk',system-ui,sans-serif;font-size:12px;fill:#d1d5db}
+.dim{font-family:'Space Grotesk',system-ui,sans-serif;font-size:11px;fill:#9ca3af}
+</style>
+<text class="ttl" x="20" y="24">Two timelines, one frame apart</text>
+<text class="lbl" x="20" y="82">CPU</text>
+<text class="lbl" x="20" y="152">GPU</text>
+<rect x="70" y="58" width="150" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="145" y="83" text-anchor="middle">record frame 0</text>
+<rect x="230" y="58" width="150" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="305" y="83" text-anchor="middle">record frame 1</text>
+<rect x="390" y="58" width="150" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="465" y="83" text-anchor="middle">record frame 2</text>
+<rect x="550" y="58" width="150" height="40" rx="5" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa" stroke-width="1.4"/><text class="lbl" x="625" y="83" text-anchor="middle">record frame 3</text>
+<rect x="230" y="128" width="150" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="lbl" x="305" y="153" text-anchor="middle">execute frame 0</text>
+<rect x="390" y="128" width="150" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="lbl" x="465" y="153" text-anchor="middle">execute frame 1</text>
+<rect x="550" y="128" width="150" height="40" rx="5" fill="#fbbf24" fill-opacity="0.14" stroke="#fbbf24" stroke-width="1.4"/><text class="lbl" x="625" y="153" text-anchor="middle">execute frame 2</text>
+<line x1="145" y1="100" x2="228" y2="126" stroke="#e5e7eb" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line x1="305" y1="100" x2="388" y2="126" stroke="#e5e7eb" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line x1="465" y1="100" x2="548" y2="126" stroke="#e5e7eb" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line x1="70" y1="196" x2="710" y2="196" stroke="#6b7280" stroke-width="1.2" marker-end="url(#a)"/>
+<text class="dim" x="710" y="214" text-anchor="end">time</text>
+<text class="dim" x="20" y="238">Dashed arrows are ExecuteCommandLists. Recording is cheap CPU work; execution happens later, on the GPU clock.</text>
+</svg>
