@@ -15,7 +15,7 @@
   {{- end }}
 
   <header class="mb-8">
-    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-normal text-[color:var(--heading)]">{{ .Title }}</h1>
 
     {{- with .Params.summary }}
     <p class="mt-3 text-base sm:text-lg text-gray-400 leading-relaxed">{{ . }}</p>
@@ -60,7 +60,7 @@
 
   {{- with .Params.gallery }}
   <section class="mt-10">
-    <h2 class="text-xl sm:text-2xl text-white tracking-wide mb-4">Screenshots</h2>
+    <h2 class="text-xl sm:text-2xl text-[color:var(--heading)] tracking-normal mb-4">Screenshots</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
       {{- $src := .src -}}
@@ -81,7 +81,7 @@
   {{- $posts := .RegularPages.ByDate -}}
   {{- if $posts }}
   <section class="mt-10">
-    <h2 class="text-xl sm:text-2xl text-white tracking-wide mb-4">Posts in this series</h2>
+    <h2 class="text-xl sm:text-2xl text-[color:var(--heading)] tracking-normal mb-4">Posts in this series</h2>
     <ol class="border border-[color:var(--line)] bg-[color:var(--surface)] rounded-sm divide-y divide-gray-800/70">
       {{- range $i, $p := $posts }}
       <li>

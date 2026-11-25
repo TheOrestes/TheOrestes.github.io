@@ -11,7 +11,7 @@
 <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-12 text-gray-100">
 
   <header class="mb-8">
-    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-wide text-white">{{ .Title }}</h1>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl tracking-normal text-[color:var(--heading)]">{{ .Title }}</h1>
     <p class="mt-2 text-sm sm:text-base text-gray-400">
       {{ len .RegularPagesRecursive }} posts across {{ len .Sections }} projects.
     </p>
@@ -37,7 +37,7 @@
         <div class="flex gap-3 min-w-0">
           <span class="mt-2 h-2 w-2 rounded-full shrink-0" style="background: {{ $accent }}"></span>
           <div class="min-w-0">
-            <h2 class="text-base sm:text-lg text-white tracking-wide">{{ .Title }}</h2>
+            <h2 class="text-base sm:text-lg text-[color:var(--heading)] tracking-normal">{{ .Title }}</h2>
             {{- with .Description }}
             <p class="mt-0.5 text-sm text-gray-400 max-w-2xl">{{ . }}</p>
             {{- end }}
@@ -66,12 +66,12 @@
 
             <div class="relative w-20 sm:w-30 aspect-video shrink-0 overflow-hidden rounded-sm
                         border border-[color:var(--line)] bg-black"
-                 {{ if not $t.src }}style="background: radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, {{ $accent }} 18%, var(--surface)), var(--bg))"{{ end }}>
+                 {{ if not $t.src }}style="background: var(--surface)"{{ end }}>
               {{- if $t.src }}
                 <img src="{{ $t.src }}" alt="" loading="lazy" decoding="async"
                      class="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100" />
                 {{- if ne $t.kind "raster" }}
-                <span class="absolute right-1 bottom-0.5 px-1 py-px rounded-sm text-[0.55rem] uppercase tracking-wider
+                <span class="absolute right-1 bottom-0.5 px-1 py-px rounded-sm text-[11px] leading-none
                              bg-black/70 border border-white/15 text-gray-300">
                   {{ if eq $t.kind "youtube" }}video{{ else }}diagram{{ end }}
                 </span>
@@ -108,7 +108,7 @@
 
   {{- with .RegularPages }}
   <section class="mt-8">
-    <h2 class="text-base sm:text-lg text-white tracking-wide mb-3">Other posts</h2>
+    <h2 class="text-base sm:text-lg text-[color:var(--heading)] tracking-normal mb-3">Other posts</h2>
     <div class="border border-[color:var(--line)] rounded-sm bg-[color:var(--surface)]">
       {{- range .ByDate.Reverse }}
       <a href="{{ .RelPermalink }}"

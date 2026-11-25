@@ -14,6 +14,24 @@
         "value": "inter",
         "createdAt": "2026-11-15T11:56:31.036Z",
         "reason": "user confirmed: chose Inter for body text in this session"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "unslop/original.html"
+        ],
+        "createdAt": "2026-11-25T16:27:24.440Z",
+        "reason": "assistant: intentional frozen backup of the pre-unslop page, user asked to keep it as is"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "unslop/original.html"
+        ],
+        "createdAt": "2026-11-25T16:27:24.612Z",
+        "reason": "assistant: intentional frozen backup of the pre-unslop page, user asked to keep it as is"
       }
     ]
   }
